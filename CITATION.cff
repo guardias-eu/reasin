@@ -1,0 +1,9 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+authors:
+- family-names: "Oldoni"
+  given-names: "Damiano"
+  orcid: "0000-0003-3445-7562"
+title: "reasin"
+version: 0.0.1
+url: "https://github.com/guardias-eu/reasin"

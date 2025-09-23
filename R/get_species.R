@@ -10,39 +10,41 @@
 #' single species.
 #' @param scientific_name Character. Scientific name or part of it. Case
 #' insensitive.
-#' @param environment Character. Environment type. One of "Terrestrial",
-#' "Aquatic", "Marine", "Freshwater". Case insensitive.
-#' @param is_union_concern Logical. If TRUE, returns only species of Union
+#' @param environment Character. Environment type. One or more from `"MAR"`,
+#'   `"FRW"`, `"TER"`, `"EST"` to filter species by, marine, freshwater,
+#'   terrestrial or oligohaline environments respectively.
+#' @param union_concern Logical. If TRUE, returns only species of Union
 #'   concern. If FALSE, returns only species not of Union concern. If NULL
 #'   (default), returns all species.
+#' @return A tibble data frame containing species information.
 #' @export
 #' @examples
 #' # Get list of all species in the EASIN catalogue
 #' get_species()
 #'
 #' # Get list of all species of Union concern
-#' get_species(is_union_concern = TRUE)
+#' get_species(union_concern = TRUE)
 #'
-#' # Get info about a single species by EASIN Species ID
-#' get_species(easin_id = 1234)
+#' # Get info about one or more species by EASIN Species IDs
+#' get_species(easin_id = c("R00460", "R12250"))
 #'
-#' # Get species by scientific name or part of it
+#' # Get info about one or more species by scientific names or parts of it
 #' get_species(scientific_name = "Ambrosia")
 #'
 #' # Get species by `environment`
-#' get_species(environment = "terrestrial")
+#' get_species(environment = "TER")
 get_species <- function(
     easin_id = NULL,
     scientific_name = NULL,
     environment = NULL,
-    is_union_concern = NULL
+    union_concern = NULL
 ) {
   # Build query parameters
   query_params <- list(
     easin_id = easin_id,
     scientific_name = scientific_name,
     environment = environment,
-    is_union_concern = is_union_concern
+    union_concern = union_concern
   )
 
   # Remove NULL parameters via purrr
@@ -60,16 +62,66 @@ get_species <- function(
     )
   }
 
+  # If `union_concern` is passed, check it's a boolean
+  if ("union_concern" %in% names(query_params)) {
+    union_concern <- query_params$union_concern
+    if (!purrr::is_logical(union_concern)) {
+      cli::cli_abort("Argument 'union_concern' must be boolean.")
+    }
+    get_species_static_url("https://easin.jrc.ec.europa.eu/apixg/catxg/euconcern")
+  }
+
   # If `easin_id` is passed, check it's a character value
   if ("easin_id" %in% names(query_params)) {
     easin_id <- query_params$easin_id
     if (!purrr::is_character(easin_id)) {
-      cli::cli_abort("Argument 'easin_id' it must be character.")
+      cli::cli_abort(
+        "Argument 'easin_id' must be character.",
+        class = "reasin_error_assignment_invalid"
+      )
     }
+    return(get_species_by_easin_id(easin_id))
   }
 
-  # If `environment` is passed, check it's a boolean
+  # If `environment` is passed, check it's a valid character value
+  if ("environment" %in% names(query_params)) {
+    environment <- query_params$environment
+    if (!purrr::is_character(environment)) {
+      cli::cli_abort(
+        "Argument 'environment' must be character.",
+        class = "reasin_error_assignment_invalid"
+      )
+    }
+    valid_environments <- c("MAR", "FRW", "TER", "EST")
+    if (any(!environment %in% valid_environments)) {
+      wrong_environments <- environment[!environment %in% valid_environments]
+      cli::cli_abort(
+        "Argument 'environment' must be one of: {valid_environments}.",
+        class = "reasin_error_assignment_invalid"
+      )
+    }
+    return(get_species_by_environment(environment))
+  }
 
+  # If `scientific_name` is passed, check it's a character value
+  if ("scientific_name" %in% names(query_params)) {
+    scientific_name <- query_params$scientific_name
+    if (!purrr::is_character(scientific_name)) {
+      cli::cli_abort(
+        "Argument 'scientific_name' must be character.",
+        class = "reasin_error_assignment_invalid"
+      )
+    }
+    # Length of each scientific name must be at least 4 characters
+    if (any(nchar(scientific_name) < 4)) {
+      short_names <- scientific_name[nchar(scientific_name) < 4]
+      cli::cli_abort(
+        "Each scientific name must be at least 4 characters long. Short names: {short_names}.",
+        class = "reasin_error_assignment_invalid"
+      )
+    }
+    return(get_species_by_scientific_name(scientific_name))
+  }
 }
 
 
@@ -77,23 +129,87 @@ get_species <- function(
 #'
 #' This function retrieves all species from the EASIN's Catalogue Web Service.
 #' It is used internally by `get_species()` if all args are `NULL`.
-#' @return A data frame containing all species.
-#' @keywords internal
+#' @return A tibble data frame containing all species.
 #' @noRd
+#' @examples
+#' get_all_species()
 get_all_species <- function() {
-  # Make the GET request to the EASIN Catalogue Web Service
-  response <- httr::GET(
-    url = "https://easin.jrc.ec.europa.eu/apixg/catxg/getall/skip/0/take/15000",
-  )
-
-  # Check for HTTP errors
-  httr::stop_for_status(response)
-
-  # Parse the JSON response
-  content <- httr::content(response, as = "text", encoding = "UTF-8")
-  data <- jsonlite::fromJSON(content, flatten = TRUE) %>%
-    dplyr::tibble()
-  # Remobve ' from Name column at the begin and at the end
+  url_all_species <- "https://easin.jrc.ec.europa.eu/apixg/catxg/getall/skip/0/take/15000"
+  data <- get_species_static_url(url_all_species)
+  # Remove `'` from `Name` column at the begin and at the end
   data$Name <- gsub("^'|'$", "", data$Name)
+  return(data)
+}
+
+#' Get all species of Union Concern
+#'
+#' Retrieves all species of Union Concern from the EASIN's Catalogue Web Service.
+#' It is used internally by `get_species()` if `union_concern = TRUE`.
+#'
+#' @return A data frame containing all species of Union Concern.
+#' @noRd
+#' @examples
+#' get_union_concern_species()
+get_union_concern_species <- function() {
+  union_concern_url <- "https://easin.jrc.ec.europa.eu/apixg/catxg/euconcern"
+  get_species_static_url(union_concern_url)
+}
+
+#' Get species by environment(s)
+#'
+#' Retrieves species from the EASIN's Catalogue Web Service filtered by one or
+#' more environment types. It is used internally by `get_species()` if
+#' `environment` argument is provided.
+#' @param environments A character vector containing one or more environment
+#' types.
+#' @return A data frame containing species filtered by the specified environment
+#' types.
+#' @noRd
+#' @examples
+#' get_species_by_environment(c("MAR", "TER"))
+get_species_by_environment <- function(environments) {
+  get_species_dynamic_url(
+    url = environment_url,
+    arg = "environment",
+    values = environments,
+    is_pagination = TRUE
+  )
+}
+
+#' Get species by EASIN ID(s)
+#'
+#' Retrieves species information from the EASIN's Catalogue Web Service for one
+#' or more EASIN IDs. It is used internally by `get_species()` if `easin_id`
+#' argument is provided.
+#'
+#' @param easin_ids A character vector containing one or more EASIN IDs.
+#' @return A tibble data frame containing species information.
+#' @noRd
+#' @examples
+#' get_species_by_easin_id(c("R00460", "R12250"))
+get_species_by_easin_id <- function(easin_ids) {
+  data <- get_species_dynamic_url(
+    arg = "easinid",
+    values = easin_ids,
+    is_pagination = FALSE
+  )
+  return(data)
+}
+
+#' Get species by scientific name or part of it
+#'
+#' Retrieves species from the EASIN's Catalogue Web Service based on a
+#' scientific name or part of it. It is used internally by `get_species()` if
+#' `scientific_name` argument is provided.
+#'
+#' @param scientific_names A character vector containing one or more scientific
+#' names or parts of it.
+#' @return A tibble data frame containing species information.
+get_species_by_scientific_name <- function(scientific_names) {
+  data <- get_species_dynamic_url(
+    arg = "term",
+    values = scientific_names,
+    is_pagination = FALSE
+  )
   return(data)
 }

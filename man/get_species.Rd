@@ -8,7 +8,7 @@ get_species(
   easin_id = NULL,
   scientific_name = NULL,
   environment = NULL,
-  is_union_concern = NULL
+  union_concern = NULL
 )
 }
 \arguments{
@@ -18,31 +18,37 @@ single species.}
 \item{scientific_name}{Character. Scientific name or part of it. Case
 insensitive.}
 
-\item{environment}{Character. Environment type. One of "Terrestrial",
-"Aquatic", "Marine", "Freshwater". Case insensitive.}
+\item{environment}{Character. Environment type. One or more from \code{"MAR"},
+\code{"FRW"}, \code{"TER"}, \code{"EST"} to filter species by, marine, freshwater,
+terrestrial or oligohaline environments respectively.}
 
-\item{is_union_concern}{Logical. If TRUE, returns only species of Union concern.
-If FALSE, returns only species not of Union concern. If NULL (default),
-returns all species.}
+\item{union_concern}{Logical. If TRUE, returns only species of Union
+concern. If FALSE, returns only species not of Union concern. If NULL
+(default), returns all species.}
+}
+\value{
+A tibble data frame containing species information.
 }
 \description{
 This function retrieves species information from the EASIN's
 \href{https://easin.jrc.ec.europa.eu/easin/Catalogue}{Catalogue}. Users can
 retrieve records by species’ scientific name, environment, impact, taxonomy,
 Union concern status
-(\href{https://easin.jrc.ec.europa.eu/easin/LegalFramework/Index}{LegalFramework})
-and more. More on \href{https://easin.jrc.ec.europa.eu/apixg}{EASIN Web Services}.
+(\href{https://easin.jrc.ec.europa.eu/easin/LegalFramework/Index}{LegalFramework}). More on \href{https://easin.jrc.ec.europa.eu/apixg}{EASIN Web Services}.
 }
 \examples{
 # Get list of all species in the EASIN catalogue
 get_species()
 
 # Get list of all species of Union concern
-get_species(is_union_concern = TRUE)
+get_species(union_concern = TRUE)
 
-# Get info about a single species by EASIN Species ID
-get_species(easin_id = 1234)
+# Get info about one or more species by EASIN Species IDs
+get_species(easin_id = c("R00460", "R12250"))
 
-# Get species by scientific name or part of it
+# Get info about one or more species by scientific names or parts of it
 get_species(scientific_name = "Ambrosia")
+
+# Get species by `environment`
+get_species(environment = "TER")
 }

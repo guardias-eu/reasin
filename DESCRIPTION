@@ -5,17 +5,21 @@ Authors@R: c(
     person("Damiano", "Oldoni", , "damiano.oldoni@inbo.be", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0003-3445-7562", affiliation = "Research Institute for Nature and Forest (INBO)")),
     person("Research Institute for Nature and Forest (INBO)", role = "cph",
-           comment = c(ROR = "00j54wy13"))
+           comment = c(ROR = "00j54wy13")),
+    person("GuardIAS", role = "fnd",
+           comment = "https://guardias.eu/")
   )
 Description: What the package does (one paragraph).
 License: MIT + file LICENSE
 URL: https://github.com/guardias-eu/reasin
 BugReports: https://github.com/guardias-eu/reasin/issues
 Imports: 
+    dplyr,
+    glue,
     httr,
     jsonlite,
     magrittr,
-    dplyr
+    rlang
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2

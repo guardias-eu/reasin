@@ -16,9 +16,10 @@ BugReports: https://github.com/guardias-eu/reasin/issues
 Imports: 
     dplyr,
     glue,
-    httr,
+    httr2,
     jsonlite,
     magrittr,
+    purrr,
     rlang
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)

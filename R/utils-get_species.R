@@ -11,7 +11,7 @@
 #' @keywords internal
 #' @noRd
 #' @examples
-#' get_species_static_url("https://easin.jrc.ec.europa.eu/apixg/catxg/species")'
+#' get_species_static_url("https://easin.jrc.ec.europa.eu/apixg/catxg/species")
 get_species_static_url <- function(url) {
   get_check_parse(url)
 }
@@ -38,7 +38,7 @@ get_species_static_url <- function(url) {
 #'   values = c("R12250")
 #' )
 get_species_dynamic_url <- function(arg, values, is_pagination) {
-  if (!arg %in% c("environment", "easinid", "term")) {
+  if (!arg %in% c("env", "easinid", "term")) {
     cli::cli_abort(
       "Argument 'arg' must be one of 'environment', 'easin_id' or 'term'.",
       class = "reasin_error_assignment_invalid"
@@ -53,18 +53,14 @@ get_species_dynamic_url <- function(arg, values, is_pagination) {
   data <- purrr::map_df(
     values,
     function(x) {
+      url <- glue::glue(
+        "https://easin.jrc.ec.europa.eu/apixg/catxg/{arg}/{x}/"
+      )
       if (is_pagination == FALSE) {
-        url <- glue::glue(
-          "https://easin.jrc.ec.europa.eu/apixg/catxg/{arg}/{x}/"
-        )
+        get_check_parse(url)
       } else {
-        skip <- 0
-        take <- 10
-        url <- glue::glue(
-          "https://easin.jrc.ec.europa.eu/apixg/catxg/{arg}/{x}/skip/{skip}/take/{take}"
-        )
+        get_check_parse_paginated(url)
       }
-      get_check_parse(url)
     }
   )
   return(data)

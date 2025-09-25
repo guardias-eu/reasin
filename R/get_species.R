@@ -6,16 +6,14 @@
 #' Union concern status
 #' ([LegalFramework](https://easin.jrc.ec.europa.eu/easin/LegalFramework/Index)). More on [EASIN Web Services](https://easin.jrc.ec.europa.eu/apixg).
 #'
-#' @param easin_id Integer. EASIN Species ID. If provided, returns info about a
-#' single species.
-#' @param scientific_name Character. Scientific name or part of it. Case
+#' @param easin_id Integer. EASIN Species ID(s).
+#' @param scientific_name Character. Scientific name(s) or part(s) of it. Case
 #' insensitive.
-#' @param environment Character. Environment type. One or more from `"MAR"`,
-#'   `"FRW"`, `"TER"`, `"EST"` to filter species by, marine, freshwater,
+#' @param environment Character. Environment type(s): one or more from `"MAR"`,
+#'   `"FRW"`, `"TER"`, `"OLI"` to filter species by, marine, freshwater,
 #'   terrestrial or oligohaline environments respectively.
-#' @param union_concern Logical. If TRUE, returns only species of Union
-#'   concern. If FALSE, returns only species not of Union concern. If NULL
-#'   (default), returns all species.
+#' @param union_concern Logical. If `TRUE`, returns only species of Union
+#'   concern. Only `TRUE` is allowed.
 #' @return A tibble data frame containing species information.
 #' @export
 #' @examples
@@ -29,10 +27,10 @@
 #' get_species(easin_id = c("R00460", "R12250"))
 #'
 #' # Get info about one or more species by scientific names or parts of it
-#' get_species(scientific_name = "Ambrosia")
+#' get_species(scientific_name = c("Aceria ambrosia", "Procambarus"))
 #'
 #' # Get species by `environment`
-#' get_species(environment = "TER")
+#' get_species(environment = c("MAR","EST"))
 get_species <- function(
     easin_id = NULL,
     scientific_name = NULL,
@@ -65,10 +63,10 @@ get_species <- function(
   # If `union_concern` is passed, check it's a boolean
   if ("union_concern" %in% names(query_params)) {
     union_concern <- query_params$union_concern
-    if (!purrr::is_logical(union_concern)) {
-      cli::cli_abort("Argument 'union_concern' must be boolean.")
+    if (!purrr::is_logical(union_concern, n = 1) | union_concern != TRUE) {
+      cli::cli_abort("Argument 'union_concern' must be TRUE")
     }
-    get_species_static_url("https://easin.jrc.ec.europa.eu/apixg/catxg/euconcern")
+    return(get_union_concern_species())
   }
 
   # If `easin_id` is passed, check it's a character value
@@ -92,7 +90,7 @@ get_species <- function(
         class = "reasin_error_assignment_invalid"
       )
     }
-    valid_environments <- c("MAR", "FRW", "TER", "EST")
+    valid_environments <- c("MAR", "FRW", "TER", "OLI")
     if (any(!environment %in% valid_environments)) {
       wrong_environments <- environment[!environment %in% valid_environments]
       cli::cli_abort(
@@ -120,6 +118,8 @@ get_species <- function(
         class = "reasin_error_assignment_invalid"
       )
     }
+    # Replace spaces with `%20`
+    scientific_name <- gsub(" ", "%20", scientific_name)
     return(get_species_by_scientific_name(scientific_name))
   }
 }
@@ -136,8 +136,7 @@ get_species <- function(
 get_all_species <- function() {
   url_all_species <- "https://easin.jrc.ec.europa.eu/apixg/catxg/getall/skip/0/take/15000"
   data <- get_species_static_url(url_all_species)
-  # Remove `'` from `Name` column at the begin and at the end
-  data$Name <- gsub("^'|'$", "", data$Name)
+  data <- clean_up_names(data, cols = "Name")
   return(data)
 }
 
@@ -152,7 +151,8 @@ get_all_species <- function() {
 #' get_union_concern_species()
 get_union_concern_species <- function() {
   union_concern_url <- "https://easin.jrc.ec.europa.eu/apixg/catxg/euconcern"
-  get_species_static_url(union_concern_url)
+  data <- get_species_static_url(union_concern_url)
+  return(data)
 }
 
 #' Get species by environment(s)
@@ -168,12 +168,13 @@ get_union_concern_species <- function() {
 #' @examples
 #' get_species_by_environment(c("MAR", "TER"))
 get_species_by_environment <- function(environments) {
-  get_species_dynamic_url(
-    url = environment_url,
-    arg = "environment",
+  data <- get_species_dynamic_url(
+    arg = "env",
     values = environments,
     is_pagination = TRUE
   )
+  data <- clean_up_names(data, cols = "Name")
+  return(data)
 }
 
 #' Get species by EASIN ID(s)

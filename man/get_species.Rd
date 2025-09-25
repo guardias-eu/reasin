@@ -12,19 +12,17 @@ get_species(
 )
 }
 \arguments{
-\item{easin_id}{Integer. EASIN Species ID. If provided, returns info about a
-single species.}
+\item{easin_id}{Integer. EASIN Species ID(s).}
 
-\item{scientific_name}{Character. Scientific name or part of it. Case
+\item{scientific_name}{Character. Scientific name(s) or part(s) of it. Case
 insensitive.}
 
-\item{environment}{Character. Environment type. One or more from \code{"MAR"},
-\code{"FRW"}, \code{"TER"}, \code{"EST"} to filter species by, marine, freshwater,
+\item{environment}{Character. Environment type(s): one or more from \code{"MAR"},
+\code{"FRW"}, \code{"TER"}, \code{"OLI"} to filter species by, marine, freshwater,
 terrestrial or oligohaline environments respectively.}
 
-\item{union_concern}{Logical. If TRUE, returns only species of Union
-concern. If FALSE, returns only species not of Union concern. If NULL
-(default), returns all species.}
+\item{union_concern}{Logical. If \code{TRUE}, returns only species of Union
+concern. Only \code{TRUE} is allowed.}
 }
 \value{
 A tibble data frame containing species information.
@@ -47,8 +45,8 @@ get_species(union_concern = TRUE)
 get_species(easin_id = c("R00460", "R12250"))
 
 # Get info about one or more species by scientific names or parts of it
-get_species(scientific_name = "Ambrosia")
+get_species(scientific_name = c("Aceria ambrosia", "Procambarus"))
 
 # Get species by `environment`
-get_species(environment = "TER")
+get_species(environment = c("MAR","EST"))
 }

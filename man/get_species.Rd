@@ -8,6 +8,7 @@ get_species(
   easin_id = NULL,
   scientific_name = NULL,
   environment = NULL,
+  country_code = NULL,
   union_concern = NULL
 )
 }
@@ -20,6 +21,8 @@ insensitive.}
 \item{environment}{Character. Environment type(s): one or more from \code{"MAR"},
 \code{"FRW"}, \code{"TER"}, \code{"OLI"} to filter species by, marine, freshwater,
 terrestrial or oligohaline environments respectively.}
+
+\item{country_code}{Character. Countries' ISO 3166-1 alpha-2 code(s) to filter species of Member State concern.}
 
 \item{union_concern}{Logical. If \code{TRUE}, returns only species of Union
 concern. Only \code{TRUE} is allowed.}
@@ -49,4 +52,7 @@ get_species(scientific_name = c("Aceria ambrosia", "Procambarus"))
 
 # Get species by `environment`
 get_species(environment = c("MAR","EST"))
+
+# Get species by `country_code`
+get_species(country_code = c("AT"))
 }

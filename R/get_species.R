@@ -12,6 +12,7 @@
 #' @param environment Character. Environment type(s): one or more from `"MAR"`,
 #'   `"FRW"`, `"TER"`, `"OLI"` to filter species by, marine, freshwater,
 #'   terrestrial or oligohaline environments respectively.
+#' @param country_code Character. Countries' ISO 3166-1 alpha-2 code(s) to filter species of Member State concern.
 #' @param union_concern Logical. If `TRUE`, returns only species of Union
 #'   concern. Only `TRUE` is allowed.
 #' @return A tibble data frame containing species information.
@@ -31,10 +32,14 @@
 #'
 #' # Get species by `environment`
 #' get_species(environment = c("MAR","EST"))
+#'
+#' # Get species by `country_code`
+#' get_species(country_code = c("AT"))
 get_species <- function(
     easin_id = NULL,
     scientific_name = NULL,
     environment = NULL,
+    country_code = NULL,
     union_concern = NULL
 ) {
   # Build query parameters
@@ -42,7 +47,8 @@ get_species <- function(
     easin_id = easin_id,
     scientific_name = scientific_name,
     environment = environment,
-    union_concern = union_concern
+    union_concern = union_concern,
+    country_code = country_code
   )
 
   # Remove NULL parameters via purrr
@@ -60,7 +66,7 @@ get_species <- function(
     )
   }
 
-  # If `union_concern` is passed, check it's a boolean
+  # Get species by `union_concern`
   if ("union_concern" %in% names(query_params)) {
     union_concern <- query_params$union_concern
     if (!purrr::is_logical(union_concern, n = 1) | union_concern != TRUE) {
@@ -69,7 +75,7 @@ get_species <- function(
     return(get_union_concern_species())
   }
 
-  # If `easin_id` is passed, check it's a character value
+  # Get species by `easin_id`
   if ("easin_id" %in% names(query_params)) {
     easin_id <- query_params$easin_id
     if (!purrr::is_character(easin_id)) {
@@ -81,7 +87,7 @@ get_species <- function(
     return(get_species_by_easin_id(easin_id))
   }
 
-  # If `environment` is passed, check it's a valid character value
+  # Get species by `environment`
   if ("environment" %in% names(query_params)) {
     environment <- query_params$environment
     if (!purrr::is_character(environment)) {
@@ -101,7 +107,7 @@ get_species <- function(
     return(get_species_by_environment(environment))
   }
 
-  # If `scientific_name` is passed, check it's a character value
+  # Get species by `scientific_name`
   if ("scientific_name" %in% names(query_params)) {
     scientific_name <- query_params$scientific_name
     if (!purrr::is_character(scientific_name)) {
@@ -121,6 +127,18 @@ get_species <- function(
     # Replace spaces with `%20`
     scientific_name <- gsub(" ", "%20", scientific_name)
     return(get_species_by_scientific_name(scientific_name))
+  }
+
+  # Get species by `country_code`
+  if ("country_code" %in% names(query_params)) {
+    country_code <- query_params$country_code
+    if (!purrr::is_character(country_code)) {
+      cli::cli_abort(
+        "Argument 'country_code' must be character.",
+        class = "reasin_error_assignment_invalid"
+      )
+    }
+    return(get_species_by_country_code(country_code))
   }
 }
 
@@ -212,5 +230,25 @@ get_species_by_scientific_name <- function(scientific_names) {
     values = scientific_names,
     is_pagination = FALSE
   )
+  return(data)
+}
+
+#' Get species by country
+#'
+#' Retrieves species from the EASIN's Catalogue Web Service filtered by one or
+#' more environment types. It is used internally by `get_species()` if
+#' `environment` argument is provided.
+#' @param country_codes A character vector containing one or more ISO 3166-1 alpha-2 country codes.
+#' @return A data frame containing species filtered by the specified countries.
+#' @noRd
+#' @examples
+#' get_species_by_country_code(c("AT", "BG"))
+get_species_by_country_code <- function(country_codes) {
+  data <- get_species_dynamic_url(
+    arg = "concernedms",
+    values = country_codes,
+    is_pagination = TRUE
+  )
+  # data <- clean_up_names(data, cols = "Name")
   return(data)
 }

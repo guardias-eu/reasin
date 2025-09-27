@@ -8,6 +8,7 @@
 #' - `environment`: The full name of the environment.
 #' - `env_code`: The abbreviation used in the `get_species()` function.
 #' @family misc functions
+#' @export
 #' @examples
 #' environments()
 environments <- function() {
@@ -26,6 +27,7 @@ environments <- function() {
 #' - `country`: The full name of the country.
 #' - `country_code`: The abbreviations to be used in the `get_species(country_code = )` function.
 #' @family misc functions
+#' @export
 #' @examples
 #' countries()
 countries <- function() {
@@ -46,7 +48,18 @@ countries <- function() {
     )
   )
 }
-
+#' Outermost regions
+#'
+#' Shows the valid outermost regions and their codes. The codes are used in the
+#' `get_species()` function to filter species by outermost regions. Based on the
+#' [Catalogue Web Service](https://easin.jrc.ec.europa.eu/apixg) documentation.
+#' @return A tibble with 2 columns:
+#' - `region`: The full name of the outermost region.
+#' - `region_code`: The abbreviations to be used in the `get_species(region_code = )` function.
+#' @family misc functions
+#' @export
+#' @examples
+#' regions()
 regions <- function() {
   dplyr::tibble(
     region = c(

@@ -23,6 +23,7 @@ countries()
 }
 \seealso{
 Other misc functions: 
-\code{\link{environments}()}
+\code{\link{environments}()},
+\code{\link{regions}()}
 }
 \concept{misc functions}

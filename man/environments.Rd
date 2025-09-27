@@ -24,6 +24,7 @@ environments()
 }
 \seealso{
 Other misc functions: 
-\code{\link{countries}()}
+\code{\link{countries}()},
+\code{\link{regions}()}
 }
 \concept{misc functions}

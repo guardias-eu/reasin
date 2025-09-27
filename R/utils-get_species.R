@@ -38,9 +38,17 @@ get_species_static_url <- function(url) {
 #'   values = c("R12250")
 #' )
 get_species_dynamic_url <- function(arg, values, is_pagination) {
-  if (!arg %in% c("env", "easinid", "term", "concernedms")) {
+  valid_args_endpoints <- c(
+    "env",
+    "easinid",
+    "term",
+    "concernedms",
+    "concernedregions",
+    "impact"
+  )
+  if (!arg %in% valid_args_endpoints) {
     cli::cli_abort(
-      "Argument 'arg' must be one of 'environment', 'easin_id' or 'term'.",
+      "Argument 'arg' must be one of the eindpoints: {valid_args_endpoints}.",
       class = "reasin_error_assignment_invalid"
     )
   }

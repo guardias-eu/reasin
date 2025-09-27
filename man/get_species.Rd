@@ -9,6 +9,8 @@ get_species(
   scientific_name = NULL,
   environment = NULL,
   country_code = NULL,
+  region_code = NULL,
+  impact = NULL,
   union_concern = NULL
 )
 }
@@ -22,7 +24,16 @@ insensitive.}
 \code{"FRW"}, \code{"TER"}, \code{"OLI"} to filter species by, marine, freshwater,
 terrestrial or oligohaline environments respectively.}
 
-\item{country_code}{Character. Countries' ISO 3166-1 alpha-2 code(s) to filter species of Member State concern.}
+\item{country_code}{Character. Countries' ISO 3166-1 alpha-2 code(s) to
+filter species of Member State concern. Use \code{countries()} to look up the
+list of codes. Source: EASIN \href{https://easin.jrc.ec.europa.eu/apixg}{Catalogue Web Service} documentation.}
+
+\item{region_code}{Character. Species of Outermost regions concern codes as
+defined in NUTS (Nomenclature of territorial units for statistics). Use
+\code{regions()} to look up the list of codes. Source: EASIN \href{https://easin.jrc.ec.europa.eu/apixg}{Catalogue Web Service} documentation.}
+
+\item{impact}{Character. Species impact. One of \code{"hi"} (high) or \code{"lo"}
+(low).}
 
 \item{union_concern}{Logical. If \code{TRUE}, returns only species of Union
 concern. Only \code{TRUE} is allowed.}
@@ -36,6 +47,20 @@ This function retrieves species information from the EASIN's
 retrieve records by species’ scientific name, environment, impact, taxonomy,
 Union concern status
 (\href{https://easin.jrc.ec.europa.eu/easin/LegalFramework/Index}{LegalFramework}). More on \href{https://easin.jrc.ec.europa.eu/apixg}{EASIN Web Services}.
+}
+\details{
+List of supported Outermost region codes (argument \code{region_code}):
+\itemize{
+\item \code{ES7}: Canary Islands
+\item \code{FRY1}: Guadeloupe
+\item \code{FRY2}: Martinique
+\item \code{FRY3}: French Guiana
+\item \code{FRY4}: Réunion
+\item \code{FRY5}: Mayotte
+\item \code{FRY6}: Saint Martin
+\item \code{PT2}: Azores
+\item \code{PT3}: Madeira
+}
 }
 \examples{
 # Get list of all species in the EASIN catalogue
@@ -55,4 +80,7 @@ get_species(environment = c("MAR","EST"))
 
 # Get species by `country_code`
 get_species(country_code = c("AT"))
+
+# Get species by `region_code`
+get_species(region_code = c("ES7", "PT3"))
 }

@@ -71,18 +71,19 @@ get_species <- function(
     country_code = NULL,
     region_code = NULL,
     impact = NULL,
-    taxonomy = NULL
+    taxonomy = NULL,
+    union_concern = NULL
 ) {
   # Build query parameters
   query_params <- list(
     easin_id = easin_id,
     scientific_name = scientific_name,
     environment = environment,
-    union_concern = union_concern,
     country_code = country_code,
     region_code = region_code,
     impact = impact,
-    taxonomy = taxonomy
+    taxonomy = taxonomy,
+    union_concern = union_concern
   )
 
   # Remove NULL parameters via purrr

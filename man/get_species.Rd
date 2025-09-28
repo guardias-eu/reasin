@@ -11,6 +11,7 @@ get_species(
   country_code = NULL,
   region_code = NULL,
   impact = NULL,
+  taxonomy = NULL,
   union_concern = NULL
 )
 }
@@ -34,6 +35,11 @@ defined in NUTS (Nomenclature of territorial units for statistics). Use
 
 \item{impact}{Character. Species impact. One of \code{"hi"} (high) or \code{"lo"}
 (low).}
+
+\item{taxonomy}{Character. A list with two slots: \code{rank} with taxonomic ranks
+and \code{taxon} with taxonomic names. Use \code{ranks()} to look up the list of
+taxonomic ranks available. Provide them in the right order from parents to
+children. Source: EASIN \href{https://easin.jrc.ec.europa.eu/apixg}{Catalogue Web Service} documentation. See}
 
 \item{union_concern}{Logical. If \code{TRUE}, returns only species of Union
 concern. Only \code{TRUE} is allowed.}

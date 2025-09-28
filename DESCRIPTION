@@ -13,14 +13,14 @@ Description: What the package does (one paragraph).
 License: MIT + file LICENSE
 URL: https://github.com/guardias-eu/reasin, https://guardias-eu.github.io/reasin/
 BugReports: https://github.com/guardias-eu/reasin/issues
-Imports: 
+Imports:
+    cli,
     dplyr,
     glue,
     httr2,
     jsonlite,
     magrittr,
-    purrr,
-    rlang
+    purrr
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2

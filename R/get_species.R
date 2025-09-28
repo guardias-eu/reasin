@@ -57,10 +57,10 @@
 #' get_species(scientific_name = c("Aceria ambrosia", "Procambarus"))
 #'
 #' # Get species by `environment`
-#' get_species(environment = c("MAR","EST"))
+#' get_species(environment = c("MAR","OLI"))
 #'
 #' # Get species by `country_code`
-#' get_species(country_code = c("AT"))
+#' get_species(country_code = c("AT", "BG"))
 #'
 #' # Get species by `region_code`
 #' get_species(region_code = c("ES7", "PT3"))

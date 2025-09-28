@@ -42,6 +42,7 @@
 #' @param union_concern Logical. If `TRUE`, returns only species of Union
 #'   concern. Only `TRUE` is allowed.
 #' @return A tibble data frame containing species information.
+#' @family species functions
 #' @export
 #' @examples
 #' # Get list of all species in the EASIN catalogue

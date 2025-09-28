@@ -1,4 +1,12 @@
 url: https://guardias-eu.github.io/reasin/
 template:
   bootstrap: 5
-
+navbar:
+  bg: dark
+reference:
+  - title: Species functions
+    contents:
+    - has_concept("species functions")
+  - title: Miscellaneous functions
+    contents:
+    - has_concept("misc functions")

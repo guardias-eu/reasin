@@ -90,3 +90,4 @@ get_species(country_code = c("AT", "BG"))
 # Get species by `region_code`
 get_species(region_code = c("ES7", "PT3"))
 }
+\concept{species functions}

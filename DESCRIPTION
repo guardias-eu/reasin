@@ -11,7 +11,7 @@ Authors@R: c(
   )
 Description: What the package does (one paragraph).
 License: MIT + file LICENSE
-URL: https://github.com/guardias-eu/reasin
+URL: https://github.com/guardias-eu/reasin, https://guardias-eu.github.io/reasin/
 BugReports: https://github.com/guardias-eu/reasin/issues
 Imports: 
     dplyr,

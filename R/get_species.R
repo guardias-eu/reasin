@@ -34,6 +34,11 @@
 #'   Service](https://easin.jrc.ec.europa.eu/apixg) documentation.
 #' @param impact Character. Species impact. One of `"hi"` (high) or `"lo"`
 #'   (low).
+#' @param taxonomy Character. A list with two slots: `rank` with taxonomic ranks
+#'   and `taxon` with taxonomic names. Use `ranks()` to look up the list of
+#'   taxonomic ranks available. Provide them in the right order from parents to
+#'   children. Source: EASIN [Catalogue Web
+#'   Service](https://easin.jrc.ec.europa.eu/apixg) documentation. See
 #' @param union_concern Logical. If `TRUE`, returns only species of Union
 #'   concern. Only `TRUE` is allowed.
 #' @return A tibble data frame containing species information.
@@ -66,22 +71,24 @@ get_species <- function(
     country_code = NULL,
     region_code = NULL,
     impact = NULL,
-    union_concern = NULL
+    taxonomy = NULL
 ) {
   # Build query parameters
   query_params <- list(
     easin_id = easin_id,
     scientific_name = scientific_name,
     environment = environment,
+    union_concern = union_concern,
     country_code = country_code,
     region_code = region_code,
     impact = impact,
-    union_concern = union_concern
+    taxonomy = taxonomy
   )
 
   # Remove NULL parameters via purrr
   query_params <- purrr::compact(query_params)
-  # If no parameters are provided, get all species
+
+  # Get all species if no parameters are provided
   if (length(query_params) == 0) {
     return(get_all_species())
   }
@@ -94,15 +101,6 @@ get_species <- function(
     )
   }
 
-  # Get species by `union_concern`
-  if ("union_concern" %in% names(query_params)) {
-    union_concern <- query_params$union_concern
-    if (!purrr::is_logical(union_concern, n = 1) | union_concern != TRUE) {
-      cli::cli_abort("Argument 'union_concern' must be TRUE")
-    }
-    return(get_union_concern_species())
-  }
-
   # Get species by `easin_id`
   if ("easin_id" %in% names(query_params)) {
     easin_id <- query_params$easin_id
@@ -113,26 +111,6 @@ get_species <- function(
       )
     }
     return(get_species_by_easin_id(easin_id))
-  }
-
-  # Get species by `environment`
-  if ("environment" %in% names(query_params)) {
-    environment <- query_params$environment
-    if (!purrr::is_character(environment)) {
-      cli::cli_abort(
-        "Argument 'environment' must be character.",
-        class = "reasin_error_assignment_invalid"
-      )
-    }
-    valid_environments <- environments() %>% dplyr::pull("env_code")
-    if (any(!environment %in% valid_environments)) {
-      wrong_environments <- environment[!environment %in% valid_environments]
-      cli::cli_abort(
-        "Argument 'environment' must be one of: {valid_environments}.",
-        class = "reasin_error_assignment_invalid"
-      )
-    }
-    return(get_species_by_environment(environment))
   }
 
   # Get species by `scientific_name`
@@ -157,7 +135,36 @@ get_species <- function(
     return(get_species_by_scientific_name(scientific_name))
   }
 
-  # Get species by `country_code`
+  # Get species by `environment`
+  if ("environment" %in% names(query_params)) {
+    environment <- query_params$environment
+    if (!purrr::is_character(environment)) {
+      cli::cli_abort(
+        "Argument 'environment' must be character.",
+        class = "reasin_error_assignment_invalid"
+      )
+    }
+    valid_environments <- environments() %>% dplyr::pull("env_code")
+    if (any(!environment %in% valid_environments)) {
+      wrong_environments <- environment[!environment %in% valid_environments]
+      cli::cli_abort(
+        "Argument 'environment' must be one of: {valid_environments}.",
+        class = "reasin_error_assignment_invalid"
+      )
+    }
+    return(get_species_by_environment(environment))
+  }
+
+  # Get species of `union_concern`
+  if ("union_concern" %in% names(query_params)) {
+    union_concern <- query_params$union_concern
+    if (!purrr::is_logical(union_concern, n = 1) | union_concern != TRUE) {
+      cli::cli_abort("Argument 'union_concern' must be TRUE")
+    }
+    return(get_union_concern_species())
+  }
+
+  # Get species of Member State concern by `country_code`
   if ("country_code" %in% names(query_params)) {
     country_code <- query_params$country_code
     if (!purrr::is_character(country_code)) {
@@ -214,6 +221,18 @@ get_species <- function(
       )
     }
     return(get_species_by_impact(impact))
+  }
+
+  # Get species by taxonomy (single level)
+  if ("taxonomy" %in% names(query_params)) {
+    taxonomy <- query_params$taxonomy
+    if (!purrr::is_character(taxonomy, n = 1)) {
+      cli::cli_abort(
+        "Argument 'taxonomy' must be character of length 1.",
+        class = "reasin_error_assignment_invalid"
+      )
+    }
+    return(get_species_by_taxonomy(taxonomy))
   }
 }
 
@@ -299,6 +318,9 @@ get_species_by_easin_id <- function(easin_ids) {
 #' @param scientific_names A character vector containing one or more scientific
 #' names or parts of it.
 #' @return A tibble data frame containing species information.
+#' @noRd
+#' @examples
+#' get_species_by_scientific_name("Vespa")
 get_species_by_scientific_name <- function(scientific_names) {
   data <- get_species_dynamic_url(
     arg = "term",
@@ -334,6 +356,9 @@ get_species_by_country_code <- function(country_codes) {
 #' `region_code` argument is provided.
 #' @param region_codes A character vector containing one or more Outermost region codes.
 #' @return A tibble data frame containing species information for species present in the given Outermost regions.
+#' @noRd
+#' @examples
+#' get_speciesby_region_code("PT3")
 get_species_by_region_code <- function(region_codes) {
   data <- get_species_dynamic_url(
     arg = "concernedregions",
@@ -347,6 +372,25 @@ get_species_by_impact <- function(impact) {
   data <- get_species_dynamic_url(
     arg = "impact",
     values = impact,
+    is_pagination = TRUE
+  )
+  return(data)
+}
+
+#' Get species by taxonomy
+#'
+#' Retrieves species from the EASIN's Catalogue Web Service filtered by `taxonomy`.
+#' It is used internally by `get_species()` if `taxonomy` argument is provided.
+#' @param rank A character representing the taxonomy level.
+#' @param taxonomy A character string representing the taxonomy name of given `rank`.
+#' @return A tibble data frame containing species information for species present in the given taxonomy.
+#' @noRd
+#' @examples
+#' get_species_by_taxonomy(rank = "kingdom", taxonomy = "Animalia")
+get_species_by_taxonomy <- function(rank, taxonomy) {
+  data <- get_species_dynamic_url(
+    arg = rank,
+    values = taxonomy,
     is_pagination = TRUE
   )
   return(data)

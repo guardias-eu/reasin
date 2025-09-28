@@ -67,7 +67,7 @@ regions <- function() {
       "Guadeloupe",
       "Martinique",
       "French Guiana",
-      "Réunion",
+      "Reunion",
       "Mayotte",
       "Saint Martin",
       "Azores",

@@ -36,3 +36,7 @@ get_species(scientific_name = "Procambarus")
 ```
 
 More examples can be found in [`get_species()` documentation](https://guardias-eu.github.io/reasin/reference/get_species.html).
+
+Check also the [Reference
+section](https://guardias-eu.github.io/reasin/reference/index.html) for a list
+with all available functions.

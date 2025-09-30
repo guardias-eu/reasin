@@ -27,7 +27,8 @@ terrestrial or oligohaline environments respectively.}
 
 \item{country_code}{Character. Countries' ISO 3166-1 alpha-2 code(s) to
 filter species of Member State concern. Use \code{countries()} to look up the
-list of codes. Source: EASIN \href{https://easin.jrc.ec.europa.eu/apixg}{Catalogue Web Service} documentation.}
+list of codes. Source: EASIN \href{https://easin.jrc.ec.europa.eu/apixg}{Catalogue Web Service} documentation. Only few
+states submitted their species of Member State concern to EASIN.}
 
 \item{region_code}{Character. Species of Outermost regions concern codes as
 defined in NUTS (Nomenclature of territorial units for statistics). Use
@@ -36,10 +37,11 @@ defined in NUTS (Nomenclature of territorial units for statistics). Use
 \item{impact}{Character. Species impact. One of \code{"hi"} (high) or \code{"lo"}
 (low).}
 
-\item{taxonomy}{Character. A list with two slots: \code{rank} with taxonomic ranks
-and \code{taxon} with taxonomic names. Use \code{ranks()} to look up the list of
-taxonomic ranks available. Provide them in the right order from parents to
-children. Source: EASIN \href{https://easin.jrc.ec.europa.eu/apixg}{Catalogue Web Service} documentation. See}
+\item{taxonomy}{Character. A list with with taxonomic names named by their
+taxonomic rank. Use \code{ranks()} to look up the list of taxonomic ranks
+available. Provide them in the right order from parents to children.
+Source: EASIN \href{https://easin.jrc.ec.europa.eu/apixg}{Catalogue Web Service}
+documentation.}
 
 \item{union_concern}{Logical. If \code{TRUE}, returns only species of Union
 concern. Only \code{TRUE} is allowed.}
@@ -85,9 +87,20 @@ get_species(scientific_name = c("Aceria ambrosia", "Procambarus"))
 get_species(environment = c("MAR","OLI"))
 
 # Get species by `country_code`
-get_species(country_code = c("AT", "BG"))
+get_species(country_code = c("IE", "LT"))
 
 # Get species by `region_code`
 get_species(region_code = c("ES7", "PT3"))
+
+# Get species by full `taxonomy` levels (up to family)
+get_species(
+  taxonomy = list(
+    kingdom = "Animalia",
+    phylum = "Arthropoda",
+    class = "Insecta",
+    order = "Hymenoptera",
+    family = "Vespidae"
+  )
+)
 }
 \concept{species functions}

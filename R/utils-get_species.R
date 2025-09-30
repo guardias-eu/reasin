@@ -4,15 +4,46 @@
 #' case for retrieving all species from the Catalogue Web Service or the s'pecies
 #' of Union Concern.
 #'
-#' @param url A character string representing the URL to fetch species data
-#' from.
-#' @return A data frame containing the species data retrieved from the s'pecified
+#' @param base_url A character string representing the base URL of the API.
+#' @param arg A character vector representing the specific endpoint to be
+#'   appended to the base URL. Useful for full taxonomy endpoint. Default: `NULL`.
+#' @param value An optional character vector representing a specific value to be
+#'   appended to the URL referring to `arg`. Useful for full taxonomy endpoint.
+#'   Default: `NULL`.
+#' @return A data frame containing the species data retrieved from the specified
 #' URL.
-#' @keywords internal
 #' @noRd
 #' @examples
 #' get_species_static_url("https://easin.jrc.ec.europa.eu/apixg/catxg/species")
-get_species_static_url <- function(url) {
+#' get_species_static_url(
+#'   "https://easin.jrc.ec.europa.eu/apixg/catxg/",
+#'   arg = c("kingdom", "phylum", "class", "order", "family"),
+#'   value = c("Animalia", "Arthropoda", "Insecta", "Hymenoptera", "Vespidae")
+#' )
+get_species_static_url <- function(base_url, arg = NULL, value = NULL) {
+  # arg and value must be both NULL or both filled in
+  if (all(is.null(arg), is.null(value)) == FALSE &
+      all(!is.null(arg), !is.null(value)) == FALSE) {
+    cli::cli_abort(
+      "Arguments 'arg' and 'value' must be both NULL or both filled in.",
+      class = "reasin_error_assignment_invalid"
+    )
+  }
+  if (!is.null(arg) & !is.null(value)) {
+    valid_arg <- c("kingdom", "phylum", "class", "order", "family")
+    if (!identical(arg, valid_arg)) {
+      cli::cli_abort(
+        "If both 'arg' and 'value' are provided, 'arg' must be {valid_arg}.",
+        class = "reasin_error_assignment_invalid"
+      )
+    }
+    url <- paste0(
+      base_url,
+      glue::glue_collapse(glue::glue("{arg}/{value}/"), sep = "")
+    )
+  } else {
+    url <- base_url
+  }
   get_check_parse(url)
 }
 
@@ -28,6 +59,7 @@ get_species_static_url <- function(url) {
 #' specified argument. If multiple values are passed, iteration and eventually
 #'   pagination is handled internally.
 #' @param is_pagination A boolean. Is an URL with `skip` and `take` arguments?
+#' @param base_url A character string representing the base URL of the API.
 #' @return A data frame containing the species data retrieved based on the
 #' specified query parameters.
 #' @noRd
@@ -37,7 +69,12 @@ get_species_static_url <- function(url) {
 #'   arg = "easin_id",
 #'   values = c("R12250")
 #' )
-get_species_dynamic_url <- function(arg, values, is_pagination) {
+get_species_dynamic_url <- function(
+    arg,
+    values,
+    is_pagination,
+    base_url = "https://easin.jrc.ec.europa.eu/apixg/catxg/"
+  ) {
   valid_args_endpoints <- c(
     "env",
     "easinid",
@@ -46,10 +83,10 @@ get_species_dynamic_url <- function(arg, values, is_pagination) {
     "concernedregions",
     "impact"
   )
+  # Check input is valid based on possible values. Return cli abort error if not
   if (!arg %in% valid_args_endpoints) {
     cli::cli_abort(
-      "Argument 'arg' must be one of the eindpoints: {valid_args_endpoints}.",
-      class = "reasin_error_assignment_invalid"
+      "Argument 'arg' must be one of the eindpoints: {valid_args_endpoints}."
     )
   }
   if (!is_pagination %in% c(TRUE, FALSE)) {

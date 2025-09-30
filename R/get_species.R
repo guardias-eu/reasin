@@ -27,18 +27,19 @@
 #' @param country_code Character. Countries' ISO 3166-1 alpha-2 code(s) to
 #'   filter species of Member State concern. Use `countries()` to look up the
 #'   list of codes. Source: EASIN [Catalogue Web
-#'   Service](https://easin.jrc.ec.europa.eu/apixg) documentation.
+#'   Service](https://easin.jrc.ec.europa.eu/apixg) documentation. Only few
+#'   states submitted their species of Member State concern to EASIN.
 #' @param region_code Character. Species of Outermost regions concern codes as
 #'   defined in NUTS (Nomenclature of territorial units for statistics). Use
 #'   `regions()` to look up the list of codes. Source: EASIN [Catalogue Web
 #'   Service](https://easin.jrc.ec.europa.eu/apixg) documentation.
 #' @param impact Character. Species impact. One of `"hi"` (high) or `"lo"`
 #'   (low).
-#' @param taxonomy Character. A list with two slots: `rank` with taxonomic ranks
-#'   and `taxon` with taxonomic names. Use `ranks()` to look up the list of
-#'   taxonomic ranks available. Provide them in the right order from parents to
-#'   children. Source: EASIN [Catalogue Web
-#'   Service](https://easin.jrc.ec.europa.eu/apixg) documentation. See
+#' @param taxonomy Character. A list with with taxonomic names named by their
+#'   taxonomic rank. Use `ranks()` to look up the list of taxonomic ranks
+#'   available. Provide them in the right order from parents to children.
+#'   Source: EASIN [Catalogue Web Service](https://easin.jrc.ec.europa.eu/apixg)
+#'   documentation.
 #' @param union_concern Logical. If `TRUE`, returns only species of Union
 #'   concern. Only `TRUE` is allowed.
 #' @return A tibble data frame containing species information.
@@ -61,10 +62,21 @@
 #' get_species(environment = c("MAR","OLI"))
 #'
 #' # Get species by `country_code`
-#' get_species(country_code = c("AT", "BG"))
+#' get_species(country_code = c("IE", "LT"))
 #'
 #' # Get species by `region_code`
 #' get_species(region_code = c("ES7", "PT3"))
+#'
+#' # Get species by full `taxonomy` levels (up to family)
+#' get_species(
+#'   taxonomy = list(
+#'     kingdom = "Animalia",
+#'     phylum = "Arthropoda",
+#'     class = "Insecta",
+#'     order = "Hymenoptera",
+#'     family = "Vespidae"
+#'   )
+#' )
 get_species <- function(
     easin_id = NULL,
     scientific_name = NULL,
@@ -225,16 +237,29 @@ get_species <- function(
     return(get_species_by_impact(impact))
   }
 
-  # Get species by taxonomy (single level)
+  # Get species by taxonomy
   if ("taxonomy" %in% names(query_params)) {
     taxonomy <- query_params$taxonomy
-    if (!purrr::is_character(taxonomy, n = 1)) {
+    rank <- names(taxonomy)
+    if (!purrr::is_bare_list(taxonomy)) {
       cli::cli_abort(
-        "Argument 'taxonomy' must be character of length 1.",
+        "Argument 'taxonomy' must be a list.",
         class = "reasin_error_assignment_invalid"
       )
     }
-    return(get_species_by_taxonomy(taxonomy))
+    if (length(taxonomy) == 0) {
+      cli::cli_abort(
+        "Argument 'taxonomy' must be a non-empty list.",
+        class = "reasin_error_assignment_invalid"
+      )
+    }
+    ranks <- c("kingdom", "phylum", "class", "order", "family")
+    if (!identical(rank, ranks)) {
+      cli::cli_abort(
+        "If you want to include taxonomic levels, you must include all levels up to family: {.val {ranks}}"
+      )
+    }
+    return(get_species_by_taxonomy(rank = rank, taxonomy = taxonomy))
   }
 }
 
@@ -383,17 +408,28 @@ get_species_by_impact <- function(impact) {
 #'
 #' Retrieves species from the EASIN's Catalogue Web Service filtered by `taxonomy`.
 #' It is used internally by `get_species()` if `taxonomy` argument is provided.
-#' @param rank A character representing the taxonomy level.
+#' @param rank A character representing the taxonomy level(s).
 #' @param taxonomy A character string representing the taxonomy name of given `rank`.
-#' @return A tibble data frame containing species information for species present in the given taxonomy.
+#' @return A tibble data frame containing species information for species
+#'   present in the given taxonomy.
 #' @noRd
 #' @examples
-#' get_species_by_taxonomy(rank = "kingdom", taxonomy = "Animalia")
+#' get_species_by_taxonomy(
+#'   rank = c("kingdom", "phylum", "class", "order", "family"),
+#'   taxonomy = c(
+#'     "Animalia",
+#'     "Arthropoda",
+#'     "Insecta",
+#'     "Hymenoptera",
+#'     "Vespidae"
+#'   )
+#' )
 get_species_by_taxonomy <- function(rank, taxonomy) {
-  data <- get_species_dynamic_url(
+  base_url <- "https://easin.jrc.ec.europa.eu/apixg/catxg/"
+  data <- get_species_static_url(
+    base_url = base_url,
     arg = rank,
-    values = taxonomy,
-    is_pagination = TRUE
+    value = taxonomy
   )
   return(data)
 }

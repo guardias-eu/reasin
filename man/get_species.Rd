@@ -13,6 +13,7 @@ get_species(
   impact = NULL,
   taxon = NULL,
   taxonomy = NULL,
+  present_in_country = NULL,
   union_concern = NULL
 )
 }
@@ -45,6 +46,10 @@ ranks. Source: EASIN \href{https://easin.jrc.ec.europa.eu/apixg}{Catalogue Web S
 \item{taxonomy}{Character named vector with the taxonomic names named
 by their taxonomic rank. Provide them in the right order from kingdom up to
 family. Source: EASIN \href{https://easin.jrc.ec.europa.eu/apixg}{Catalogue Web Service} documentation.}
+
+\item{present_in_country}{Character. Countries' ISO 3166-1 alpha-2 code to
+filter species present in that country. Use \code{countries()} to look up the
+list of codes. Source: EASIN \href{https://easin.jrc.ec.europa.eu/apixg}{Catalogue Web Service} documentation.}
 
 \item{union_concern}{Logical. If \code{TRUE}, returns only species of Union
 concern. Only \code{TRUE} is allowed.}
@@ -108,5 +113,8 @@ get_species(
     family = "Vespidae"
   )
 )
+
+# Get species present in a country
+get_species(present_in_country = "BE")
 }
 \concept{species functions}

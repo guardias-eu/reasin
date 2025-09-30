@@ -82,6 +82,7 @@ get_species_dynamic_url <- function(
     "concernedms",
     "concernedregions",
     "impact",
+    "incountries",
     ranks() %>% dplyr::pull(rank)
   )
   # Check input is valid based on possible values. Return cli abort error if not

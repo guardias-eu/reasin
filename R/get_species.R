@@ -43,6 +43,10 @@
 #'   by their taxonomic rank. Provide them in the right order from kingdom up to
 #'   family. Source: EASIN [Catalogue Web
 #'   Service](https://easin.jrc.ec.europa.eu/apixg) documentation.
+#' @param present_in_country Character. Countries' ISO 3166-1 alpha-2 code to
+#'  filter species present in that country. Use `countries()` to look up the
+#'  list of codes. Source: EASIN [Catalogue Web
+#'  Service](https://easin.jrc.ec.europa.eu/apixg) documentation.
 #' @param union_concern Logical. If `TRUE`, returns only species of Union
 #'   concern. Only `TRUE` is allowed.
 #' @return A tibble data frame containing species information.
@@ -83,6 +87,9 @@
 #'     family = "Vespidae"
 #'   )
 #' )
+#'
+#' # Get species present in a country
+#' get_species(present_in_country = "BE")
 get_species <- function(
     easin_id = NULL,
     scientific_name = NULL,
@@ -92,6 +99,7 @@ get_species <- function(
     impact = NULL,
     taxon = NULL,
     taxonomy = NULL,
+    present_in_country = NULL,
     union_concern = NULL
 ) {
   # Build query parameters
@@ -104,6 +112,7 @@ get_species <- function(
     impact = impact,
     taxon = taxon,
     taxonomy = taxonomy,
+    present_in_country = present_in_country,
     union_concern = union_concern
   )
 
@@ -283,6 +292,25 @@ get_species <- function(
     }
     return(get_species_by_taxonomy(rank = rank, taxonomy = taxonomy))
   }
+
+  # Get species present in a country
+  if ("present_in_country" %in% names(query_params)) {
+    country <- query_params$present_in_country
+    if (!purrr::is_character(country, n = 1)) {
+      cli::cli_abort(
+        "Argument 'country' must be character of length 1.",
+        class = "reasin_error_assignment_invalid"
+      )
+    }
+    valid_countries <- countries() %>% dplyr::pull(country_code)
+    if (!country %in% valid_countries) {
+      cli::cli_abort(
+        "Argument 'present_in_country' must be one of: {valid_countries}. Invalid value: {country}.",
+        class = "reasin_error_assignment_invalid"
+      )
+    }
+    return(get_species_by_presence_in_country(country))
+  }
 }
 
 #' Get all species
@@ -295,8 +323,8 @@ get_species <- function(
 #' get_all_species()
 get_all_species <- function() {
   url_all_species <- "https://easin.jrc.ec.europa.eu/apixg/catxg/getall/skip/0/take/15000"
-  data <- get_species_static_url(url_all_species)
-  data <- clean_up_names(data, cols = "Name")
+  data <- get_species_static_url(url_all_species) %>%
+    clean_up_names(cols = "Name")
   return(data)
 }
 
@@ -476,5 +504,15 @@ get_species_by_taxonomy <- function(rank, taxonomy) {
     arg = rank,
     value = taxonomy
   )
+  return(data)
+}
+
+get_species_by_presence_in_country <- function(country) {
+  data <- get_species_dynamic_url(
+    arg = "incountries",
+    values = country,
+    is_pagination = TRUE
+  ) %>%
+    clean_up_names(cols = "Name")
   return(data)
 }

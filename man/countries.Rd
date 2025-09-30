@@ -24,6 +24,7 @@ countries()
 \seealso{
 Other misc functions: 
 \code{\link{environments}()},
+\code{\link{ranks}()},
 \code{\link{regions}()}
 }
 \concept{misc functions}

@@ -86,3 +86,26 @@ regions <- function() {
     )
   )
 }
+
+#' Taxonomic ranks
+#'
+#' Shows the valid taxonomic ranks. The ranks are used in the `get_species()`
+#' function to filter species by taxonomic rank. Based on the
+#' [Catalogue Web Service](https://easin.jrc.ec.europa.eu/apixg) documentation.
+#' @return A tibble with 1 column:
+#' - `rank`: The valid taxonomic ranks.
+#' @family misc functions
+#' @export
+#' @examples
+#' ranks()
+ranks <- function() {
+  dplyr::tibble(
+    rank = c(
+      "kingdom",
+      "phylum",
+      "class",
+      "order",
+      "family"
+    )
+  )
+}

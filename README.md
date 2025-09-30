@@ -12,7 +12,8 @@ status](https://www.repostatus.org/badges/latest/active.svg)](https://www.repost
 
 The goal of reasin is to provide a R interface to the API of the European Alien Species Information Network (EASIN).
 
-At the moment only interface to the Catalogue Web Service (checklist data) is implemented. Expect more features soon.
+At the moment only interface to the EASIN [Catalogue
+Web Service](https://easin.jrc.ec.europa.eu/apixg) (checklist data) is implemented. Expect more features soon.
 
 ## Installation
 

@@ -35,11 +35,14 @@
 #'   Service](https://easin.jrc.ec.europa.eu/apixg) documentation.
 #' @param impact Character. Species impact. One of `"hi"` (high) or `"lo"`
 #'   (low).
-#' @param taxonomy Character. A list with with taxonomic names named by their
-#'   taxonomic rank. Use `ranks()` to look up the list of taxonomic ranks
-#'   available. Provide them in the right order from parents to children.
-#'   Source: EASIN [Catalogue Web Service](https://easin.jrc.ec.europa.eu/apixg)
-#'   documentation.
+#' @param taxon Character named vector of length 1 with the taxon name
+#'   named by its taxonomic rank. Use `ranks()` to look up the list of valid
+#'   ranks. Source: EASIN [Catalogue Web
+#'   Service](https://easin.jrc.ec.europa.eu/apixg) documentation.
+#' @param taxonomy Character named vector with the taxonomic names named
+#'   by their taxonomic rank. Provide them in the right order from kingdom up to
+#'   family. Source: EASIN [Catalogue Web
+#'   Service](https://easin.jrc.ec.europa.eu/apixg) documentation.
 #' @param union_concern Logical. If `TRUE`, returns only species of Union
 #'   concern. Only `TRUE` is allowed.
 #' @return A tibble data frame containing species information.
@@ -67,9 +70,12 @@
 #' # Get species by `region_code`
 #' get_species(region_code = c("ES7", "PT3"))
 #'
+#' # Get species by `taxon`
+#' get_species(taxon = c(family = "Vespidae"))
+#'
 #' # Get species by full `taxonomy` levels (up to family)
 #' get_species(
-#'   taxonomy = list(
+#'   taxonomy = c(
 #'     kingdom = "Animalia",
 #'     phylum = "Arthropoda",
 #'     class = "Insecta",
@@ -241,19 +247,13 @@ get_species <- function(
   if ("taxonomy" %in% names(query_params)) {
     taxonomy <- query_params$taxonomy
     rank <- names(taxonomy)
-    if (!purrr::is_bare_list(taxonomy)) {
+    if (!purrr::is_character(taxonomy, n = 5)) {
       cli::cli_abort(
-        "Argument 'taxonomy' must be a list.",
+        "Argument 'taxonomy' must be a named vector of length 5.",
         class = "reasin_error_assignment_invalid"
       )
     }
-    if (length(taxonomy) == 0) {
-      cli::cli_abort(
-        "Argument 'taxonomy' must be a non-empty list.",
-        class = "reasin_error_assignment_invalid"
-      )
-    }
-    ranks <- c("kingdom", "phylum", "class", "order", "family")
+    ranks <- ranks() %>% dplyr::pull("rank")
     if (!identical(rank, ranks)) {
       cli::cli_abort(
         "If you want to include taxonomic levels, you must include all levels up to family: {.val {ranks}}"
@@ -262,7 +262,6 @@ get_species <- function(
     return(get_species_by_taxonomy(rank = rank, taxonomy = taxonomy))
   }
 }
-
 
 #' Get all species
 #'

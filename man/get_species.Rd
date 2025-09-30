@@ -37,14 +37,16 @@ defined in NUTS (Nomenclature of territorial units for statistics). Use
 \item{impact}{Character. Species impact. One of \code{"hi"} (high) or \code{"lo"}
 (low).}
 
-\item{taxonomy}{Character. A list with with taxonomic names named by their
-taxonomic rank. Use \code{ranks()} to look up the list of taxonomic ranks
-available. Provide them in the right order from parents to children.
-Source: EASIN \href{https://easin.jrc.ec.europa.eu/apixg}{Catalogue Web Service}
-documentation.}
+\item{taxonomy}{Character named vector with the taxonomic names named
+by their taxonomic rank. Provide them in the right order from kingdom up to
+family. Source: EASIN \href{https://easin.jrc.ec.europa.eu/apixg}{Catalogue Web Service} documentation.}
 
 \item{union_concern}{Logical. If \code{TRUE}, returns only species of Union
 concern. Only \code{TRUE} is allowed.}
+
+\item{taxon}{Character named vector of length 1 with the taxon name
+named by its taxonomic rank. Use \code{ranks()} to look up the list of valid
+ranks. Source: EASIN \href{https://easin.jrc.ec.europa.eu/apixg}{Catalogue Web Service} documentation.}
 }
 \value{
 A tibble data frame containing species information.
@@ -91,6 +93,9 @@ get_species(country_code = c("IE", "LT"))
 
 # Get species by `region_code`
 get_species(region_code = c("ES7", "PT3"))
+
+# Get species by `taxon`
+get_species(taxon = c(family = "Vespidae"))
 
 # Get species by full `taxonomy` levels (up to family)
 get_species(

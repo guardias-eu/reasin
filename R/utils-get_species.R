@@ -30,7 +30,7 @@ get_species_static_url <- function(base_url, arg = NULL, value = NULL) {
     )
   }
   if (!is.null(arg) & !is.null(value)) {
-    valid_arg <- c("kingdom", "phylum", "class", "order", "family")
+    valid_arg <- ranks() %>% dplyr::pull(rank)
     if (!identical(arg, valid_arg)) {
       cli::cli_abort(
         "If both 'arg' and 'value' are provided, 'arg' must be {valid_arg}.",

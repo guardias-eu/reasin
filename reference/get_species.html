@@ -84,7 +84,8 @@ terrestrial or oligohaline environments respectively.</p></dd>
 <dt id="arg-country-code">country_code<a class="anchor" aria-label="anchor" href="#arg-country-code"></a></dt>
 <dd><p>Character. Countries' ISO 3166-1 alpha-2 code(s) to
 filter species of Member State concern. Use <code><a href="countries.html">countries()</a></code> to look up the
-list of codes. Source: EASIN <a href="https://easin.jrc.ec.europa.eu/apixg" class="external-link">Catalogue Web Service</a> documentation.</p></dd>
+list of codes. Source: EASIN <a href="https://easin.jrc.ec.europa.eu/apixg" class="external-link">Catalogue Web Service</a> documentation. Only few
+states submitted their species of Member State concern to EASIN.</p></dd>
 
 
 <dt id="arg-region-code">region_code<a class="anchor" aria-label="anchor" href="#arg-region-code"></a></dt>
@@ -99,10 +100,11 @@ defined in NUTS (Nomenclature of territorial units for statistics). Use
 
 
 <dt id="arg-taxonomy">taxonomy<a class="anchor" aria-label="anchor" href="#arg-taxonomy"></a></dt>
-<dd><p>Character. A list with two slots: <code>rank</code> with taxonomic ranks
-and <code>taxon</code> with taxonomic names. Use <code>ranks()</code> to look up the list of
-taxonomic ranks available. Provide them in the right order from parents to
-children. Source: EASIN <a href="https://easin.jrc.ec.europa.eu/apixg" class="external-link">Catalogue Web Service</a> documentation. See</p></dd>
+<dd><p>Character. A list with with taxonomic names named by their
+taxonomic rank. Use <code>ranks()</code> to look up the list of taxonomic ranks
+available. Provide them in the right order from parents to children.
+Source: EASIN <a href="https://easin.jrc.ec.europa.eu/apixg" class="external-link">Catalogue Web Service</a>
+documentation.</p></dd>
 
 
 <dt id="arg-union-concern">union_concern<a class="anchor" aria-label="anchor" href="#arg-union-concern"></a></dt>
@@ -225,8 +227,27 @@ concern. Only <code>TRUE</code> is allowed.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   CommonNames &lt;list&gt;, Synonyms &lt;list&gt;, CBD_Pathways &lt;list&gt;</span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Get species by `country_code`</span></span></span>
-<span class="r-in"><span><span class="fu">get_species</span><span class="op">(</span>country_code <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"AT"</span>, <span class="st">"BG"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 0 × 0</span></span>
+<span class="r-in"><span><span class="fu">get_species</span><span class="op">(</span>country_code <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"IE"</span>, <span class="st">"LT"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 112 × 25</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    EASINID Name      Authorship FirstIntroductionsInEU PresentInCountries Status</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>                 <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> R17242  Alexandr… (Howell) … <span style="color: #949494;">&lt;df [1 × 3]&gt;</span>           <span style="color: #949494;">&lt;df [6 × 1]&gt;</span>       A     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> R00595  Allium t… L.         <span style="color: #949494;">&lt;df [1 × 3]&gt;</span>           <span style="color: #949494;">&lt;df [22 × 1]&gt;</span>      A     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> R17488  Amphibal… Darwin, 1… <span style="color: #949494;">&lt;df [1 × 3]&gt;</span>           <span style="color: #949494;">&lt;df [26 × 1]&gt;</span>      C     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> R01070  Anser an… (Linnaeus… <span style="color: #949494;">&lt;df [1 × 3]&gt;</span>           <span style="color: #949494;">&lt;df [55 × 1]&gt;</span>      C     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> R01255  Aponoget… L.f.       <span style="color: #949494;">&lt;df [1 × 3]&gt;</span>           <span style="color: #949494;">&lt;df [9 × 1]&gt;</span>       A     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> R01826  Azolla f… Lam.       <span style="color: #949494;">&lt;df [1 × 3]&gt;</span>           <span style="color: #949494;">&lt;df [35 × 1]&gt;</span>      A     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> R02253  Branta c… (Linnaeus… <span style="color: #949494;">&lt;df [1 × 3]&gt;</span>           <span style="color: #949494;">&lt;df [39 × 1]&gt;</span>      A     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> R19497  Bufo bufo (Linnaeus… <span style="color: #949494;">&lt;df [1 × 3]&gt;</span>           <span style="color: #949494;">&lt;df [42 × 1]&gt;</span>      A     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> R02476  Cabomba … A.Gray     <span style="color: #949494;">&lt;df [1 × 3]&gt;</span>           <span style="color: #949494;">&lt;df [15 × 1]&gt;</span>      A     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> R02720  Caprella… Schurin, … <span style="color: #949494;">&lt;df [1 × 3]&gt;</span>           <span style="color: #949494;">&lt;df [12 × 1]&gt;</span>      A     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 102 more rows</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 19 more variables: HasImpact &lt;lgl&gt;, IsEUConcern &lt;lgl&gt;, EUConcernName &lt;chr&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   IsOutermostConcern &lt;lgl&gt;, ConcernedOutermostRegions &lt;list&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   IsMSConcern &lt;lgl&gt;, ConcernedMS &lt;list&gt;, IsPartNative &lt;lgl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   NativeRange &lt;list&gt;, IsHorizonScanning &lt;lgl&gt;, LastRevisionDate &lt;lgl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   Kingdom &lt;chr&gt;, Phylum &lt;chr&gt;, Class &lt;chr&gt;, Order &lt;chr&gt;, Family &lt;chr&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   CommonNames &lt;list&gt;, Synonyms &lt;list&gt;, CBD_Pathways &lt;list&gt;</span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Get species by `region_code`</span></span></span>
 <span class="r-in"><span><span class="fu">get_species</span><span class="op">(</span>region_code <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ES7"</span>, <span class="st">"PT3"</span><span class="op">)</span><span class="op">)</span></span></span>
@@ -244,6 +265,36 @@ concern. Only <code>TRUE</code> is allowed.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> R04627  Cyclura … (Bonnater… <span style="color: #949494;">&lt;df [1 × 3]&gt;</span>           <span style="color: #949494;">&lt;df [1 × 1]&gt;</span>       Q     </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> R04773  Cytisus … (Hill) Ro… <span style="color: #949494;">&lt;df [1 × 3]&gt;</span>           <span style="color: #949494;">&lt;df [10 × 1]&gt;</span>      A     </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 352 more rows</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 19 more variables: HasImpact &lt;lgl&gt;, IsEUConcern &lt;lgl&gt;, EUConcernName &lt;chr&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   IsOutermostConcern &lt;lgl&gt;, ConcernedOutermostRegions &lt;list&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   IsMSConcern &lt;lgl&gt;, ConcernedMS &lt;list&gt;, IsPartNative &lt;lgl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   NativeRange &lt;list&gt;, IsHorizonScanning &lt;lgl&gt;, LastRevisionDate &lt;lgl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   Kingdom &lt;chr&gt;, Phylum &lt;chr&gt;, Class &lt;chr&gt;, Order &lt;chr&gt;, Family &lt;chr&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   CommonNames &lt;list&gt;, Synonyms &lt;list&gt;, CBD_Pathways &lt;list&gt;</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Get species by full `taxonomy` levels (up to family)</span></span></span>
+<span class="r-in"><span><span class="fu">get_species</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  taxonomy <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    kingdom <span class="op">=</span> <span class="st">"Animalia"</span>,</span></span>
+<span class="r-in"><span>    phylum <span class="op">=</span> <span class="st">"Arthropoda"</span>,</span></span>
+<span class="r-in"><span>    class <span class="op">=</span> <span class="st">"Insecta"</span>,</span></span>
+<span class="r-in"><span>    order <span class="op">=</span> <span class="st">"Hymenoptera"</span>,</span></span>
+<span class="r-in"><span>    family <span class="op">=</span> <span class="st">"Vespidae"</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 10 × 25</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    EASINID Name      Authorship FirstIntroductionsInEU PresentInCountries Status</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>                 <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> R05238  <span style="color: #949494;">"</span>Dolicho… <span style="color: #949494;">"</span>(Fabrici… <span style="color: #949494;">&lt;df [1 × 3]&gt;</span>           <span style="color: #949494;">&lt;df [17 × 1]&gt;</span>      A     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> R20108  <span style="color: #949494;">"</span>Laticor… <span style="color: #949494;">"</span>(Shoemak… <span style="color: #949494;">&lt;df [1 × 3]&gt;</span>           <span style="color: #949494;">&lt;NULL&gt;</span>             A     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> R11911  <span style="color: #949494;">"</span>Poliste… <span style="color: #949494;">"</span>(Christ,… <span style="color: #949494;">&lt;df [1 × 3]&gt;</span>           <span style="color: #949494;">&lt;df [34 × 1]&gt;</span>      A     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> R19647  <span style="color: #949494;">"</span>Vespa b… <span style="color: #949494;">"</span>Fabriciu… <span style="color: #949494;">&lt;df [1 × 3]&gt;</span>           <span style="color: #949494;">&lt;df [1 × 1]&gt;</span>       A     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> R20364  <span style="color: #949494;">"</span>Vespa o… <span style="color: #949494;">"</span>Linnaeus… <span style="color: #949494;">&lt;NULL&gt;</span>                 <span style="color: #949494;">&lt;NULL&gt;</span>             A     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> R15970  <span style="color: #949494;">"</span>Vespa v… <span style="color: #949494;">"</span>Buysson,… <span style="color: #949494;">&lt;df [1 × 3]&gt;</span>           <span style="color: #949494;">&lt;df [15 × 1]&gt;</span>      A     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> R15972  <span style="color: #949494;">"</span>Vespula… <span style="color: #949494;">"</span>(Fabrici… <span style="color: #949494;">&lt;df [1 × 3]&gt;</span>           <span style="color: #949494;">&lt;df [51 × 1]&gt;</span>      A     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> R20193  <span style="color: #949494;">"</span>Vespula… <span style="color: #949494;">"</span>(de Saus… <span style="color: #949494;">&lt;NULL&gt;</span>                 <span style="color: #949494;">&lt;NULL&gt;</span>             A     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> R15973  <span style="color: #949494;">"</span>Vespula… <span style="color: #949494;">"</span>(Linnaeu… <span style="color: #949494;">&lt;df [1 × 3]&gt;</span>           <span style="color: #949494;">&lt;df [28 × 1]&gt;</span>      A     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> R15974  <span style="color: #949494;">"</span>Vespula… <span style="color: #949494;">"</span>(Linnaeu… <span style="color: #949494;">&lt;df [1 × 3]&gt;</span>           <span style="color: #949494;">&lt;df [42 × 1]&gt;</span>      A     </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 19 more variables: HasImpact &lt;lgl&gt;, IsEUConcern &lt;lgl&gt;, EUConcernName &lt;chr&gt;,</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   IsOutermostConcern &lt;lgl&gt;, ConcernedOutermostRegions &lt;list&gt;,</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   IsMSConcern &lt;lgl&gt;, ConcernedMS &lt;list&gt;, IsPartNative &lt;lgl&gt;,</span></span>

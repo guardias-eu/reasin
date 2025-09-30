@@ -100,16 +100,20 @@ defined in NUTS (Nomenclature of territorial units for statistics). Use
 
 
 <dt id="arg-taxonomy">taxonomy<a class="anchor" aria-label="anchor" href="#arg-taxonomy"></a></dt>
-<dd><p>Character. A list with with taxonomic names named by their
-taxonomic rank. Use <code>ranks()</code> to look up the list of taxonomic ranks
-available. Provide them in the right order from parents to children.
-Source: EASIN <a href="https://easin.jrc.ec.europa.eu/apixg" class="external-link">Catalogue Web Service</a>
-documentation.</p></dd>
+<dd><p>Character named vector with the taxonomic names named
+by their taxonomic rank. Provide them in the right order from kingdom up to
+family. Source: EASIN <a href="https://easin.jrc.ec.europa.eu/apixg" class="external-link">Catalogue Web Service</a> documentation.</p></dd>
 
 
 <dt id="arg-union-concern">union_concern<a class="anchor" aria-label="anchor" href="#arg-union-concern"></a></dt>
 <dd><p>Logical. If <code>TRUE</code>, returns only species of Union
 concern. Only <code>TRUE</code> is allowed.</p></dd>
+
+
+<dt id="arg-taxon">taxon<a class="anchor" aria-label="anchor" href="#arg-taxon"></a></dt>
+<dd><p>Character named vector of length 1 with the taxon name
+named by its taxonomic rank. Use <code><a href="ranks.html">ranks()</a></code> to look up the list of valid
+ranks. Source: EASIN <a href="https://easin.jrc.ec.europa.eu/apixg" class="external-link">Catalogue Web Service</a> documentation.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -272,6 +276,10 @@ concern. Only <code>TRUE</code> is allowed.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   Kingdom &lt;chr&gt;, Phylum &lt;chr&gt;, Class &lt;chr&gt;, Order &lt;chr&gt;, Family &lt;chr&gt;,</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   CommonNames &lt;list&gt;, Synonyms &lt;list&gt;, CBD_Pathways &lt;list&gt;</span></span>
 <span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Get species by `taxon`</span></span></span>
+<span class="r-in"><span><span class="fu">get_species</span><span class="op">(</span>taxon <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>family <span class="op">=</span> <span class="st">"Vespidae"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in get_species(taxon = c(family = "Vespidae")):</span> Argument 'taxonomy' must be a named vector of length 5.</span>
+<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Get species by full `taxonomy` levels (up to family)</span></span></span>
 <span class="r-in"><span><span class="fu">get_species</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  taxonomy <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
@@ -282,25 +290,7 @@ concern. Only <code>TRUE</code> is allowed.</p></dd>
 <span class="r-in"><span>    family <span class="op">=</span> <span class="st">"Vespidae"</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 10 × 25</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    EASINID Name      Authorship FirstIntroductionsInEU PresentInCountries Status</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>                 <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> R05238  <span style="color: #949494;">"</span>Dolicho… <span style="color: #949494;">"</span>(Fabrici… <span style="color: #949494;">&lt;df [1 × 3]&gt;</span>           <span style="color: #949494;">&lt;df [17 × 1]&gt;</span>      A     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> R20108  <span style="color: #949494;">"</span>Laticor… <span style="color: #949494;">"</span>(Shoemak… <span style="color: #949494;">&lt;df [1 × 3]&gt;</span>           <span style="color: #949494;">&lt;NULL&gt;</span>             A     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> R11911  <span style="color: #949494;">"</span>Poliste… <span style="color: #949494;">"</span>(Christ,… <span style="color: #949494;">&lt;df [1 × 3]&gt;</span>           <span style="color: #949494;">&lt;df [34 × 1]&gt;</span>      A     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> R19647  <span style="color: #949494;">"</span>Vespa b… <span style="color: #949494;">"</span>Fabriciu… <span style="color: #949494;">&lt;df [1 × 3]&gt;</span>           <span style="color: #949494;">&lt;df [1 × 1]&gt;</span>       A     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> R20364  <span style="color: #949494;">"</span>Vespa o… <span style="color: #949494;">"</span>Linnaeus… <span style="color: #949494;">&lt;NULL&gt;</span>                 <span style="color: #949494;">&lt;NULL&gt;</span>             A     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> R15970  <span style="color: #949494;">"</span>Vespa v… <span style="color: #949494;">"</span>Buysson,… <span style="color: #949494;">&lt;df [1 × 3]&gt;</span>           <span style="color: #949494;">&lt;df [15 × 1]&gt;</span>      A     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> R15972  <span style="color: #949494;">"</span>Vespula… <span style="color: #949494;">"</span>(Fabrici… <span style="color: #949494;">&lt;df [1 × 3]&gt;</span>           <span style="color: #949494;">&lt;df [51 × 1]&gt;</span>      A     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> R20193  <span style="color: #949494;">"</span>Vespula… <span style="color: #949494;">"</span>(de Saus… <span style="color: #949494;">&lt;NULL&gt;</span>                 <span style="color: #949494;">&lt;NULL&gt;</span>             A     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> R15973  <span style="color: #949494;">"</span>Vespula… <span style="color: #949494;">"</span>(Linnaeu… <span style="color: #949494;">&lt;df [1 × 3]&gt;</span>           <span style="color: #949494;">&lt;df [28 × 1]&gt;</span>      A     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> R15974  <span style="color: #949494;">"</span>Vespula… <span style="color: #949494;">"</span>(Linnaeu… <span style="color: #949494;">&lt;df [1 × 3]&gt;</span>           <span style="color: #949494;">&lt;df [42 × 1]&gt;</span>      A     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 19 more variables: HasImpact &lt;lgl&gt;, IsEUConcern &lt;lgl&gt;, EUConcernName &lt;chr&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   IsOutermostConcern &lt;lgl&gt;, ConcernedOutermostRegions &lt;list&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   IsMSConcern &lt;lgl&gt;, ConcernedMS &lt;list&gt;, IsPartNative &lt;lgl&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   NativeRange &lt;list&gt;, IsHorizonScanning &lt;lgl&gt;, LastRevisionDate &lt;lgl&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   Kingdom &lt;chr&gt;, Phylum &lt;chr&gt;, Class &lt;chr&gt;, Order &lt;chr&gt;, Family &lt;chr&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   CommonNames &lt;list&gt;, Synonyms &lt;list&gt;, CBD_Pathways &lt;list&gt;</span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in get_species(taxonomy = list(kingdom = "Animalia", phylum = "Arthropoda",     class = "Insecta", order = "Hymenoptera", family = "Vespidae")):</span> Argument 'taxonomy' must be a named vector of length 5.</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

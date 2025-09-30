@@ -406,11 +406,11 @@ get_species_by_scientific_name <- function(scientific_names) {
   return(data)
 }
 
-#' Get species by country
+#' Get species of Member State concern
 #'
 #' Retrieves species from the EASIN's Catalogue Web Service filtered by one or
 #' more environment types. It is used internally by `get_species()` if
-#' `environment` argument is provided.
+#' `country_code` argument is provided.
 #' @param country_codes A character vector containing one or more ISO 3166-1 alpha-2 country codes.
 #' @return A data frame containing species filtered by the specified countries.
 #' @noRd
@@ -444,6 +444,15 @@ get_species_by_region_code <- function(region_codes) {
   return(data)
 }
 
+#' Get species with a specific impact
+#'
+#' Retrieves species from the EASIN's Catalogue Web Service It is used
+#' internally by `get_species()` if `impact` argument is provided.
+#' @param impact A character containing one of `"hi"` (high) or `"lo"` (low).
+#' @return A data frame containing species filtered by the specified countries.
+#' @noRd
+#' @examples
+#' get_species_by_country(impact = "lo")
 get_species_by_impact <- function(impact) {
   data <- get_species_dynamic_url(
     arg = "impact",
@@ -507,6 +516,15 @@ get_species_by_taxonomy <- function(rank, taxonomy) {
   return(data)
 }
 
+#' Get species present in a country
+#'
+#' Retrieves species from the EASIN's Catalogue Web Service It is used
+#' internally by `get_species()` if `present_in_country` argument is provided.
+#' @param country A character containing one ISO 3166-1 alpha-2 country codes.
+#' @return A data frame containing species filtered by the specified countries.
+#' @noRd
+#' @examples
+#' get_species_by_country(present_in_country = "LU")
 get_species_by_presence_in_country <- function(country) {
   data <- get_species_dynamic_url(
     arg = "incountries",

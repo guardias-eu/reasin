@@ -43,3 +43,7 @@ More examples can be found in [`get_species()` documentation](https://guardias-e
 Check also the [Reference
 section](https://guardias-eu.github.io/reasin/reference/index.html) for a list
 with all available functions.
+
+## Funding
+
+This package is being developed in the framework of the [GuardIAS](https://guardias.eu/) prject. GuardIAS receives funding from the European Union’s Horizon Europe Research and Innovation Programme (ID No 101181413).

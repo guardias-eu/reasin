@@ -2,8 +2,12 @@
 # reasin
 
 <!-- badges: start -->
+[![CRAN
+status](https://www.r-pkg.org/badges/version/reasin)](https://CRAN.R-project.org/package=reasin)
 [![R-CMD-check](https://github.com/guardias-eu/reasin/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/guardias-eu/reasin/actions/workflows/R-CMD-check.yaml)
 [![Codecov test coverage](https://codecov.io/gh/guardias-eu/reasin/graph/badge.svg)](https://app.codecov.io/gh/guardias-eu/reasin)
+[![repo
+status](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 <!-- badges: end -->
 
 The goal of reasin is to provide a R interface to the API of the European Alien Species Information Network (EASIN).

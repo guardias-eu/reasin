@@ -90,6 +90,7 @@ get_species <- function(
     country_code = NULL,
     region_code = NULL,
     impact = NULL,
+    taxon = NULL,
     taxonomy = NULL,
     union_concern = NULL
 ) {
@@ -101,6 +102,7 @@ get_species <- function(
     country_code = country_code,
     region_code = region_code,
     impact = impact,
+    taxon = taxon,
     taxonomy = taxonomy,
     union_concern = union_concern
   )
@@ -243,7 +245,27 @@ get_species <- function(
     return(get_species_by_impact(impact))
   }
 
-  # Get species by taxonomy
+  # Get species by taxon
+  if ("taxon" %in% names(query_params)) {
+    taxon <- query_params$taxon
+    rank <- names(taxon)
+    if (!purrr::is_character(taxon, n = 1)) {
+      cli::cli_abort(
+        "Argument 'taxon' must be a named vector of length 1.",
+        class = "reasin_error_assignment_invalid"
+      )
+    }
+    valid_ranks <- ranks() %>% dplyr::pull("rank")
+    if (!rank %in% valid_ranks) {
+      cli::cli_abort(
+        "If you want to include a taxonomic level, it must be one of: {.val {valid_ranks}}",
+        class = "reasin_error_assignment_invalid"
+      )
+    }
+    return(get_species_by_taxon(rank = rank, taxon = taxon))
+  }
+
+  # Get species by full taxonomy
   if ("taxonomy" %in% names(query_params)) {
     taxonomy <- query_params$taxonomy
     rank <- names(taxonomy)
@@ -403,10 +425,34 @@ get_species_by_impact <- function(impact) {
   return(data)
 }
 
-#' Get species by taxonomy
+#' Get species by taxon
 #'
-#' Retrieves species from the EASIN's Catalogue Web Service filtered by `taxonomy`.
-#' It is used internally by `get_species()` if `taxonomy` argument is provided.
+#' Retrieves species from the EASIN's Catalogue Web Service filtered by a given
+#' `taxon`. It is used internally by `get_species()` if `taxon` argument is
+#' provided.
+#' @param rank A character representing the taxonomy level. From kingdom up to
+#'   family.
+#' @param taxon A character string representing the taxonomy name of given
+#'   `rank`.
+#' @return A tibble data frame containing species information for species
+#'  present in the given taxon.
+#' @noRd
+#' @examples
+#' get_species_by_taxon(rank = "family", taxon = "Vespidae")
+get_species_by_taxon <- function(rank, taxon) {
+  data <- get_species_dynamic_url(
+    arg = rank,
+    value = taxon,
+    is_pagination = TRUE
+  )
+  return(data)
+}
+
+#' Get species by full taxonomy
+#'
+#' Retrieves species from the EASIN's Catalogue Web Service filtered by full
+#' `taxonomy`. It is used internally by `get_species()` if `taxonomy` argument
+#' is provided.
 #' @param rank A character representing the taxonomy level(s).
 #' @param taxonomy A character string representing the taxonomy name of given `rank`.
 #' @return A tibble data frame containing species information for species

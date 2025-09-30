@@ -11,6 +11,7 @@ get_species(
   country_code = NULL,
   region_code = NULL,
   impact = NULL,
+  taxon = NULL,
   taxonomy = NULL,
   union_concern = NULL
 )
@@ -37,16 +38,16 @@ defined in NUTS (Nomenclature of territorial units for statistics). Use
 \item{impact}{Character. Species impact. One of \code{"hi"} (high) or \code{"lo"}
 (low).}
 
+\item{taxon}{Character named vector of length 1 with the taxon name
+named by its taxonomic rank. Use \code{ranks()} to look up the list of valid
+ranks. Source: EASIN \href{https://easin.jrc.ec.europa.eu/apixg}{Catalogue Web Service} documentation.}
+
 \item{taxonomy}{Character named vector with the taxonomic names named
 by their taxonomic rank. Provide them in the right order from kingdom up to
 family. Source: EASIN \href{https://easin.jrc.ec.europa.eu/apixg}{Catalogue Web Service} documentation.}
 
 \item{union_concern}{Logical. If \code{TRUE}, returns only species of Union
 concern. Only \code{TRUE} is allowed.}
-
-\item{taxon}{Character named vector of length 1 with the taxon name
-named by its taxonomic rank. Use \code{ranks()} to look up the list of valid
-ranks. Source: EASIN \href{https://easin.jrc.ec.europa.eu/apixg}{Catalogue Web Service} documentation.}
 }
 \value{
 A tibble data frame containing species information.
@@ -99,7 +100,7 @@ get_species(taxon = c(family = "Vespidae"))
 
 # Get species by full `taxonomy` levels (up to family)
 get_species(
-  taxonomy = list(
+  taxonomy = c(
     kingdom = "Animalia",
     phylum = "Arthropoda",
     class = "Insecta",

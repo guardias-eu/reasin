@@ -10,6 +10,7 @@
 #' @param value An optional character vector representing a specific value to be
 #'   appended to the URL referring to `arg`. Useful for full taxonomy endpoint.
 #'   Default: `NULL`.
+#' @param is_pagination A boolean. Is an URL with `skip` and `take` arguments?
 #' @return A data frame containing the species data retrieved from the specified
 #' URL.
 #' @noRd
@@ -20,7 +21,12 @@
 #'   arg = c("kingdom", "phylum", "class", "order", "family"),
 #'   value = c("Animalia", "Arthropoda", "Insecta", "Hymenoptera", "Vespidae")
 #' )
-get_species_static_url <- function(base_url, arg = NULL, value = NULL) {
+get_species_static_url <- function(
+    base_url,
+    arg = NULL,
+    value = NULL,
+    is_pagination = FALSE
+  ) {
   # arg and value must be both NULL or both filled in
   if (all(is.null(arg), is.null(value)) == FALSE &
       all(!is.null(arg), !is.null(value)) == FALSE) {
@@ -44,7 +50,11 @@ get_species_static_url <- function(base_url, arg = NULL, value = NULL) {
   } else {
     url <- base_url
   }
-  get_check_parse(url)
+  if (is_pagination == TRUE) {
+    get_check_parse_paginated(url)
+  } else {
+    get_check_parse(url)
+  }
 }
 
 #' Get species via dynamic URL with query parameters
@@ -83,6 +93,8 @@ get_species_dynamic_url <- function(
     "concernedregions",
     "impact",
     "incountries",
+    "status",
+    "nativeincountries",
     ranks() %>% dplyr::pull(rank)
   )
   # Check input is valid based on possible values. Return cli abort error if not

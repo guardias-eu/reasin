@@ -10,11 +10,25 @@
 #' get_check_parse(url)
 get_check_parse <- function(url) {
   request <- httr2::request(url)
-  response <- httr2::req_perform(request)
+  # Perform the request without throwing an error for HTTP errors at the request
+  # stage
+  response <- httr2::req_error(request, is_error = function(resp) FALSE) %>%
+    httr2::req_perform()
 
-  # Check for HTTP errors
-  httr2::resp_check_status(response)
-
+  # Check for 404 Not Found error and return a specific error
+  if (httr2::resp_status(response) == 404) {
+    cli::cli_abort(
+      "No data found (404 Not Found). Please check the URL: {url}.",
+      class = "reasin_error_api_404"
+    )
+  }
+  # Check for other HTTP errors
+  if (httr2::resp_is_error(response)) {
+    cli::cli_abort(
+      "HTTP request failed with status {httr2::resp_status(response)}.",
+      class = "reasin_error_api_http"
+    )
+  }
   # Parse the content (JSON)
   content <- httr2::resp_body_string(response)
   if (!jsonlite::validate(content)) {

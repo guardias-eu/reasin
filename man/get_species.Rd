@@ -14,6 +14,10 @@ get_species(
   taxon = NULL,
   taxonomy = NULL,
   present_in_country = NULL,
+  status = NULL,
+  horizon = NULL,
+  partly_native = NULL,
+  native_in_country = NULL,
   union_concern = NULL
 )
 }
@@ -29,18 +33,18 @@ terrestrial or oligohaline environments respectively.}
 
 \item{country_code}{Character. Countries' ISO 3166-1 alpha-2 code(s) to
 filter species of Member State concern. Use \code{countries()} to look up the
-list of codes. Source: EASIN \href{https://easin.jrc.ec.europa.eu/apixg}{Catalogue Web Service} documentation. Only few
+list of country codes. Source: EASIN \href{https://easin.jrc.ec.europa.eu/apixg}{Catalogue Web Service} documentation. Only few
 states submitted their species of Member State concern to EASIN.}
 
 \item{region_code}{Character. Species of Outermost regions concern codes as
 defined in NUTS (Nomenclature of territorial units for statistics). Use
-\code{regions()} to look up the list of codes. Source: EASIN \href{https://easin.jrc.ec.europa.eu/apixg}{Catalogue Web Service} documentation.}
+\code{regions()} to look up the list of region codes. Source: EASIN \href{https://easin.jrc.ec.europa.eu/apixg}{Catalogue Web Service} documentation.}
 
-\item{impact}{Character. Species impact. One of \code{"hi"} (high) or \code{"lo"}
-(low).}
+\item{impact}{Character. Species impact(s). Possible values: \code{"hi"} (high)
+and \code{"lo"} (low).}
 
-\item{taxon}{Character named vector of length 1 with the taxon name
-named by its taxonomic rank. Use \code{ranks()} to look up the list of valid
+\item{taxon}{Character named vector with the taxon name(s)
+named by their taxonomic rank(s). Use \code{ranks()} to look up the list of valid
 ranks. Source: EASIN \href{https://easin.jrc.ec.europa.eu/apixg}{Catalogue Web Service} documentation.}
 
 \item{taxonomy}{Character named vector with the taxonomic names named
@@ -49,7 +53,13 @@ family. Source: EASIN \href{https://easin.jrc.ec.europa.eu/apixg}{Catalogue Web 
 
 \item{present_in_country}{Character. Countries' ISO 3166-1 alpha-2 code to
 filter species present in that country. Use \code{countries()} to look up the
-list of codes. Source: EASIN \href{https://easin.jrc.ec.europa.eu/apixg}{Catalogue Web Service} documentation.}
+list of country codes. Source: EASIN \href{https://easin.jrc.ec.europa.eu/apixg}{Catalogue Web Service} documentation.}
+
+\item{status}{Character. Species status code(s). Use \code{statuses()} to look up
+the list of country codes. Source: EASIN \href{https://easin.jrc.ec.europa.eu/apixg}{Catalogue Web Service} documentation.}
+
+\item{horizon}{Logical. If \code{TRUE}, returns only species coming from Horizon
+Scanning assessments. Only \code{TRUE} is allowed.}
 
 \item{union_concern}{Logical. If \code{TRUE}, returns only species of Union
 concern. Only \code{TRUE} is allowed.}
@@ -64,26 +74,15 @@ retrieve records by species’ scientific name, environment, impact, taxonomy,
 Union concern status
 (\href{https://easin.jrc.ec.europa.eu/easin/LegalFramework/Index}{LegalFramework}). More on \href{https://easin.jrc.ec.europa.eu/apixg}{EASIN Web Services}.
 }
-\details{
-List of supported Outermost region codes (argument \code{region_code}):
-\itemize{
-\item \code{ES7}: Canary Islands
-\item \code{FRY1}: Guadeloupe
-\item \code{FRY2}: Martinique
-\item \code{FRY3}: French Guiana
-\item \code{FRY4}: Réunion
-\item \code{FRY5}: Mayotte
-\item \code{FRY6}: Saint Martin
-\item \code{PT2}: Azores
-\item \code{PT3}: Madeira
-}
-}
 \examples{
 # Get list of all species in the EASIN catalogue
 get_species()
 
 # Get list of all species of Union concern
 get_species(union_concern = TRUE)
+
+# Get Horizon scanning species
+get_species(horizon = TRUE)
 
 # Get info about one or more species by EASIN Species IDs
 get_species(easin_id = c("R00460", "R12250"))
@@ -114,7 +113,16 @@ get_species(
   )
 )
 
-# Get species present in a country
-get_species(present_in_country = "BE")
+# Get species present in one or more countries
+get_species(present_in_country = c("LU", "IE"))
+
+# Get species by `status`
+get_species(status = c("Q", "A"))
+
+# Get species which are native in at least one country
+get_species(partly_native = TRUE)
+
+# Get species which are native in one or more countries
+get_species(native_in_country = c("AT","ES"))
 }
 \concept{species functions}

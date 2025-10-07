@@ -25,6 +25,7 @@ countries()
 Other misc functions: 
 \code{\link{environments}()},
 \code{\link{ranks}()},
-\code{\link{regions}()}
+\code{\link{regions}()},
+\code{\link{statuses}()}
 }
 \concept{misc functions}

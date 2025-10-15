@@ -51,15 +51,24 @@ ranks. Source: EASIN \href{https://easin.jrc.ec.europa.eu/apixg}{Catalogue Web S
 by their taxonomic rank. Provide them in the right order from kingdom up to
 family. Source: EASIN \href{https://easin.jrc.ec.europa.eu/apixg}{Catalogue Web Service} documentation.}
 
-\item{present_in_country}{Character. Countries' ISO 3166-1 alpha-2 code to
-filter species present in that country. Use \code{countries()} to look up the
-list of country codes. Source: EASIN \href{https://easin.jrc.ec.europa.eu/apixg}{Catalogue Web Service} documentation.}
+\item{present_in_country}{Character. One or more countries' ISO 3166-1
+alpha-2 codes to filter species present in these countries. Use
+\code{countries()} to look up the list of country codes. Source: EASIN
+\href{https://easin.jrc.ec.europa.eu/apixg}{Catalogue Web Service}
+documentation.}
 
 \item{status}{Character. Species status code(s). Use \code{statuses()} to look up
 the list of country codes. Source: EASIN \href{https://easin.jrc.ec.europa.eu/apixg}{Catalogue Web Service} documentation.}
 
 \item{horizon}{Logical. If \code{TRUE}, returns only species coming from Horizon
 Scanning assessments. Only \code{TRUE} is allowed.}
+
+\item{partly_native}{Logical. If \code{TRUE}, returns only specise which are
+native in one or more EU countries.}
+
+\item{native_in_country}{Character. One or more countries' ISO 3166-1 alpha-2
+codes to filter species native in those countries. Use \code{countries()} to
+look up the list of country codes. Source: EASIN \href{https://easin.jrc.ec.europa.eu/apixg}{Catalogue Web Service} documentation.}
 
 \item{union_concern}{Logical. If \code{TRUE}, returns only species of Union
 concern. Only \code{TRUE} is allowed.}

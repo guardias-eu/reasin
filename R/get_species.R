@@ -31,15 +31,22 @@
 #'   by their taxonomic rank. Provide them in the right order from kingdom up to
 #'   family. Source: EASIN [Catalogue Web
 #'   Service](https://easin.jrc.ec.europa.eu/apixg) documentation.
-#' @param present_in_country Character. Countries' ISO 3166-1 alpha-2 code to
-#'  filter species present in that country. Use `countries()` to look up the
-#'  list of country codes. Source: EASIN [Catalogue Web
-#'  Service](https://easin.jrc.ec.europa.eu/apixg) documentation.
+#' @param present_in_country Character. One or more countries' ISO 3166-1
+#'   alpha-2 codes to filter species present in these countries. Use
+#'   `countries()` to look up the list of country codes. Source: EASIN
+#'   [Catalogue Web Service](https://easin.jrc.ec.europa.eu/apixg)
+#'   documentation.
 #' @param status Character. Species status code(s). Use `statuses()` to look up
 #'  the list of country codes. Source: EASIN [Catalogue Web
 #'  Service](https://easin.jrc.ec.europa.eu/apixg) documentation.
 #' @param horizon Logical. If `TRUE`, returns only species coming from Horizon
 #' Scanning assessments. Only `TRUE` is allowed.
+#' @param partly_native Logical. If `TRUE`, returns only specise which are
+#'   native in one or more EU countries.
+#' @param native_in_country Character. One or more countries' ISO 3166-1 alpha-2
+#'   codes to filter species native in those countries. Use `countries()` to
+#'   look up the list of country codes. Source: EASIN [Catalogue Web
+#'   Service](https://easin.jrc.ec.europa.eu/apixg) documentation.
 #' @param union_concern Logical. If `TRUE`, returns only species of Union
 #' concern. Only `TRUE` is allowed.
 #' @return A tibble data frame containing species information.
@@ -94,7 +101,7 @@
 #' get_species(partly_native = TRUE)
 #'
 #' # Get species which are native in one or more countries
-#' get_species(native_in_country = c("AT","ES"))
+#' get_species(native_in_country = c("DK","EE","FI"))
 get_species <- function(
     easin_id = NULL,
     scientific_name = NULL,

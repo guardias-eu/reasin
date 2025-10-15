@@ -82,9 +82,10 @@ insensitive.</p></dd>
 
 
 <dt id="arg-environment">environment<a class="anchor" aria-label="anchor" href="#arg-environment"></a></dt>
-<dd><p>Character. Environment type(s): one or more from <code>"MAR"</code>,
+<dd><p>Character. Environment type(s): one or more of: <code>"MAR"</code>,
 <code>"FRW"</code>, <code>"TER"</code>, <code>"OLI"</code> to filter species by, marine, freshwater,
-terrestrial or oligohaline environments respectively.</p></dd>
+terrestrial or oligohaline environments respectively. Use <code><a href="environments.html">environments()</a></code>
+to look up the list of environment codes. Source: EASIN <a href="https://easin.jrc.ec.europa.eu/apixg" class="external-link">Catalogue Web Service</a> documentation.</p></dd>
 
 
 <dt id="arg-country-code">country_code<a class="anchor" aria-label="anchor" href="#arg-country-code"></a></dt>
@@ -101,8 +102,9 @@ defined in NUTS (Nomenclature of territorial units for statistics). Use
 
 
 <dt id="arg-impact">impact<a class="anchor" aria-label="anchor" href="#arg-impact"></a></dt>
-<dd><p>Character. Species impact(s). Possible values: <code>"hi"</code> (high)
-and <code>"lo"</code> (low).</p></dd>
+<dd><p>Character. Species impact(s). One or more of: <code>"hi"</code> (high)
+and <code>"lo"</code> (low).  Use <code><a href="impacts.html">impacts()</a></code> to look up the list of impact codes and
+their meaning. Source: EASIN <a href="https://easin.jrc.ec.europa.eu/apixg" class="external-link">Catalogue Web Service</a> documentation.</p></dd>
 
 
 <dt id="arg-taxon">taxon<a class="anchor" aria-label="anchor" href="#arg-taxon"></a></dt>
@@ -126,8 +128,9 @@ documentation.</p></dd>
 
 
 <dt id="arg-status">status<a class="anchor" aria-label="anchor" href="#arg-status"></a></dt>
-<dd><p>Character. Species status code(s). Use <code><a href="statuses.html">statuses()</a></code> to look up
-the list of country codes. Source: EASIN <a href="https://easin.jrc.ec.europa.eu/apixg" class="external-link">Catalogue Web Service</a> documentation.</p></dd>
+<dd><p>Character. Species status code(s). One or more of:  <code>"A"</code>,
+<code>"C"</code> and <code>"Q"</code>. Use <code><a href="statuses.html">statuses()</a></code> to look up the list of status codes and
+their meaning. Source: EASIN <a href="https://easin.jrc.ec.europa.eu/apixg" class="external-link">Catalogue Web Service</a> documentation.</p></dd>
 
 
 <dt id="arg-horizon">horizon<a class="anchor" aria-label="anchor" href="#arg-horizon"></a></dt>

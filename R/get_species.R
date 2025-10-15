@@ -9,9 +9,11 @@
 #' @param easin_id Integer. EASIN Species ID(s).
 #' @param scientific_name Character. Scientific name(s) or part(s) of it. Case
 #' insensitive.
-#' @param environment Character. Environment type(s): one or more from `"MAR"`,
+#' @param environment Character. Environment type(s): one or more of: `"MAR"`,
 #'   `"FRW"`, `"TER"`, `"OLI"` to filter species by, marine, freshwater,
-#'   terrestrial or oligohaline environments respectively.
+#'   terrestrial or oligohaline environments respectively. Use `environments()`
+#'   to look up the list of environment codes. Source: EASIN [Catalogue Web
+#'   Service](https://easin.jrc.ec.europa.eu/apixg) documentation.
 #' @param country_code Character. Countries' ISO 3166-1 alpha-2 code(s) to
 #'   filter species of Member State concern. Use `countries()` to look up the
 #'   list of country codes. Source: EASIN [Catalogue Web
@@ -21,8 +23,10 @@
 #'   defined in NUTS (Nomenclature of territorial units for statistics). Use
 #'   `regions()` to look up the list of region codes. Source: EASIN [Catalogue Web
 #'   Service](https://easin.jrc.ec.europa.eu/apixg) documentation.
-#' @param impact Character. Species impact(s). Possible values: `"hi"` (high)
-#'   and `"lo"` (low).
+#' @param impact Character. Species impact(s). One or more of: `"hi"` (high)
+#'   and `"lo"` (low).  Use `impacts()` to look up the list of impact codes and
+#'   their meaning. Source: EASIN [Catalogue Web
+#'   Service](https://easin.jrc.ec.europa.eu/apixg) documentation.
 #' @param taxon Character named vector with the taxon name(s)
 #'   named by their taxonomic rank(s). Use `ranks()` to look up the list of valid
 #'   ranks. Source: EASIN [Catalogue Web
@@ -36,9 +40,10 @@
 #'   `countries()` to look up the list of country codes. Source: EASIN
 #'   [Catalogue Web Service](https://easin.jrc.ec.europa.eu/apixg)
 #'   documentation.
-#' @param status Character. Species status code(s). Use `statuses()` to look up
-#'  the list of country codes. Source: EASIN [Catalogue Web
-#'  Service](https://easin.jrc.ec.europa.eu/apixg) documentation.
+#' @param status Character. Species status code(s). One or more of:  `"A"`,
+#'   `"C"` and `"Q"`. Use `statuses()` to look up the list of status codes and
+#'   their meaning. Source: EASIN [Catalogue Web
+#'   Service](https://easin.jrc.ec.europa.eu/apixg) documentation.
 #' @param horizon Logical. If `TRUE`, returns only species coming from Horizon
 #' Scanning assessments. Only `TRUE` is allowed.
 #' @param partly_native Logical. If `TRUE`, returns only specise which are
@@ -199,7 +204,7 @@ get_species <- function(
     if (any(!environment %in% valid_environments)) {
       wrong_environments <- environment[!environment %in% valid_environments]
       cli::cli_abort(
-        "Argument 'environment' must be one of: {valid_environments}.",
+        "Argument 'environment' must be one or more of: {valid_environments}.",
         class = "reasin_error_assignment_invalid"
       )
     }
@@ -268,7 +273,7 @@ get_species <- function(
     if (any(!impact %in% valid_impacts)) {
       wrong_impact <- impact[!impact %in% valid_impacts]
       cli::cli_abort(
-        "Argument 'impact' must be one of: {valid_impacts}. Invalid value{?s}: {wrong_impact}.",
+        "Argument 'impact' must be one or more of: {valid_impacts}. Invalid value{?s}: {wrong_impact}.  Use `impacts()` to get all valid values and their meaning.",
         class = "reasin_error_assignment_invalid"
       )
     }
@@ -327,7 +332,7 @@ get_species <- function(
     if (any(!country %in% valid_countries)) {
       wrong_countries <- country[!country %in% valid_countries]
       cli::cli_abort(
-        "Argument 'present_in_country' must be one of: {valid_countries}. Invalid value: {country}.",
+        "Argument 'present_in_country' must be one or more of: {valid_countries}. Invalid value: {country}.",
         class = "reasin_error_assignment_invalid"
       )
     }
@@ -347,7 +352,7 @@ get_species <- function(
     if (any(!status %in% valid_status)) {
       wrong_status <- status[!status %in% valid_status]
       cli::cli_abort(
-        "Argument 'status' must be one of: {valid_status}. Invalid value{?s}: {wrong_status}.",
+        "Argument 'status' must be one or more of: {valid_status}. Invalid value{?s}: {wrong_status}. Use `statuses()` to get all valid values and their meaning.",
         class = "reasin_error_assignment_invalid"
       )
     }
@@ -564,7 +569,7 @@ get_species_by_region_code <- function(region_codes) {
 #'
 #' Retrieves species from the EASIN's Catalogue Web Service It is used
 #' internally by `get_species()` if `impact` argument is provided.
-#' @param impact A character containing one of `"hi"` (high) or `"lo"` (low).
+#' @param impact A character containing one or more of: `"hi"` (high) or `"lo"` (low).
 #' @return A data frame containing species filtered by the specified countries.
 #' @noRd
 #' @examples

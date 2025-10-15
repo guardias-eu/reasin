@@ -25,6 +25,7 @@ statuses()
 Other misc functions: 
 \code{\link{countries}()},
 \code{\link{environments}()},
+\code{\link{impacts}()},
 \code{\link{ranks}()},
 \code{\link{regions}()}
 }

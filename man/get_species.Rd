@@ -27,9 +27,10 @@ get_species(
 \item{scientific_name}{Character. Scientific name(s) or part(s) of it. Case
 insensitive.}
 
-\item{environment}{Character. Environment type(s): one or more from \code{"MAR"},
+\item{environment}{Character. Environment type(s): one or more of: \code{"MAR"},
 \code{"FRW"}, \code{"TER"}, \code{"OLI"} to filter species by, marine, freshwater,
-terrestrial or oligohaline environments respectively.}
+terrestrial or oligohaline environments respectively. Use \code{environments()}
+to look up the list of environment codes. Source: EASIN \href{https://easin.jrc.ec.europa.eu/apixg}{Catalogue Web Service} documentation.}
 
 \item{country_code}{Character. Countries' ISO 3166-1 alpha-2 code(s) to
 filter species of Member State concern. Use \code{countries()} to look up the
@@ -40,8 +41,9 @@ states submitted their species of Member State concern to EASIN.}
 defined in NUTS (Nomenclature of territorial units for statistics). Use
 \code{regions()} to look up the list of region codes. Source: EASIN \href{https://easin.jrc.ec.europa.eu/apixg}{Catalogue Web Service} documentation.}
 
-\item{impact}{Character. Species impact(s). Possible values: \code{"hi"} (high)
-and \code{"lo"} (low).}
+\item{impact}{Character. Species impact(s). One or more of: \code{"hi"} (high)
+and \code{"lo"} (low).  Use \code{impacts()} to look up the list of impact codes and
+their meaning. Source: EASIN \href{https://easin.jrc.ec.europa.eu/apixg}{Catalogue Web Service} documentation.}
 
 \item{taxon}{Character named vector with the taxon name(s)
 named by their taxonomic rank(s). Use \code{ranks()} to look up the list of valid
@@ -57,8 +59,9 @@ alpha-2 codes to filter species present in these countries. Use
 \href{https://easin.jrc.ec.europa.eu/apixg}{Catalogue Web Service}
 documentation.}
 
-\item{status}{Character. Species status code(s). Use \code{statuses()} to look up
-the list of country codes. Source: EASIN \href{https://easin.jrc.ec.europa.eu/apixg}{Catalogue Web Service} documentation.}
+\item{status}{Character. Species status code(s). One or more of:  \code{"A"},
+\code{"C"} and \code{"Q"}. Use \code{statuses()} to look up the list of status codes and
+their meaning. Source: EASIN \href{https://easin.jrc.ec.europa.eu/apixg}{Catalogue Web Service} documentation.}
 
 \item{horizon}{Logical. If \code{TRUE}, returns only species coming from Horizon
 Scanning assessments. Only \code{TRUE} is allowed.}

@@ -128,3 +128,25 @@ statuses <- function() {
     status_code = c("A", "C", "Q")
   )
 }
+
+#' Impact
+#'
+#' Shows the valid impact levels. The impact levels are used in the
+#' `get_species()` function to filter species by impact. Based on the
+#' [Catalogue Web Service](https://easin.jrc.ec.europa.eu/apixg) documentation.
+#' @return A tibble with 2 columns:
+#' - `impact`: The full name of the impact level.
+#' - `impact_code`: The abbreviation to be used in the `get_species(impact = )` function.
+#' @family misc functions
+#' @export
+#' @examples
+#' impacts()
+impacts <- function() {
+  dplyr::tibble(
+    impact = c(
+      "high",
+      "low"
+    ),
+    impact_code = c("hi", "lo")
+  )
+}

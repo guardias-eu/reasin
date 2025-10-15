@@ -25,6 +25,7 @@ environments()
 \seealso{
 Other misc functions: 
 \code{\link{countries}()},
+\code{\link{impacts}()},
 \code{\link{ranks}()},
 \code{\link{regions}()},
 \code{\link{statuses}()}

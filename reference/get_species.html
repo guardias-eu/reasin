@@ -118,9 +118,11 @@ family. Source: EASIN <a href="https://easin.jrc.ec.europa.eu/apixg" class="exte
 
 
 <dt id="arg-present-in-country">present_in_country<a class="anchor" aria-label="anchor" href="#arg-present-in-country"></a></dt>
-<dd><p>Character. Countries' ISO 3166-1 alpha-2 code to
-filter species present in that country. Use <code><a href="countries.html">countries()</a></code> to look up the
-list of country codes. Source: EASIN <a href="https://easin.jrc.ec.europa.eu/apixg" class="external-link">Catalogue Web Service</a> documentation.</p></dd>
+<dd><p>Character. One or more countries' ISO 3166-1
+alpha-2 codes to filter species present in these countries. Use
+<code><a href="countries.html">countries()</a></code> to look up the list of country codes. Source: EASIN
+<a href="https://easin.jrc.ec.europa.eu/apixg" class="external-link">Catalogue Web Service</a>
+documentation.</p></dd>
 
 
 <dt id="arg-status">status<a class="anchor" aria-label="anchor" href="#arg-status"></a></dt>
@@ -131,6 +133,17 @@ the list of country codes. Source: EASIN <a href="https://easin.jrc.ec.europa.eu
 <dt id="arg-horizon">horizon<a class="anchor" aria-label="anchor" href="#arg-horizon"></a></dt>
 <dd><p>Logical. If <code>TRUE</code>, returns only species coming from Horizon
 Scanning assessments. Only <code>TRUE</code> is allowed.</p></dd>
+
+
+<dt id="arg-partly-native">partly_native<a class="anchor" aria-label="anchor" href="#arg-partly-native"></a></dt>
+<dd><p>Logical. If <code>TRUE</code>, returns only specise which are
+native in one or more EU countries.</p></dd>
+
+
+<dt id="arg-native-in-country">native_in_country<a class="anchor" aria-label="anchor" href="#arg-native-in-country"></a></dt>
+<dd><p>Character. One or more countries' ISO 3166-1 alpha-2
+codes to filter species native in those countries. Use <code><a href="countries.html">countries()</a></code> to
+look up the list of country codes. Source: EASIN <a href="https://easin.jrc.ec.europa.eu/apixg" class="external-link">Catalogue Web Service</a> documentation.</p></dd>
 
 
 <dt id="arg-union-concern">union_concern<a class="anchor" aria-label="anchor" href="#arg-union-concern"></a></dt>
@@ -147,7 +160,7 @@ concern. Only <code>TRUE</code> is allowed.</p></dd>
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Get list of all species in the EASIN catalogue</span></span></span>
 <span class="r-in"><span><span class="fu">get_species</span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 14,401 × 12</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 14,774 × 12</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    EasinID Name     Authorship LSID  Reference HasImpact IsEUConcern IsMSConcern</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>      </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> R19422  Candida… <span style="color: #949494;">"</span>Fagen et… urn:… https://… FALSE     FALSE       FALSE      </span>
@@ -160,7 +173,7 @@ concern. Only <code>TRUE</code> is allowed.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> R19428  Candida… <span style="color: #949494;">""</span>         urn:… https://… FALSE     FALSE       FALSE      </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> R11526  Candida… <span style="color: #949494;">""</span>         urn:… https://… TRUE      FALSE       FALSE      </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> R19429  Candida… <span style="color: #949494;">""</span>         urn:… https://… FALSE     FALSE       FALSE      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 14,391 more rows</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 14,764 more rows</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 4 more variables: IsOutermostConcern &lt;lgl&gt;, IsPartNative &lt;lgl&gt;,</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   IsHorizonScanning &lt;lgl&gt;, Status &lt;chr&gt;</span></span>
 <span class="r-in"><span></span></span>
@@ -242,20 +255,20 @@ concern. Only <code>TRUE</code> is allowed.</p></dd>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Get species by `environment`</span></span></span>
 <span class="r-in"><span><span class="fu">get_species</span><span class="op">(</span>environment <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"MAR"</span>,<span class="st">"OLI"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 1,908 × 25</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 2,281 × 25</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    EASINID Name      Authorship FirstIntroductionsInEU PresentInCountries Status</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>                 <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> R20136  Ablennes… <span style="color: #949494;">"</span>(Valenci… <span style="color: #949494;">&lt;df [1 × 3]&gt;</span>           <span style="color: #949494;">&lt;df [2 × 1]&gt;</span>       A     </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> R20210  Abudefdu… <span style="color: #949494;">"</span>(Linnaeu… <span style="color: #949494;">&lt;df [1 × 3]&gt;</span>           <span style="color: #949494;">&lt;NULL&gt;</span>             A     </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> R19331  Abudefdu… <span style="color: #949494;">"</span>(Steinda… <span style="color: #949494;">&lt;df [1 × 3]&gt;</span>           <span style="color: #949494;">&lt;df [2 × 1]&gt;</span>       A     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> R19652  Abudefdu… <span style="color: #949494;">"</span>(Lacepèd… <span style="color: #949494;">&lt;df [1 × 3]&gt;</span>           <span style="color: #949494;">&lt;df [4 × 1]&gt;</span>       A     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> R19332  Abudefdu… <span style="color: #949494;">"</span>(Quoy &amp; … <span style="color: #949494;">&lt;df [1 × 3]&gt;</span>           <span style="color: #949494;">&lt;df [7 × 1]&gt;</span>       A     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> R16518  Abyla tr… <span style="color: #949494;">"</span>Quoy &amp; G… <span style="color: #949494;">&lt;df [1 × 3]&gt;</span>           <span style="color: #949494;">&lt;df [2 × 1]&gt;</span>       Q     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> R17484  Acanthar… <span style="color: #949494;">"</span>(Forest,… <span style="color: #949494;">&lt;df [1 × 3]&gt;</span>           <span style="color: #949494;">&lt;df [1 × 1]&gt;</span>       A     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> R16519  Acanthas… <span style="color: #949494;">"</span>(Linnaeu… <span style="color: #949494;">&lt;df [1 × 3]&gt;</span>           <span style="color: #949494;">&lt;df [3 × 1]&gt;</span>       A     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> R18239  Acanthop… <span style="color: #949494;">"</span>(Forsskå… <span style="color: #949494;">&lt;df [1 × 3]&gt;</span>           <span style="color: #949494;">&lt;df [4 × 1]&gt;</span>       A     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> R00082  Acanthop… <span style="color: #949494;">"</span>(Delile)… <span style="color: #949494;">&lt;df [1 × 3]&gt;</span>           <span style="color: #949494;">&lt;df [10 × 1]&gt;</span>      C     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 1,898 more rows</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> R00027  Abudefdu… <span style="color: #949494;">"</span>(Linnaeu… <span style="color: #949494;">&lt;NULL&gt;</span>                 <span style="color: #949494;">&lt;df [2 × 1]&gt;</span>       A     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> R19652  Abudefdu… <span style="color: #949494;">"</span>(Lacepèd… <span style="color: #949494;">&lt;df [1 × 3]&gt;</span>           <span style="color: #949494;">&lt;df [4 × 1]&gt;</span>       A     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> R20399  Abudefdu… <span style="color: #949494;">"</span>(Forsskå… <span style="color: #949494;">&lt;NULL&gt;</span>                 <span style="color: #949494;">&lt;NULL&gt;</span>             A     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> R20754  Abudefdu… <span style="color: #949494;">"</span>(Müller … <span style="color: #949494;">&lt;NULL&gt;</span>                 <span style="color: #949494;">&lt;NULL&gt;</span>             A     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> R19332  Abudefdu… <span style="color: #949494;">"</span>(Quoy &amp; … <span style="color: #949494;">&lt;df [1 × 3]&gt;</span>           <span style="color: #949494;">&lt;df [7 × 1]&gt;</span>       A     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> R16518  Abyla tr… <span style="color: #949494;">"</span>Quoy &amp; G… <span style="color: #949494;">&lt;df [1 × 3]&gt;</span>           <span style="color: #949494;">&lt;df [2 × 1]&gt;</span>       Q     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> R17484  Acanthar… <span style="color: #949494;">"</span>(Forest,… <span style="color: #949494;">&lt;df [1 × 3]&gt;</span>           <span style="color: #949494;">&lt;df [1 × 1]&gt;</span>       A     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 2,271 more rows</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 19 more variables: HasImpact &lt;lgl&gt;, IsEUConcern &lt;lgl&gt;, EUConcernName &lt;chr&gt;,</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   IsOutermostConcern &lt;lgl&gt;, ConcernedOutermostRegions &lt;list&gt;,</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   IsMSConcern &lt;lgl&gt;, ConcernedMS &lt;list&gt;, IsPartNative &lt;lgl&gt;,</span></span>
@@ -386,7 +399,7 @@ concern. Only <code>TRUE</code> is allowed.</p></dd>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Get species by `status`</span></span></span>
 <span class="r-in"><span><span class="fu">get_species</span><span class="op">(</span>status <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Q"</span>, <span class="st">"A"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 13,110 × 25</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 13,480 × 25</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    EASINID Name      Authorship FirstIntroductionsInEU PresentInCountries Status</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>                 <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> R19422  Candidat… <span style="color: #949494;">"</span>Fagen et… <span style="color: #949494;">&lt;df [1 × 3]&gt;</span>           <span style="color: #949494;">&lt;df [14 × 1]&gt;</span>      Q     </span>
@@ -399,7 +412,7 @@ concern. Only <code>TRUE</code> is allowed.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> R19428  Candidat… <span style="color: #949494;">""</span>         <span style="color: #949494;">&lt;df [1 × 3]&gt;</span>           <span style="color: #949494;">&lt;df [1 × 1]&gt;</span>       Q     </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> R11526  Candidat… <span style="color: #949494;">""</span>         <span style="color: #949494;">&lt;df [1 × 3]&gt;</span>           <span style="color: #949494;">&lt;df [29 × 1]&gt;</span>      Q     </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> R19429  Candidat… <span style="color: #949494;">""</span>         <span style="color: #949494;">&lt;df [1 × 3]&gt;</span>           <span style="color: #949494;">&lt;df [2 × 1]&gt;</span>       Q     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 13,100 more rows</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 13,470 more rows</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 19 more variables: HasImpact &lt;lgl&gt;, IsEUConcern &lt;lgl&gt;, EUConcernName &lt;chr&gt;,</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   IsOutermostConcern &lt;lgl&gt;, ConcernedOutermostRegions &lt;list&gt;,</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   IsMSConcern &lt;lgl&gt;, ConcernedMS &lt;list&gt;, IsPartNative &lt;lgl&gt;,</span></span>
@@ -435,7 +448,7 @@ concern. Only <code>TRUE</code> is allowed.</p></dd>
 <span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in map(.x, .f, ...):</span> <span style="color: #00BBBB;">ℹ</span> In index: 1.</span>
 <span class="r-err co"><span class="r-pr">#&gt;</span> <span style="font-weight: bold;">Caused by error in `get_check_parse()`:</span></span>
 <span class="r-err co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> No data found (404 Not Found). Please check the URL:</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span>   https://easin.jrc.ec.europa.eu/apixg/catxg/nativeincountries/AT,ES/skip/0/take/1000.</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span>   https://easin.jrc.ec.europa.eu/apixg/catxg/nativeincountries/AT,ES/skip/1000/take/1000.</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

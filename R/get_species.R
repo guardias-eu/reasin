@@ -101,7 +101,7 @@
 #' get_species(partly_native = TRUE)
 #'
 #' # Get species which are native in one or more countries
-#' get_species(native_in_country = c("DK","EE","FI"))
+#' get_species(native_in_country = c("EE","FI"))
 get_species <- function(
     easin_id = NULL,
     scientific_name = NULL,

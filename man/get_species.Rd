@@ -132,6 +132,6 @@ get_species(status = c("Q", "A"))
 get_species(partly_native = TRUE)
 
 # Get species which are native in one or more countries
-get_species(native_in_country = c("AT","ES"))
+get_species(native_in_country = c("EE","FI"))
 }
 \concept{species functions}

@@ -407,7 +407,7 @@ get_species <- function(
 #' @examples
 #' get_all_species()
 get_all_species <- function() {
-  url_all_species <- "https://easin.jrc.ec.europa.eu/apixg/catxg/getall/skip/0/take/15000"
+  url_all_species <- "https://easin.jrc.ec.europa.eu/apixg/catxg/getall/skip/0/take/20000"
   data <- get_species_static_url(url_all_species) %>%
     clean_up_names(cols = "Name")
   return(data)

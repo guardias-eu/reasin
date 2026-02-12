@@ -6,7 +6,7 @@ test_that("`get_species()` returns all data correctly", {
   # all_data_df is a tibble
   expect_s3_class(all_data_df, "tbl_df")
   expect_s3_class(all_data_df, "data.frame")
-  expect_identical(nrow(all_data_df), 14353L)
+  expect_identical(nrow(all_data_df), 15686L)
   expect_identical(
     names(all_data_df),
     c("EasinID",

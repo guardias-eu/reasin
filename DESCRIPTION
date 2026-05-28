@@ -1,6 +1,7 @@
 Package: reasin
 Title: Interface to the European Alien Species Information Network API
-Version: 0.0.0.9000
+Version: 0.0.1.0
+Date: 2026-05-28
 Authors@R: c(
     person("Damiano", "Oldoni", , "damiano.oldoni@inbo.be", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0003-3445-7562", affiliation = "Research Institute for Nature and Forest (INBO)")),
@@ -9,9 +10,13 @@ Authors@R: c(
     person("GuardIAS", role = "fnd",
            comment = "https://guardias.eu/")
   )
-Description: What the package does (one paragraph).
+Description: A programmatic interface to the Web Service methods provided
+    by European Alien Species Information Network (EASIN). At the moment
+    only interface to the EASIN Catalogue Web Service (checklist data) is
+    implemented.
 License: MIT + file LICENSE
-URL: https://github.com/guardias-eu/reasin, https://guardias-eu.github.io/reasin/
+URL: https://github.com/guardias-eu/reasin,
+    https://guardias-eu.github.io/reasin/
 BugReports: https://github.com/guardias-eu/reasin/issues
 Imports:
     cli,
@@ -21,9 +26,9 @@ Imports:
     jsonlite,
     magrittr,
     purrr
-Encoding: UTF-8
-Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.2
 Suggests:
     testthat,
     vcr (>= 0.6.0)
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.2

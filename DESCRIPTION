@@ -15,7 +15,8 @@ Description: A programmatic interface to the Web Service methods provided
     only interface to the EASIN Catalogue Web Service (checklist data) is
     implemented.
 License: MIT + file LICENSE
-URL: https://github.com/guardias-eu/reasin, https://guardias-eu.github.io/reasin/
+URL: https://github.com/guardias-eu/reasin,
+    https://guardias-eu.github.io/reasin/
 BugReports: https://github.com/guardias-eu/reasin/issues
 Imports:
     cli,
@@ -25,9 +26,9 @@ Imports:
     jsonlite,
     magrittr,
     purrr
-Encoding: UTF-8
-Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.2
 Suggests:
     testthat,
     vcr (>= 0.6.0)
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.2

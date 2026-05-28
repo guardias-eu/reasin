@@ -10,7 +10,10 @@ Authors@R: c(
     person("GuardIAS", role = "fnd",
            comment = "https://guardias.eu/")
   )
-Description: What the package does (one paragraph).
+Description: A programmatic interface to the Web Service methods provided
+    by European Alien Species Information Network (EASIN). At the moment
+    only interface to the EASIN Catalogue Web Service (checklist data) is
+    implemented.
 License: MIT + file LICENSE
 URL: https://github.com/guardias-eu/reasin, https://guardias-eu.github.io/reasin/
 BugReports: https://github.com/guardias-eu/reasin/issues

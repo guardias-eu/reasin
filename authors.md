@@ -15,7 +15,7 @@
 ## Citation
 
 Source:
-[`DESCRIPTION`](https://github.com/guardias-eu/reasin/blob/main/DESCRIPTION)
+[`DESCRIPTION`](https://github.com/guardias-eu/reasin/blob/v0.1.0/DESCRIPTION)
 
 Oldoni D (2026). *reasin: Interface to the European Alien Species
 Information Network API*. R package version 0.0.1.0,

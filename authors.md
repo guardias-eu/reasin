@@ -18,13 +18,13 @@ Source:
 [`DESCRIPTION`](https://github.com/guardias-eu/reasin/blob/main/DESCRIPTION)
 
 Oldoni D (2026). *reasin: Interface to the European Alien Species
-Information Network API*. R package version 0.0.0.9000,
+Information Network API*. R package version 0.0.1.0,
 <https://github.com/guardias-eu/reasin>.
 
     @Manual{,
       title = {reasin: Interface to the European Alien Species Information Network API},
       author = {Damiano Oldoni},
       year = {2026},
-      note = {R package version 0.0.0.9000},
+      note = {R package version 0.0.1.0},
       url = {https://github.com/guardias-eu/reasin},
     }

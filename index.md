@@ -13,6 +13,7 @@ You can install the development version of reasin from
 [GitHub](https://github.com/guardias-eu/reasin) with:
 
 ``` r
+
 # install.packages("pak")
 pak::pak("guardias-eu/reasin") # dev version
 ```
@@ -25,6 +26,7 @@ to retrieve information on species from the EASIN [Catalogue Web
 Service](https://easin.jrc.ec.europa.eu/apixg):
 
 ``` r
+
 library(reasin)
 
 # Get overview with all species

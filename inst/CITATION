@@ -1,11 +1,14 @@
+citHeader("To cite `reasin` in publications please use:")
+# begin checklist entry
 bibentry(
-  bibtype = "Article",
-  title = ,
-  author = ,
-  journal = ,
-  year = ,
-  volume = ,
-  number = ,
-  pages = ,
-  doi =
+  bibtype = "Manual",
+  title = "reasin: An R Interface to the EASIN API",
+  author = c(person(given = "Damiano", family = "Oldoni")),
+  year = 2026,
+  url = "https://guardias-eu.github.io/reasin/",
+  abstract = "An R interface to the European Alien Species Information Network API.",
+  textVersion = "Oldoni, Damiano (2026) reasin: An R interface to the EASIN the European Alien Species Information Network API. Version 0.1.0. https://guardias-eu.github.io/reasin/",
+  keywords = "api; biodiversity; biodiversity-data; biodiversity informatics; data; invasive species; oscibio; r",
+  doi = "",
 )
+# end checklist entry

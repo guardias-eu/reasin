@@ -36,7 +36,7 @@ Union concern status
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>Get species information from the EASIN's Catalogue Web Service</h1>
-      <small class="dont-index">Source: <a href="https://github.com/guardias-eu/reasin/blob/v0.1.0/R/get_species.R" class="external-link"><code>R/get_species.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/guardias-eu/reasin/blob/main/R/get_species.R" class="external-link"><code>R/get_species.R</code></a></small>
       <div class="d-none name"><code>get_species.Rd</code></div>
     </div>
 
@@ -163,7 +163,7 @@ concern. Only <code>TRUE</code> is allowed.</p></dd>
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Get list of all species in the EASIN catalogue</span></span></span>
 <span class="r-in"><span><span class="fu">get_species</span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 15,688 × 12</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 15,750 × 12</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    EasinID Name     Authorship LSID  Reference HasImpact IsEUConcern IsMSConcern</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>      </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> R19422  Candida… <span style="color: #949494;">"</span>Fagen et… urn:… https://… FALSE     FALSE       FALSE      </span>
@@ -176,7 +176,7 @@ concern. Only <code>TRUE</code> is allowed.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> R19428  Candida… <span style="color: #949494;">""</span>         urn:… https://… FALSE     FALSE       FALSE      </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> R11526  Candida… <span style="color: #949494;">""</span>         urn:… https://… TRUE      FALSE       FALSE      </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> R19429  Candida… <span style="color: #949494;">""</span>         urn:… https://… FALSE     FALSE       FALSE      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 15,678 more rows</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 15,740 more rows</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 4 more variables: IsOutermostConcern &lt;lgl&gt;, IsPartNative &lt;lgl&gt;,</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   IsHorizonScanning &lt;lgl&gt;, Status &lt;chr&gt;</span></span>
 <span class="r-in"><span></span></span>
@@ -260,7 +260,7 @@ concern. Only <code>TRUE</code> is allowed.</p></dd>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Get species by `environment`</span></span></span>
 <span class="r-in"><span><span class="fu">get_species</span><span class="op">(</span>environment <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"MAR"</span>,<span class="st">"OLI"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 2,351 × 27</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 2,416 × 27</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    EASINID Name      Authorship FirstIntroductionsInEU PresentInCountries Status</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>                 <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> R20136  Ablennes… <span style="color: #949494;">"</span>(Valenci… <span style="color: #949494;">&lt;NULL&gt;</span>                 <span style="color: #949494;">&lt;df [2 × 1]&gt;</span>       A     </span>
@@ -273,7 +273,7 @@ concern. Only <code>TRUE</code> is allowed.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> R19332  Abudefdu… <span style="color: #949494;">"</span>(Quoy &amp; … <span style="color: #949494;">&lt;df [1 × 3]&gt;</span>           <span style="color: #949494;">&lt;df [7 × 1]&gt;</span>       A     </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> R16518  Abyla tr… <span style="color: #949494;">"</span>Quoy &amp; G… <span style="color: #949494;">&lt;NULL&gt;</span>                 <span style="color: #949494;">&lt;df [2 × 1]&gt;</span>       Q     </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> R17484  Acanthar… <span style="color: #949494;">"</span>(Forest,… <span style="color: #949494;">&lt;df [1 × 3]&gt;</span>           <span style="color: #949494;">&lt;df [1 × 1]&gt;</span>       A     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 2,341 more rows</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 2,406 more rows</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 21 more variables: HasImpact &lt;lgl&gt;, IsEUConcern &lt;lgl&gt;, EUConcernName &lt;chr&gt;,</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   IsOutermostConcern &lt;lgl&gt;, ConcernedOutermostRegions &lt;list&gt;,</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   IsMSConcern &lt;lgl&gt;, ConcernedMS &lt;list&gt;, IsPartNative &lt;lgl&gt;,</span></span>
@@ -406,7 +406,7 @@ concern. Only <code>TRUE</code> is allowed.</p></dd>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Get species by `status`</span></span></span>
 <span class="r-in"><span><span class="fu">get_species</span><span class="op">(</span>status <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Q"</span>, <span class="st">"A"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 14,364 × 27</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 14,425 × 27</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    EASINID Name      Authorship FirstIntroductionsInEU PresentInCountries Status</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>                 <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> R19422  Candidat… <span style="color: #949494;">"</span>Fagen et… <span style="color: #949494;">&lt;df [1 × 3]&gt;</span>           <span style="color: #949494;">&lt;df [14 × 1]&gt;</span>      Q     </span>
@@ -419,7 +419,7 @@ concern. Only <code>TRUE</code> is allowed.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> R19428  Candidat… <span style="color: #949494;">""</span>         <span style="color: #949494;">&lt;df [1 × 3]&gt;</span>           <span style="color: #949494;">&lt;df [1 × 1]&gt;</span>       Q     </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> R11526  Candidat… <span style="color: #949494;">""</span>         <span style="color: #949494;">&lt;df [1 × 3]&gt;</span>           <span style="color: #949494;">&lt;df [29 × 1]&gt;</span>      Q     </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> R19429  Candidat… <span style="color: #949494;">""</span>         <span style="color: #949494;">&lt;df [1 × 3]&gt;</span>           <span style="color: #949494;">&lt;df [2 × 1]&gt;</span>       Q     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 14,354 more rows</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 14,415 more rows</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 21 more variables: HasImpact &lt;lgl&gt;, IsEUConcern &lt;lgl&gt;, EUConcernName &lt;chr&gt;,</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   IsOutermostConcern &lt;lgl&gt;, ConcernedOutermostRegions &lt;list&gt;,</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   IsMSConcern &lt;lgl&gt;, ConcernedMS &lt;list&gt;, IsPartNative &lt;lgl&gt;,</span></span>
@@ -429,7 +429,7 @@ concern. Only <code>TRUE</code> is allowed.</p></dd>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Get species which are native in at least one country</span></span></span>
 <span class="r-in"><span><span class="fu">get_species</span><span class="op">(</span>partly_native <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 5,216 × 27</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 5,215 × 27</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    EASINID Name      Authorship FirstIntroductionsInEU PresentInCountries Status</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>                 <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> R19422  'Candida… <span style="color: #949494;">"</span>Fagen et… <span style="color: #949494;">&lt;df [1 × 3]&gt;</span>           <span style="color: #949494;">&lt;df [14 × 1]&gt;</span>      Q     </span>
@@ -442,7 +442,7 @@ concern. Only <code>TRUE</code> is allowed.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> R11526  'Candida… <span style="color: #949494;">""</span>         <span style="color: #949494;">&lt;df [1 × 3]&gt;</span>           <span style="color: #949494;">&lt;df [29 × 1]&gt;</span>      Q     </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> R19429  'Candida… <span style="color: #949494;">""</span>         <span style="color: #949494;">&lt;df [1 × 3]&gt;</span>           <span style="color: #949494;">&lt;df [2 × 1]&gt;</span>       Q     </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> R19430  'Candida… <span style="color: #949494;">""</span>         <span style="color: #949494;">&lt;df [1 × 3]&gt;</span>           <span style="color: #949494;">&lt;df [1 × 1]&gt;</span>       Q     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 5,206 more rows</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 5,205 more rows</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 21 more variables: HasImpact &lt;lgl&gt;, IsEUConcern &lt;lgl&gt;, EUConcernName &lt;chr&gt;,</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   IsOutermostConcern &lt;lgl&gt;, ConcernedOutermostRegions &lt;list&gt;,</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   IsMSConcern &lt;lgl&gt;, ConcernedMS &lt;list&gt;, IsPartNative &lt;lgl&gt;,</span></span>
@@ -483,7 +483,7 @@ concern. Only <code>TRUE</code> is allowed.</p></dd>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
     </footer></div>

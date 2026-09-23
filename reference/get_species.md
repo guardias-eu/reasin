@@ -137,7 +137,7 @@ A tibble data frame containing species information.
 ``` r
 # Get list of all species in the EASIN catalogue
 get_species()
-#> # A tibble: 15,688 × 12
+#> # A tibble: 15,750 × 12
 #>    EasinID Name     Authorship LSID  Reference HasImpact IsEUConcern IsMSConcern
 #>    <chr>   <chr>    <chr>      <chr> <chr>     <lgl>     <lgl>       <lgl>      
 #>  1 R19422  Candida… "Fagen et… urn:… https://… FALSE     FALSE       FALSE      
@@ -150,7 +150,7 @@ get_species()
 #>  8 R19428  Candida… ""         urn:… https://… FALSE     FALSE       FALSE      
 #>  9 R11526  Candida… ""         urn:… https://… TRUE      FALSE       FALSE      
 #> 10 R19429  Candida… ""         urn:… https://… FALSE     FALSE       FALSE      
-#> # ℹ 15,678 more rows
+#> # ℹ 15,740 more rows
 #> # ℹ 4 more variables: IsOutermostConcern <lgl>, IsPartNative <lgl>,
 #> #   IsHorizonScanning <lgl>, Status <chr>
 
@@ -234,7 +234,7 @@ get_species(scientific_name = c("Aceria ambrosia", "Procambarus"))
 
 # Get species by `environment`
 get_species(environment = c("MAR","OLI"))
-#> # A tibble: 2,351 × 27
+#> # A tibble: 2,416 × 27
 #>    EASINID Name      Authorship FirstIntroductionsInEU PresentInCountries Status
 #>    <chr>   <chr>     <chr>      <list>                 <list>             <chr> 
 #>  1 R20136  Ablennes… "(Valenci… <NULL>                 <df [2 × 1]>       A     
@@ -247,7 +247,7 @@ get_species(environment = c("MAR","OLI"))
 #>  8 R19332  Abudefdu… "(Quoy & … <df [1 × 3]>           <df [7 × 1]>       A     
 #>  9 R16518  Abyla tr… "Quoy & G… <NULL>                 <df [2 × 1]>       Q     
 #> 10 R17484  Acanthar… "(Forest,… <df [1 × 3]>           <df [1 × 1]>       A     
-#> # ℹ 2,341 more rows
+#> # ℹ 2,406 more rows
 #> # ℹ 21 more variables: HasImpact <lgl>, IsEUConcern <lgl>, EUConcernName <chr>,
 #> #   IsOutermostConcern <lgl>, ConcernedOutermostRegions <list>,
 #> #   IsMSConcern <lgl>, ConcernedMS <list>, IsPartNative <lgl>,
@@ -380,7 +380,7 @@ get_species(present_in_country = c("LU", "IE"))
 
 # Get species by `status`
 get_species(status = c("Q", "A"))
-#> # A tibble: 14,364 × 27
+#> # A tibble: 14,425 × 27
 #>    EASINID Name      Authorship FirstIntroductionsInEU PresentInCountries Status
 #>    <chr>   <chr>     <chr>      <list>                 <list>             <chr> 
 #>  1 R19422  Candidat… "Fagen et… <df [1 × 3]>           <df [14 × 1]>      Q     
@@ -393,7 +393,7 @@ get_species(status = c("Q", "A"))
 #>  8 R19428  Candidat… ""         <df [1 × 3]>           <df [1 × 1]>       Q     
 #>  9 R11526  Candidat… ""         <df [1 × 3]>           <df [29 × 1]>      Q     
 #> 10 R19429  Candidat… ""         <df [1 × 3]>           <df [2 × 1]>       Q     
-#> # ℹ 14,354 more rows
+#> # ℹ 14,415 more rows
 #> # ℹ 21 more variables: HasImpact <lgl>, IsEUConcern <lgl>, EUConcernName <chr>,
 #> #   IsOutermostConcern <lgl>, ConcernedOutermostRegions <list>,
 #> #   IsMSConcern <lgl>, ConcernedMS <list>, IsPartNative <lgl>,
@@ -403,7 +403,7 @@ get_species(status = c("Q", "A"))
 
 # Get species which are native in at least one country
 get_species(partly_native = TRUE)
-#> # A tibble: 5,216 × 27
+#> # A tibble: 5,215 × 27
 #>    EASINID Name      Authorship FirstIntroductionsInEU PresentInCountries Status
 #>    <chr>   <chr>     <chr>      <list>                 <list>             <chr> 
 #>  1 R19422  'Candida… "Fagen et… <df [1 × 3]>           <df [14 × 1]>      Q     
@@ -416,7 +416,7 @@ get_species(partly_native = TRUE)
 #>  8 R11526  'Candida… ""         <df [1 × 3]>           <df [29 × 1]>      Q     
 #>  9 R19429  'Candida… ""         <df [1 × 3]>           <df [2 × 1]>       Q     
 #> 10 R19430  'Candida… ""         <df [1 × 3]>           <df [1 × 1]>       Q     
-#> # ℹ 5,206 more rows
+#> # ℹ 5,205 more rows
 #> # ℹ 21 more variables: HasImpact <lgl>, IsEUConcern <lgl>, EUConcernName <chr>,
 #> #   IsOutermostConcern <lgl>, ConcernedOutermostRegions <list>,
 #> #   IsMSConcern <lgl>, ConcernedMS <list>, IsPartNative <lgl>,

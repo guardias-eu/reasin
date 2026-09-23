@@ -22,11 +22,11 @@ function to filter species by status. Based on the
 statuses()
 }
 \seealso{
-Other misc functions: 
-\code{\link{countries}()},
-\code{\link{environments}()},
-\code{\link{impacts}()},
-\code{\link{ranks}()},
-\code{\link{regions}()}
+Other misc functions:
+\code{\link[=countries]{countries()}},
+\code{\link[=environments]{environments()}},
+\code{\link[=impacts]{impacts()}},
+\code{\link[=ranks]{ranks()}},
+\code{\link[=regions]{regions()}}
 }
 \concept{misc functions}

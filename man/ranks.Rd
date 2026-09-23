@@ -21,11 +21,11 @@ function to filter species by taxonomic rank. Based on the
 ranks()
 }
 \seealso{
-Other misc functions: 
-\code{\link{countries}()},
-\code{\link{environments}()},
-\code{\link{impacts}()},
-\code{\link{regions}()},
-\code{\link{statuses}()}
+Other misc functions:
+\code{\link[=countries]{countries()}},
+\code{\link[=environments]{environments()}},
+\code{\link[=impacts]{impacts()}},
+\code{\link[=regions]{regions()}},
+\code{\link[=statuses]{statuses()}}
 }
 \concept{misc functions}

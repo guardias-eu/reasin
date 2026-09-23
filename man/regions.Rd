@@ -22,11 +22,11 @@ Shows the valid outermost regions and their codes. The codes are used in the
 regions()
 }
 \seealso{
-Other misc functions: 
-\code{\link{countries}()},
-\code{\link{environments}()},
-\code{\link{impacts}()},
-\code{\link{ranks}()},
-\code{\link{statuses}()}
+Other misc functions:
+\code{\link[=countries]{countries()}},
+\code{\link[=environments]{environments()}},
+\code{\link[=impacts]{impacts()}},
+\code{\link[=ranks]{ranks()}},
+\code{\link[=statuses]{statuses()}}
 }
 \concept{misc functions}

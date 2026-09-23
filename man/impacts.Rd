@@ -22,11 +22,11 @@ Shows the valid impact levels. The impact levels are used in the
 impacts()
 }
 \seealso{
-Other misc functions: 
-\code{\link{countries}()},
-\code{\link{environments}()},
-\code{\link{ranks}()},
-\code{\link{regions}()},
-\code{\link{statuses}()}
+Other misc functions:
+\code{\link[=countries]{countries()}},
+\code{\link[=environments]{environments()}},
+\code{\link[=ranks]{ranks()}},
+\code{\link[=regions]{regions()}},
+\code{\link[=statuses]{statuses()}}
 }
 \concept{misc functions}

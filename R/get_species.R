@@ -600,7 +600,7 @@ get_species_by_impact <- function(impact) {
 get_species_by_taxon <- function(rank, taxon) {
   data <- get_species_dynamic_url(
     arg = rank,
-    value = taxon,
+    values = taxon,
     is_pagination = TRUE
   )
   return(data)

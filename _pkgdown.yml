@@ -1,12 +1,26 @@
-url: https://guardias-eu.github.io/reasin/
 template:
   bootstrap: 5
+  light-switch: false
 navbar:
-  bg: dark
-reference:
-  - title: Species functions
-    contents:
-    - has_concept("species functions")
-  - title: Miscellaneous functions
-    contents:
-    - has_concept("misc functions")
+  title: ~
+  type: default
+  structure:
+    left:  [intro, reference, articles, tutorials, news, contributing]
+    right: [search, github]
+  components:
+    news:
+      text: Changelog
+      href: news/index.html
+    contributing:
+      text: Contributing
+      menu:
+      - text: Contributing
+        href: CONTRIBUTING.html
+      - text: Code of conduct
+        href: CODE_OF_CONDUCT.html
+authors:
+  Research Institute for Nature and Forest (INBO):
+    href: "https://www.vlaanderen.be/inbo/en-gb"
+    html: "<img src='https://inbo.github.io/citeme/reference/figures/logo-en.png' height=24 alt='Research Institute for Nature and Forest (INBO)'>"
+
+url: https://guardias-eu.github.io/reasin

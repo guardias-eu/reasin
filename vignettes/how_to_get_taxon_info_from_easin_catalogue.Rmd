@@ -1,0 +1,151 @@
+---
+title: "How to get taxonomic information from the EASIN Catalogue"
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  message = FALSE,
+  comment = "#>"
+)
+```
+
+## Introduction
+
+Load reasin with:
+
+```{r setup}
+library(reasin)
+```
+
+To retrieve species data from the EASIN Catalogue Web Service you need to use the function `get_species()`. Behind the screen several API endpoints will be called, depending on the arguments used. In this article we show what you can do with `get_species()`.
+
+## Overview of all species
+
+The first, basic way to get species data is to call `get_species()` without any arguments. This will retrieve all species from the EASIN Catalogue:
+
+```{r get-all-species}  
+all_species <- get_species()
+head(all_species)
+```
+
+Aside the `EASIN_ID` and columns containing scientific name (`Name` and `Authorship`), the returned data frame contains columns important for understanding the species distribution and status in Europe, such as `HasImpact`, `IsEUConcern` and `IsMSConcern` (is a taxon of concern for some Member States?), `IsPartNative` (is the taxon native for at least one Member State?). However, if you want to know more about its taxonomy, the native range, the pathways of introduction, the environments it inhabits, etc., you need to use `get_species()` with specific arguments. So, read on!
+
+## Detailed information for some species
+
+### Information by `easin_id`
+
+The most straightforward way to get species information is to provide one or more EASIN IDs via the `easin_id` argument:
+
+```{r get-species-by-easin-id}
+some_species <- get_species(easin_id = c("R00460", "R12250"))
+some_species
+```
+
+### Information by scientific name or taxonomy
+
+You can also get species by their scientific name (or part of it) using the `scientific_name` argument. For example, to get all species whose scientific name contains `"Aceria ambrosia"` or `"Procambarus"`:
+
+```{r get-species-by-scientific-name}
+get_species(scientific_name = c("Aceria ambrosia", "Procambarus"))
+```
+
+Or you can use `taxon` and provide a character named vector with the taxon name(s) named by their taxonomic rank(s):
+
+```{r get-species-by-taxon}
+get_species(taxon = c(order = "Decapoda", family = "Asteraceae"))
+```
+
+Use `ranks()` to look up all the ranks you can use:
+
+```{r ranks}
+ranks()
+```
+
+
+### Information by environment, impact or status
+
+You can also get species by the environments they inhabit. For example, to get all species inhabiting freshwater environments:
+
+```{r get-species-by-environment}
+freshwater_species <- get_species(environment = "FRW")
+head(freshwater_species)
+```
+
+How to remember all the environment codes? Not easy, right? Don't worry: you can use the `environments()` function to get a data frame with all environment codes and their description:
+
+```{r get-environments}
+environments()
+```
+
+Similar to environments, you can use the `impacts()` and `statuses()` functions to get the codes and their description:
+
+```{r get-statuses}
+statuses()
+```
+
+```{r get-impacts}
+impacts()
+```
+
+### Information by countries or regions
+
+There are some arguments you can use to get detailed information at country/regional level:
+
+- `country_code`: to get species of **Member State concern** for one or more countries. Very few Member States have communicated this information to the European Commission, so it could be that you get an empty data frame back.
+- `region_code`: to get species of **outermost regions concern** for one or more regions.
+- `present_in_country`: to get species present in one or more countries, probably one of the most useful arguments.
+- `native_in_country`: to get species native in one or more countries.
+
+You must use [ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) country codes. Still, you don't have to remember all the country codes: you can use the `countries()` function to get a data frame with all country codes and their description:
+
+```{r get-countries}
+countries()
+```
+
+Similar for outermost regions, you can use the `regions()` function to get the codes and their description:
+
+```{r get-outermost-regions}
+regions()
+```
+
+Some examples:
+
+- species of Member State concern for Ireland and Lithuania:
+
+```{r get-species-by-country_code}
+get_species(country_code = c("IE", "LT"))
+```
+
+- species of outermost regions concern for Canary Islands:
+
+```{r get-species-by-region_code}
+get_species(region_code = c("ES7"))
+```
+
+- species present in Luxembourg and Ireland:
+
+```{r get-species-by-present_in_country}
+get_species(present_in_country = c("LU", "IE"))
+```
+
+- species native in Estonia and Finland:
+
+```{r get-species-by-native_in_country}
+get_species(native_in_country = c("EE","FI"))
+```
+
+
+### Information by general criteria
+
+There also are other arguments you can use to get species by more general criteria:
+
+- `union_concern`: to get species of Union concern. Only `TRUE` is allowed.
+- `horizon`: to get species coming from Horizon Scanning assessments. Only `TRUE` is allowed.
+- `partly_native`: to get specise which are native in one or more EU countries. Only `TRUE` is allowed.
+
+For example, to get all species of Union concern:
+
+```{r get-species-by-union_concern}
+get_species(union_concern = TRUE)
+```

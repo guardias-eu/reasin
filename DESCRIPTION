@@ -29,6 +29,8 @@ Imports:
 Suggests:
     testthat,
     vcr (>= 0.6.0)
+VignetteBuilder:
+    knitr
 Config/citeme/keywords: easin; api; alien species
 Config/roxygen2/version: 8.1.0
 Encoding: UTF-8

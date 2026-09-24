@@ -5,7 +5,7 @@ Date: 2026-05-28
 Authors@R: c(
     person("Damiano", "Oldoni", , "damiano.oldoni@inbo.be", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0003-3445-7562", affiliation = "Research Institute for Nature and Forest (INBO)")),
-    person("Research Institute for Nature and Forest (INBO)", role = "cph",
+    person("Research Institute for Nature and Forest (INBO)", , , "info@inbo.be", role = "cph",
            comment = c(ROR = "00j54wy13")),
     person("GuardIAS", role = "fnd",
            comment = "https://guardias.eu/")

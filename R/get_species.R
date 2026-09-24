@@ -273,7 +273,7 @@ get_species <- function(
     if (any(!impact %in% valid_impacts)) {
       wrong_impact <- impact[!impact %in% valid_impacts]
       cli::cli_abort(
-        "Argument 'impact' must be one or more of: {valid_impacts}. Invalid value{?s}: {wrong_impact}.  Use `impacts()` to get all valid values and their meaning.",
+        "Argument 'impact' must be one or more of: {valid_impacts}. Invalid impact value{?s}: {wrong_impact}.  Use `impacts()` to get all valid values and their meaning.",
         class = "reasin_error_assignment_invalid"
       )
     }
@@ -291,7 +291,8 @@ get_species <- function(
       )
     }
     valid_ranks <- ranks() %>% dplyr::pull("rank")
-    if (!rank %in% valid_ranks) {
+    invalid_ranks <- rank[!rank %in% valid_ranks]
+    if (length(invalid_ranks) > 0) {
       cli::cli_abort(
         "If you want to include a taxonomic level, it must be one of: {.val {valid_ranks}}",
         class = "reasin_error_assignment_invalid"
@@ -598,11 +599,17 @@ get_species_by_impact <- function(impact) {
 #' @examples
 #' get_species_by_taxon(rank = "family", taxon = "Vespidae")
 get_species_by_taxon <- function(rank, taxon) {
-  data <- get_species_dynamic_url(
-    arg = rank,
-    values = taxon,
-    is_pagination = TRUE
-  )
+  data <- purrr::map2(
+    rank,
+    taxon,
+    ~ get_species_dynamic_url(
+      arg = .x,
+      values = .y,
+      is_pagination = TRUE
+    )
+  ) %>%
+    purrr::list_rbind()
+
   return(data)
 }
 

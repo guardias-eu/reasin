@@ -1,4 +1,4 @@
-#' Get species information from the EASIN's Catalogue Web Service
+#' Get species information from the EASIN Catalogue Web Service
 #'
 #' This function retrieves species information from the EASIN's
 #' [Catalogue](https://easin.jrc.ec.europa.eu/easin/Catalogue). Users can

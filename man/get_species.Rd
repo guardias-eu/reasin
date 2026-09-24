@@ -2,7 +2,7 @@
 % Please edit documentation in R/get_species.R
 \name{get_species}
 \alias{get_species}
-\title{Get species information from the EASIN's Catalogue Web Service}
+\title{Get species information from the EASIN Catalogue Web Service}
 \usage{
 get_species(
   easin_id = NULL,

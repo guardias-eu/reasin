@@ -57,4 +57,4 @@ with all available functions.
 
 ## Funding
 
-This package is being developed in the framework of the [GuardIAS](https://guardias.eu/) prject. GuardIAS receives funding from the European Union’s Horizon Europe Research and Innovation Programme (ID No 101181413).
+This package is being developed in the framework of the [GuardIAS](https://guardias.eu/) project. GuardIAS receives funding from the European Union’s Horizon Europe Research and Innovation Programme (ID No 101181413).

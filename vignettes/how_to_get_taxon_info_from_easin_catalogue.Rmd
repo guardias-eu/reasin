@@ -29,7 +29,7 @@ all_species <- get_species()
 head(all_species)
 ```
 
-Aside the `EASIN_ID` and columns containing scientific name (`Name` and `Authorship`), the returned data frame contains columns important for understanding the species distribution and status in Europe, such as `HasImpact`, `IsEUConcern` and `IsMSConcern` (is a taxon of concern for some Member States?), `IsPartNative` (is the taxon native for at least one Member State?). However, if you want to know more about its taxonomy, the native range, the pathways of introduction, the environments it inhabits, etc., you need to use `get_species()` with specific arguments. So, read on!
+Aside the `EASIN_ID` and columns containing scientific name (`Name` and `Authorship`), the returned data frame contains columns important for understanding the species distribution and status in Europe, such as `HasImpact`, `IsEUConcern` and `IsMSConcern` (is a taxon of concern for some Member States?), `IsPartNative` (is the taxon native for at least one Member State?). However, if you want to know more about for example its taxonomy, the native range, the pathways of introduction and the environments it inhabits, you need to use `get_species()` with specific arguments. So, read on!
 
 ## Detailed information for some species
 
@@ -142,7 +142,7 @@ There also are other arguments you can use to get species by more general criter
 
 - `union_concern`: to get species of Union concern. Only `TRUE` is allowed.
 - `horizon`: to get species coming from Horizon Scanning assessments. Only `TRUE` is allowed.
-- `partly_native`: to get specise which are native in one or more EU countries. Only `TRUE` is allowed.
+- `partly_native`: to get species which are native in one or more EU countries. Only `TRUE` is allowed.
 
 For example, to get all species of Union concern:
 

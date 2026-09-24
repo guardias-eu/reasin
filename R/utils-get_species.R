@@ -1,8 +1,8 @@
 #' Get species from static URL
 #'
-#' Retrieves a specific set of species from a predefined URL via API. This is t'he
-#' case for retrieving all species from the Catalogue Web Service or the s'pecies
-#' of Union Concern.
+#' Retrieves a specific set of species from a predefined URL via API. This is
+#' the case for retrieving all species from the EASIN Catalogue Web Service or
+#' the species of Union Concern.
 #'
 #' @param base_url A character string representing the base URL of the API.
 #' @param arg A character vector representing the specific endpoint to be
@@ -59,9 +59,9 @@ get_species_static_url <- function(
 
 #' Get species via dynamic URL with query parameters
 #'
-#' Retrieves species from the EASIN's Catalogue Web Service based on dynamic
-#' query parameters. This function is used internally by some subfunctions of
-#' `get_species()` when specific filters are applied, e.g. when multiple
+#' Retrieves species from the EASIN Catalogue Web Service based on dynamic
+#' query parameters. This function is used internally by some functions called
+#' by `get_species()` when specific filters are applied, e.g. when multiple
 #' environments, EASIN IDs or scientific names are provided.
 #' @param arg Character with the argument name. One of `"environment"`,
 #'   `"easin_id"` or `"term"`.

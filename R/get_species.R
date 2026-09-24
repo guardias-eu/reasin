@@ -1,10 +1,10 @@
 #' Get species information from the EASIN Catalogue Web Service
 #'
-#' This function retrieves species information from the EASIN's
+#' This function retrieves species information from the EASIN
 #' [Catalogue](https://easin.jrc.ec.europa.eu/easin/Catalogue). Users can
-#' retrieve records by species’ scientific name, environment, impact, taxonomy,
+#' retrieve records by scientific name, environment, impact, taxonomy,
 #' Union concern status
-#' ([LegalFramework](https://easin.jrc.ec.europa.eu/easin/LegalFramework/Index)). More on [EASIN Web Services](https://easin.jrc.ec.europa.eu/apixg).
+#' ([Legal Framework](https://easin.jrc.ec.europa.eu/easin/LegalFramework/Index)). More on [EASIN Web Services](https://easin.jrc.ec.europa.eu/apixg).
 #'
 #' @param easin_id Integer. EASIN Species ID(s).
 #' @param scientific_name Character. Scientific name(s) or part(s) of it. Case
@@ -46,7 +46,7 @@
 #'   Service](https://easin.jrc.ec.europa.eu/apixg) documentation.
 #' @param horizon Logical. If `TRUE`, returns only species coming from Horizon
 #' Scanning assessments. Only `TRUE` is allowed.
-#' @param partly_native Logical. If `TRUE`, returns only specise which are
+#' @param partly_native Logical. If `TRUE`, returns only species which are
 #'   native in one or more EU countries.
 #' @param native_in_country Character. One or more countries' ISO 3166-1 alpha-2
 #'   codes to filter species native in those countries. Use `countries()` to
@@ -411,8 +411,8 @@ get_species <- function(
 
 #' Get all species
 #'
-#' This function retrieves all species from the EASIN's Catalogue Web Service.
-#' It is used internally by `get_species()` if all args are `NULL`.
+#' This function retrieves all species from the EASIN Catalogue Web Service.
+#' It is used internally by `get_species()` if all arguments are `NULL`.
 #' @return A tibble data frame containing all species.
 #' @noRd
 #' @examples
@@ -426,7 +426,7 @@ get_all_species <- function() {
 
 #' Get all species of Union Concern
 #'
-#' Retrieves all species of Union Concern from the EASIN's Catalogue Web Service.
+#' Retrieves all species of Union Concern from the EASIN Catalogue Web Service.
 #' It is used internally by `get_species()` if `union_concern = TRUE`.
 #'
 #' @return A data frame containing all species of Union Concern.
@@ -441,7 +441,7 @@ get_union_concern_species <- function() {
 
 #' Get all species based on Horizon Scanning assessments
 #'
-#' Retrieves all species from the EASIN's Catalogue Web Service that have been
+#' Retrieves all species from the EASIN Catalogue Web Service that have been
 #' assessed in the context of Horizon Scanning. It is used internally by
 #' `get_species()` if `horion_scanning = TRUE`.
 #' @return A data frame containing all species assessed in the context of
@@ -457,7 +457,7 @@ get_horizon_scanning_species <- function() {
 
 #' Get species native in at least one country
 #'
-#' Retrieves all species from the EASIN's Catalogue Web Service that are native
+#' Retrieves all species from the EASIN Catalogue Web Service that are native
 #' in at least one Member State.
 #' @return A data frame containing all species native in at least one country.
 #' @noRd
@@ -471,7 +471,7 @@ get_partly_native_species <- function() {
 
 #' Get species by environment(s)
 #'
-#' Retrieves species from the EASIN's Catalogue Web Service filtered by one or
+#' Retrieves species from the EASIN Catalogue Web Service filtered by one or
 #' more environment types. It is used internally by `get_species()` if
 #' `environment` argument is provided.
 #' @param environments A character vector containing one or more environment
@@ -493,7 +493,7 @@ get_species_by_environment <- function(environments) {
 
 #' Get species by EASIN ID(s)
 #'
-#' Retrieves species information from the EASIN's Catalogue Web Service for one
+#' Retrieves species information from the EASIN Catalogue Web Service for one
 #' or more EASIN IDs. It is used internally by `get_species()` if `easin_id`
 #' argument is provided.
 #'
@@ -513,7 +513,7 @@ get_species_by_easin_id <- function(easin_ids) {
 
 #' Get species by scientific name or part of it
 #'
-#' Retrieves species from the EASIN's Catalogue Web Service based on a
+#' Retrieves species from the EASIN Catalogue Web Service based on a
 #' scientific name or part of it. It is used internally by `get_species()` if
 #' `scientific_name` argument is provided.
 #'
@@ -534,7 +534,7 @@ get_species_by_scientific_name <- function(scientific_names) {
 
 #' Get species of Member State concern
 #'
-#' Retrieves species from the EASIN's Catalogue Web Service filtered by one or
+#' Retrieves species from the EASIN Catalogue Web Service filtered by one or
 #' more environment types. It is used internally by `get_species()` if
 #' `country_code` argument is provided.
 #' @param country_codes A character vector containing one or more ISO 3166-1 alpha-2 country codes.
@@ -556,7 +556,7 @@ get_species_by_country_code <- function(country_codes) {
 
 #' Get species by Outermost region code(s)
 #'
-#' Retrieves species from the EASIN's Catalogue Web Service filtered by one or
+#' Retrieves species from the EASIN Catalogue Web Service filtered by one or
 #' more Outermost region codes. It is used internally by `get_species()` if
 #' `region_code` argument is provided.
 #' @param region_codes A character vector containing one or more Outermost region codes.
@@ -578,7 +578,7 @@ get_species_by_region_code <- function(region_codes) {
 
 #' Get species with a specific impact
 #'
-#' Retrieves species from the EASIN's Catalogue Web Service It is used
+#' Retrieves species from the EASIN Catalogue Web Service It is used
 #' internally by `get_species()` if `impact` argument is provided.
 #' @param impact A character containing one or more of: `"hi"` (high) or `"lo"` (low).
 #' @return A data frame containing species filtered by the specified countries.
@@ -596,7 +596,7 @@ get_species_by_impact <- function(impact) {
 
 #' Get species by taxon
 #'
-#' Retrieves species from the EASIN's Catalogue Web Service filtered by a given
+#' Retrieves species from the EASIN Catalogue Web Service filtered by a given
 #' `taxon`. It is used internally by `get_species()` if `taxon` argument is
 #' provided.
 #' @param rank A character representing the taxonomy level. From kingdom up to
@@ -625,7 +625,7 @@ get_species_by_taxon <- function(rank, taxon) {
 
 #' Get species by full taxonomy
 #'
-#' Retrieves species from the EASIN's Catalogue Web Service filtered by full
+#' Retrieves species from the EASIN Catalogue Web Service filtered by full
 #' `taxonomy`. It is used internally by `get_species()` if `taxonomy` argument
 #' is provided.
 #' @param rank A character representing the taxonomy level(s).
@@ -656,7 +656,7 @@ get_species_by_taxonomy <- function(rank, taxonomy) {
 
 #' Get species present in a country
 #'
-#' Retrieves species from the EASIN's Catalogue Web Service filtered by presence
+#' Retrieves species from the EASIN Catalogue Web Service filtered by presence
 #' in a give country. It is used internally by `get_species()` if
 #' `present_in_country` argument is provided.
 #' @param country A character containing one ISO 3166-1 alpha-2 country codes.
@@ -679,7 +679,7 @@ get_species_by_presence_in_country <- function(countries) {
 
 #' Get species via status
 #'
-#' Retrieves species from the EASIN's Catalogue Web Service filtered by status.
+#' Retrieves species from the EASIN Catalogue Web Service filtered by status.
 #' It is used internally by `get_species()` if `status` argument is provided.
 #' @param status A character vector containing one or more status types.
 #' @return A data frame containing species filtered by the specified status
@@ -700,7 +700,7 @@ get_species_by_status <- function(status) {
 
 #' Get native species in one or more countries
 #'
-#' Retrieves from the EASIN's Catalogue Web Servic the species for countries in
+#' Retrieves from the EASIN Catalogue Web Service the species for countries in
 #' which they are native.
 #' @param country_codes A character vector containing one or more ISO 3166-1 alpha-2 country codes.
 #' @return A data frame containing species filtered by the specified countries.

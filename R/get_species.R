@@ -153,7 +153,7 @@ get_species <- function(
   if (length(query_params) > 1) {
     no_null_args <- names(query_params)
     cli::cli_abort(
-      "Pass one or no argument to `get_species()`: {no_null_args} found."
+      "Pass one or no argument to {.fun get_species}: {no_null_args} found"
     )
   }
 
@@ -162,7 +162,7 @@ get_species <- function(
     easin_id <- query_params$easin_id
     if (!purrr::is_character(easin_id)) {
       cli::cli_abort(
-        "Argument 'easin_id' must be character.",
+        "Argument {.arg easin_id} must be character",
         class = "reasin_error_assignment_invalid"
       )
     }
@@ -174,7 +174,7 @@ get_species <- function(
     scientific_name <- query_params$scientific_name
     if (!purrr::is_character(scientific_name)) {
       cli::cli_abort(
-        "Argument 'scientific_name' must be character.",
+        "Argument {.arg scientific_name} must be character",
         class = "reasin_error_assignment_invalid"
       )
     }
@@ -182,7 +182,8 @@ get_species <- function(
     if (any(nchar(scientific_name) < 4)) {
       short_names <- scientific_name[nchar(scientific_name) < 4]
       cli::cli_abort(
-        "Each scientific name must be at least 4 characters long. Short names: {short_names}.",
+        "Scientific names must be at least 4 characters long",
+        "i" = "Short names found: {short_names}",
         class = "reasin_error_assignment_invalid"
       )
     }
@@ -196,7 +197,7 @@ get_species <- function(
     environment <- query_params$environment
     if (!purrr::is_character(environment)) {
       cli::cli_abort(
-        "Argument 'environment' must be character.",
+        "Argument {.arg environment} must be character",
         class = "reasin_error_assignment_invalid"
       )
     }
@@ -204,7 +205,8 @@ get_species <- function(
     if (any(!environment %in% valid_environments)) {
       wrong_environments <- environment[!environment %in% valid_environments]
       cli::cli_abort(
-        "Argument 'environment' must be one or more of: {valid_environments}.",
+        "Environment{?s} invalid: {wrong_environments}",
+        "i" = "Use {.fun environments} to get all valid values",
         class = "reasin_error_assignment_invalid"
       )
     }
@@ -215,7 +217,7 @@ get_species <- function(
   if ("union_concern" %in% names(query_params)) {
     union_concern <- query_params$union_concern
     if (!isTRUE(union_concern)) {
-      cli::cli_abort("Argument 'union_concern' must be TRUE")
+      cli::cli_abort("Argument {.arg union_concern} must be TRUE")
     }
     return(get_union_concern_species())
   }
@@ -225,7 +227,7 @@ get_species <- function(
     country_code <- toupper(query_params$country_code)
     if (!purrr::is_character(country_code)) {
       cli::cli_abort(
-        "Argument 'country_code' must be character.",
+        "Argument {.arg country_code} must be character",
         class = "reasin_error_assignment_invalid"
       )
     }
@@ -233,7 +235,8 @@ get_species <- function(
     if (any(!country_code %in% valid_countries)) {
       wrong_countries <- country_code[!country_code %in% valid_countries]
       cli::cli_abort(
-        "Countr{?y/ies} invalid: {wrong_coutries}. Use `countries()` to get all valid values.",
+        "Countr{?y/ies} invalid: {wrong_coutries}",
+        "i" = "Use {.fun countries} to get all valid values",
         class = "reasin_error_assignment_invalid"
       )
     }
@@ -245,7 +248,7 @@ get_species <- function(
     region_code <- toupper(query_params$region_code)
     if (!purrr::is_character(region_code)) {
       cli::cli_abort(
-        "Argument 'region_code' must be character.",
+        "Argument {.arg region_code} must be character",
         class = "reasin_error_assignment_invalid"
       )
     }
@@ -253,7 +256,8 @@ get_species <- function(
     if (any(!region_code %in% valid_regions)) {
       wrong_regions <- region_code[!region_code %in% valid_regions]
       cli::cli_abort(
-        "Region{?s} code{?s} invalid: {wrong_regions}. Use `regions()` to get all valid values.",
+        "Region{?s} code{?s} invalid: {wrong_regions}",
+        "i" = "Use {.fun regions} to get all valid values",
         class = "reasin_error_assignment_invalid"
       )
     }
@@ -265,7 +269,7 @@ get_species <- function(
     impact <- query_params$impact
     if (!purrr::is_character(impact)) {
       cli::cli_abort(
-        "Argument 'impact' must be character.",
+        "Argument {.arg impact} must be character",
         class = "reasin_error_assignment_invalid"
       )
     }
@@ -273,7 +277,8 @@ get_species <- function(
     if (any(!impact %in% valid_impacts)) {
       wrong_impact <- impact[!impact %in% valid_impacts]
       cli::cli_abort(
-        "Argument 'impact' must be one or more of: {valid_impacts}. Invalid impact value{?s}: {wrong_impact}.  Use `impacts()` to get all valid values and their meaning.",
+        "Invalid impact value{?s}: {wrong_impact}",
+        "i" = "Use {.fun impacts} to get all valid values",
         class = "reasin_error_assignment_invalid"
       )
     }
@@ -286,7 +291,7 @@ get_species <- function(
     rank <- names(taxon)
     if (!purrr::is_character(taxon)) {
       cli::cli_abort(
-        "Argument 'taxon' must be a named vector.",
+        "Argument {.arg taxon} must be a named vector",
         class = "reasin_error_assignment_invalid"
       )
     }
@@ -294,7 +299,8 @@ get_species <- function(
     invalid_ranks <- rank[!rank %in% valid_ranks]
     if (length(invalid_ranks) > 0) {
       cli::cli_abort(
-        "If you want to include a taxonomic level, it must be one of: {.val {valid_ranks}}",
+        "Invalid ranks: {invalid_ranks}",
+        "i" = "Use {.fun ranks} to get all valid ranks",
         class = "reasin_error_assignment_invalid"
       )
     }
@@ -307,14 +313,15 @@ get_species <- function(
     rank <- names(taxonomy)
     if (!purrr::is_character(taxonomy, n = 5)) {
       cli::cli_abort(
-        "Argument 'taxonomy' must be a named vector of length 5.",
+        "Argument {.arg taxonomy} must be a named vector of length 5",
         class = "reasin_error_assignment_invalid"
       )
     }
     ranks <- ranks() %>% dplyr::pull("rank")
     if (!identical(rank, ranks)) {
       cli::cli_abort(
-        "If you want to include taxonomic levels, you must include all levels up to family: {.val {ranks}}"
+        "Missing or invalid ranks or ranks provided in the wrong order",
+        "i" = "Valid ranks in the right order: {.val {ranks}}"
       )
     }
     return(get_species_by_taxonomy(rank = rank, taxonomy = taxonomy))
@@ -325,7 +332,7 @@ get_species <- function(
     country <- query_params$present_in_country
     if (!purrr::is_character(country)) {
       cli::cli_abort(
-        "Argument 'present_in_country' must be character.",
+        "Argument {.arg present_in_country} must be character.",
         class = "reasin_error_assignment_invalid"
       )
     }
@@ -333,7 +340,8 @@ get_species <- function(
     if (any(!country %in% valid_countries)) {
       wrong_countries <- country[!country %in% valid_countries]
       cli::cli_abort(
-        "Argument 'present_in_country' must be one or more of: {valid_countries}. Invalid value: {country}.",
+        "Countr{?y/ies} invalid: {wrong_coutries}",
+        "i" = "Use {.fun countries} to get all valid values",
         class = "reasin_error_assignment_invalid"
       )
     }
@@ -345,7 +353,7 @@ get_species <- function(
     status <- toupper(query_params$status)
     if (!purrr::is_character(status)) {
       cli::cli_abort(
-        "Argument 'status' must be character.",
+        "Argument {.arg status} must be character.",
         class = "reasin_error_assignment_invalid"
       )
     }
@@ -353,7 +361,8 @@ get_species <- function(
     if (any(!status %in% valid_status)) {
       wrong_status <- status[!status %in% valid_status]
       cli::cli_abort(
-        "Argument 'status' must be one or more of: {valid_status}. Invalid value{?s}: {wrong_status}. Use `statuses()` to get all valid values and their meaning.",
+        "Status code{?s} invalid: {wrong_status}",
+        "i" = "Use {.fun statuses}` to get all valid values",
         class = "reasin_error_assignment_invalid"
       )
     }
@@ -364,7 +373,7 @@ get_species <- function(
   if ("horizon" %in% names(query_params)) {
     horizon <- query_params$horizon
     if (!isTRUE(horizon)) {
-      cli::cli_abort("Argument 'horizon' must be TRUE.")
+      cli::cli_abort("Argument {.arg horizon} must be TRUE")
     }
     return(get_horizon_scanning_species())
   }
@@ -373,7 +382,7 @@ get_species <- function(
   if ("partly_native" %in% names(query_params)) {
     partly_native <- query_params$partly_native
     if (!isTRUE(partly_native)) {
-      cli::cli_abort("Argument 'partly_native' must be TRUE.")
+      cli::cli_abort("Argument {.arg partly_native} must be TRUE")
     }
     return(get_partly_native_species())
   }
@@ -383,7 +392,7 @@ get_species <- function(
     native_in_country <- query_params$native_in_country
     if (!purrr::is_character(native_in_country)) {
       cli::cli_abort(
-        "Argument 'native_in_country' must be character.",
+        "Argument {.arg native_in_country} must be character",
         class = "reasin_error_assignment_invalid"
       )
     }
@@ -391,7 +400,8 @@ get_species <- function(
     if (any(!native_in_country %in% valid_countries)) {
       wrong_countries <- native_in_country[!native_in_country %in% valid_countries]
       cli::cli_abort(
-        "Countr{?y/ies} invalid: {wrong_coutries}. Use `countries()` to get all valid values.",
+        "Countr{?y/ies} invalid: {wrong_coutries}",
+        "i" = "Use {.fun countries} to get all valid values",
         class = "reasin_error_assignment_invalid"
       )
     }

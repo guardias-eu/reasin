@@ -53,7 +53,7 @@ get_species(scientific_name = c("Aceria ambrosia", "Procambarus"))
 Or you can use `taxon` and provide a character named vector with the taxon name(s) named by their taxonomic rank(s):
 
 ```{r get-species-by-taxon}
-get_species(taxon = c(order = "Decapoda", family = "Asteraceae"))
+get_species(taxon = c(order = "Cumacea", family = "Varunidae"))
 ```
 
 Use `ranks()` to look up all the ranks you can use:

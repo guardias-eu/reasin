@@ -31,6 +31,7 @@ Suggests:
     vcr (>= 0.6.0)
 VignetteBuilder:
     knitr
+Config/citeme/communities: inbo; guardias
 Config/citeme/keywords: easin; api; alien species
 Config/roxygen2/version: 8.1.0
 Encoding: UTF-8

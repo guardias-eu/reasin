@@ -22,5 +22,12 @@ authors:
   Research Institute for Nature and Forest (INBO):
     href: "https://www.vlaanderen.be/inbo/en-gb"
     html: "<img src='https://inbo.github.io/citeme/reference/figures/logo-en.png' height=24 alt='Research Institute for Nature and Forest (INBO)'>"
+reference:
+  - title: Species functions
+    contents:
+    - has_concept("species functions")
+  - title: Miscellaneous functions
+    contents:
+    - has_concept("misc functions")
 
 url: https://guardias-eu.github.io/reasin

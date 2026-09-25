@@ -66,7 +66,7 @@ their meaning. Source: EASIN \href{https://easin.jrc.ec.europa.eu/apixg}{Catalog
 \item{horizon}{Logical. If \code{TRUE}, returns only species coming from Horizon
 Scanning assessments. Only \code{TRUE} is allowed.}
 
-\item{partly_native}{Logical. If \code{TRUE}, returns only specise which are
+\item{partly_native}{Logical. If \code{TRUE}, returns only species which are
 native in one or more EU countries.}
 
 \item{native_in_country}{Character. One or more countries' ISO 3166-1 alpha-2
@@ -80,11 +80,11 @@ concern. Only \code{TRUE} is allowed.}
 A tibble data frame containing species information.
 }
 \description{
-This function retrieves species information from the EASIN's
+This function retrieves species information from the EASIN
 \href{https://easin.jrc.ec.europa.eu/easin/Catalogue}{Catalogue}. Users can
-retrieve records by species’ scientific name, environment, impact, taxonomy,
+retrieve records by scientific name, environment, impact, taxonomy,
 Union concern status
-(\href{https://easin.jrc.ec.europa.eu/easin/LegalFramework/Index}{LegalFramework}). More on \href{https://easin.jrc.ec.europa.eu/apixg}{EASIN Web Services}.
+(\href{https://easin.jrc.ec.europa.eu/easin/LegalFramework/Index}{Legal Framework}). More on \href{https://easin.jrc.ec.europa.eu/apixg}{EASIN Web Services}.
 }
 \examples{
 # Get list of all species in the EASIN catalogue

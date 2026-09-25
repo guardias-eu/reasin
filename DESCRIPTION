@@ -27,6 +27,7 @@ Imports:
     magrittr,
     purrr
 Suggests:
+    knitr,
     testthat,
     vcr (>= 0.6.0)
 VignetteBuilder:

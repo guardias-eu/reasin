@@ -7,7 +7,7 @@ Authors@R: c(
            comment = c(ORCID = "0000-0003-3445-7562", affiliation = "Research Institute for Nature and Forest (INBO)")),
     person("Research Institute for Nature and Forest (INBO)", , , "info@inbo.be", role = "cph",
            comment = c(ROR = "00j54wy13")),
-    person("GuardIAS", role = "fnd",
+    person("Guarding European Waters from Invasive Alien Species (GuardIAS)", , , "stelios@katsanevakis.com", role = "fnd",
            comment = "https://guardias.eu/")
   )
 Description: A programmatic interface to the Web Service methods provided

@@ -40,4 +40,3 @@ test_that("`get_species()` returns all data correctly", {
   expect_type(all_data_df$IsPartNative, "logical")
   expect_type(all_data_df$IsHorizonScanning, "logical")
 })
-

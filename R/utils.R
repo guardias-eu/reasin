@@ -14,7 +14,10 @@ clean_up_names <- function(df, cols) {
   if (!all(cols %in% colnames(df))) {
     missing_cols <- cols[!cols %in% colnames(df)]
     cli::cli_abort(
-      "The following columns are missing in the dataframe: {paste(missing_cols, collapse = ', ')}",
+      paste(
+        "{length(missing_cols)} column{?s} {?is/are} missing in the dataframe:",
+        "{.col {missing_cols}}"
+      ),
       class = "reasin_error_assignment_invalid"
     )
   }

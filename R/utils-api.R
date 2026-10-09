@@ -52,8 +52,9 @@ get_check_parse <- function(url) {
 #'   requests.
 #' @noRd
 #' @examples
-#' url <- "https://easin.jrc.ec.europa.eu/apixg/catxg/env/TER/skip/{skip}/take/{take}"
-#' get_check_parse_paginated(url)
+#' get_check_parse_paginated(
+#'   "https://easin.jrc.ec.europa.eu/apixg/catxg/env/TER/"
+#'  )
 get_check_parse_paginated <- function(url) {
   all_data <- dplyr::tibble()
   skip <- 0

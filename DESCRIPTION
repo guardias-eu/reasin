@@ -5,7 +5,7 @@ Date: 2026-09-24
 Authors@R: c(
     person("Damiano", "Oldoni", , "damiano.oldoni@inbo.be", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0003-3445-7562", affiliation = "Research Institute for Nature and Forest (INBO)")),
-    person("Research Institute for Nature and Forest (INBO)", , , "info@inbo.be", role = "cph",
+    person("Research Institute for Nature and Forest (INBO)", , , "info@inbo.be", role = c("cph", "pbl"),
            comment = c(ROR = "00j54wy13")),
     person("Guarding European Waters from Invasive Alien Species (GuardIAS)", , , "stelios@katsanevakis.com", role = "fnd",
            comment = "https://guardias.eu/")

@@ -181,11 +181,11 @@ get_species <- function(
     # Length of each scientific name must be at least 4 characters
     if (any(nchar(scientific_name) < 4)) {
       short_names <- scientific_name[nchar(scientific_name) < 4]
-      cli::cli_abort(
+      cli::cli_abort(c(
         "Scientific names must be at least 4 characters long",
         "i" = "Short names found: {short_names}",
         class = "reasin_error_assignment_invalid"
-      )
+      ))
     }
     # Replace spaces with `%20`
     scientific_name <- gsub(" ", "%20", scientific_name)
@@ -204,11 +204,11 @@ get_species <- function(
     valid_environments <- environments() %>% dplyr::pull("env_code")
     if (any(!environment %in% valid_environments)) {
       wrong_environments <- environment[!environment %in% valid_environments]
-      cli::cli_abort(
+      cli::cli_abort(c(
         "Environment{?s} invalid: {wrong_environments}",
         "i" = "Use {.fun environments} to get all valid values",
         class = "reasin_error_assignment_invalid"
-      )
+      ))
     }
     return(get_species_by_environment(environment))
   }
@@ -234,11 +234,11 @@ get_species <- function(
     valid_countries <- countries() %>% dplyr::pull("country_code")
     if (any(!country_code %in% valid_countries)) {
       wrong_countries <- country_code[!country_code %in% valid_countries]
-      cli::cli_abort(
+      cli::cli_abort(c(
         "Countr{?y/ies} invalid: {wrong_coutries}",
         "i" = "Use {.fun countries} to get all valid values",
         class = "reasin_error_assignment_invalid"
-      )
+      ))
     }
     return(get_species_by_country_code(country_code))
   }
@@ -255,11 +255,11 @@ get_species <- function(
     valid_regions <- regions() %>% dplyr::pull("region_code")
     if (any(!region_code %in% valid_regions)) {
       wrong_regions <- region_code[!region_code %in% valid_regions]
-      cli::cli_abort(
+      cli::cli_abort(c(
         "Region{?s} code{?s} invalid: {wrong_regions}",
         "i" = "Use {.fun regions} to get all valid values",
         class = "reasin_error_assignment_invalid"
-      )
+      ))
     }
     return(get_species_by_region_code(region_code))
   }
@@ -276,11 +276,11 @@ get_species <- function(
     valid_impacts <- c("hi", "lo")
     if (any(!impact %in% valid_impacts)) {
       wrong_impact <- impact[!impact %in% valid_impacts]
-      cli::cli_abort(
+      cli::cli_abort(c(
         "Invalid impact value{?s}: {wrong_impact}",
         "i" = "Use {.fun impacts} to get all valid values",
         class = "reasin_error_assignment_invalid"
-      )
+      ))
     }
     return(get_species_by_impact(impact))
   }
@@ -298,11 +298,11 @@ get_species <- function(
     valid_ranks <- ranks() %>% dplyr::pull("rank")
     invalid_ranks <- rank[!rank %in% valid_ranks]
     if (length(invalid_ranks) > 0) {
-      cli::cli_abort(
+      cli::cli_abort(c(
         "Invalid ranks: {invalid_ranks}",
         "i" = "Use {.fun ranks} to get all valid ranks",
         class = "reasin_error_assignment_invalid"
-      )
+      ))
     }
     return(get_species_by_taxon(rank = rank, taxon = taxon))
   }
@@ -319,10 +319,10 @@ get_species <- function(
     }
     ranks <- ranks() %>% dplyr::pull("rank")
     if (!identical(rank, ranks)) {
-      cli::cli_abort(
+      cli::cli_abort(c(
         "Missing or invalid ranks or ranks provided in the wrong order",
         "i" = "Valid ranks in the right order: {.val {ranks}}"
-      )
+      ))
     }
     return(get_species_by_taxonomy(rank = rank, taxonomy = taxonomy))
   }
@@ -339,11 +339,11 @@ get_species <- function(
     valid_countries <- countries() %>% dplyr::pull(country_code)
     if (any(!country %in% valid_countries)) {
       wrong_countries <- country[!country %in% valid_countries]
-      cli::cli_abort(
+      cli::cli_abort(c(
         "Countr{?y/ies} invalid: {wrong_coutries}",
         "i" = "Use {.fun countries} to get all valid values",
         class = "reasin_error_assignment_invalid"
-      )
+      ))
     }
     return(get_species_by_presence_in_country(country))
   }
@@ -360,11 +360,11 @@ get_species <- function(
     valid_status <- statuses() %>% dplyr::pull("status_code")
     if (any(!status %in% valid_status)) {
       wrong_status <- status[!status %in% valid_status]
-      cli::cli_abort(
+      cli::cli_abort(c(
         "Status code{?s} invalid: {wrong_status}",
         "i" = "Use {.fun statuses}` to get all valid values",
         class = "reasin_error_assignment_invalid"
-      )
+      ))
     }
     return(get_species_by_status(status))
   }
@@ -399,11 +399,11 @@ get_species <- function(
     valid_countries <- countries() %>% dplyr::pull(country_code)
     if (any(!native_in_country %in% valid_countries)) {
       wrong_countries <- native_in_country[!native_in_country %in% valid_countries]
-      cli::cli_abort(
+      cli::cli_abort(c(
         "Countr{?y/ies} invalid: {wrong_coutries}",
         "i" = "Use {.fun countries} to get all valid values",
         class = "reasin_error_assignment_invalid"
-      )
+      ))
     }
     return(get_native_species_in_country(native_in_country))
   }

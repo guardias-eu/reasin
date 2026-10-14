@@ -66,14 +66,15 @@ get_check_parse_paginated <- function(url) {
       take = take
     )
     data <- get_check_parse(paginated_url)
-    if ("." %in% names(data)) {
-      if ("Empty" %in% names(data$.)) {
+    if ("jsonlite::fromJSON(content, flatten = TRUE)" %in% names(data)) {
+      if ("Empty" %in% names(data$`jsonlite::fromJSON(content, flatten = TRUE)`)) {
         break # No data anymore
       } else {
-        cli::cli_abort(
-          "Unexpected response structure: {names(data$.)} column{?s} found.",
-          class = "reasin_error_api_unexpected_response"
-        )
+        cli::cli_abort(c(
+          "Unexpected empty response structure.",
+          "i" = "Column{?s} names found: {names(data$`jsonlite::fromJSON(content, flatten = TRUE)`)}",
+          class = "reasin_error_api_unexpected_response_empty_result"
+        ))
       }
     }
     all_data <- dplyr::bind_rows(all_data, data)

@@ -21,7 +21,7 @@ clean_up_names <- function(df, cols) {
       class = "reasin_error_assignment_invalid"
     )
   }
-  df <- df %>%
+  df <- df |>
     dplyr::mutate(dplyr::across(dplyr::all_of(cols), ~ gsub("^'|'$", "", .x)))
   return(df)
 }

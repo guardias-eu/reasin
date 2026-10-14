@@ -202,7 +202,7 @@ get_species <- function(
         class = "reasin_error_assignment_invalid"
       )
     }
-    valid_environments <- environments() %>% dplyr::pull("env_code")
+    valid_environments <- environments() |> dplyr::pull("env_code")
     if (any(!environment %in% valid_environments)) {
       wrong_environments <- environment[!environment %in% valid_environments]
       cli::cli_abort(c(
@@ -232,7 +232,7 @@ get_species <- function(
         class = "reasin_error_assignment_invalid"
       )
     }
-    valid_countries <- countries() %>% dplyr::pull("country_code")
+    valid_countries <- countries() |> dplyr::pull("country_code")
     if (any(!country_code %in% valid_countries)) {
       wrong_countries <- country_code[!country_code %in% valid_countries]
       cli::cli_abort(c(
@@ -253,7 +253,7 @@ get_species <- function(
         class = "reasin_error_assignment_invalid"
       )
     }
-    valid_regions <- regions() %>% dplyr::pull("region_code")
+    valid_regions <- regions() |> dplyr::pull("region_code")
     if (any(!region_code %in% valid_regions)) {
       wrong_regions <- region_code[!region_code %in% valid_regions]
       cli::cli_abort(c(
@@ -296,7 +296,7 @@ get_species <- function(
         class = "reasin_error_assignment_invalid"
       )
     }
-    valid_ranks <- ranks() %>% dplyr::pull("rank")
+    valid_ranks <- ranks() |> dplyr::pull("rank")
     invalid_ranks <- rank[!rank %in% valid_ranks]
     if (length(invalid_ranks) > 0) {
       cli::cli_abort(c(
@@ -318,7 +318,7 @@ get_species <- function(
         class = "reasin_error_assignment_invalid"
       )
     }
-    ranks <- ranks() %>% dplyr::pull("rank")
+    ranks <- ranks() |> dplyr::pull("rank")
     if (!identical(rank, ranks)) {
       cli::cli_abort(c(
         "Missing or invalid ranks or ranks provided in the wrong order",
@@ -337,7 +337,7 @@ get_species <- function(
         class = "reasin_error_assignment_invalid"
       )
     }
-    valid_countries <- countries() %>% dplyr::pull(country_code)
+    valid_countries <- countries() |> dplyr::pull(country_code)
     if (any(!country %in% valid_countries)) {
       wrong_countries <- country[!country %in% valid_countries]
       cli::cli_abort(c(
@@ -358,7 +358,7 @@ get_species <- function(
         class = "reasin_error_assignment_invalid"
       )
     }
-    valid_status <- statuses() %>% dplyr::pull("status_code")
+    valid_status <- statuses() |> dplyr::pull("status_code")
     if (any(!status %in% valid_status)) {
       wrong_status <- status[!status %in% valid_status]
       cli::cli_abort(c(
@@ -397,7 +397,7 @@ get_species <- function(
         class = "reasin_error_assignment_invalid"
       )
     }
-    valid_countries <- countries() %>% dplyr::pull(country_code)
+    valid_countries <- countries() |> dplyr::pull(country_code)
     if (any(!native_in_country %in% valid_countries)) {
       wrong_countries <- native_in_country[
         !native_in_country %in% valid_countries
@@ -426,7 +426,7 @@ get_all_species <- function() {
     "skip/0/take/20000",
     sep = "/"
   )
-  data <- get_species_static_url(url_all_species) %>%
+  data <- get_species_static_url(url_all_species) |>
     clean_up_names(cols = "Name")
   return(data)
 }
@@ -628,7 +628,7 @@ get_species_by_taxon <- function(rank, taxon) {
       values = .y,
       is_pagination = TRUE
     )
-  ) %>%
+  ) |>
     purrr::list_rbind()
 
   return(data)
@@ -684,7 +684,7 @@ get_species_by_pres_in_country <- function(countries) {
     arg = "incountries",
     values = countries,
     is_pagination = TRUE
-  ) %>%
+  ) |>
     clean_up_names(cols = "Name")
   return(data)
 }
@@ -704,7 +704,7 @@ get_species_by_status <- function(status) {
     arg = "status",
     values = status,
     is_pagination = TRUE
-  ) %>%
+  ) |>
     clean_up_names(cols = "Name")
   return(data)
 }

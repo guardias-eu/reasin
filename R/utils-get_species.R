@@ -37,7 +37,7 @@ get_species_static_url <- function(
     )
   }
   if (!is.null(arg) && !is.null(value)) {
-    valid_arg <- ranks() %>% dplyr::pull(rank)
+    valid_arg <- ranks() |> dplyr::pull(rank)
     if (!identical(arg, valid_arg)) {
       cli::cli_abort(
         "If both 'arg' and 'value' are provided, 'arg' must be {valid_arg}.",
@@ -96,7 +96,7 @@ get_species_dynamic_url <- function(
     "incountries",
     "status",
     "nativeincountries",
-    ranks() %>% dplyr::pull(rank)
+    ranks() |> dplyr::pull(rank)
   )
   # Check input is valid based on possible values. Return cli abort error if not
   if (!arg %in% valid_args_endpoints) {

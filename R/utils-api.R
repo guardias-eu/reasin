@@ -12,7 +12,7 @@ get_check_parse <- function(url) {
   request <- httr2::request(url)
   # Perform the request without throwing an error for HTTP errors at the request
   # stage
-  response <- httr2::req_error(request, is_error = function(resp) FALSE) %>%
+  response <- httr2::req_error(request, is_error = function(resp) FALSE) |>
     httr2::req_perform()
 
   # Check for 404 Not Found error and return a specific error
@@ -37,7 +37,7 @@ get_check_parse <- function(url) {
       class = "reasin_error_api_invalid_json"
     )
   }
-  jsonlite::fromJSON(content, flatten = TRUE) %>%
+  jsonlite::fromJSON(content, flatten = TRUE) |>
     dplyr::tibble()
 }
 

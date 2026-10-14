@@ -63,39 +63,14 @@ ranks()
 ```
 
 
-### Information by environment, impact or status
-
-You can also get species by the environments they inhabit. For example, to get all species inhabiting freshwater environments:
-
-```{r get-species-by-environment}
-freshwater_species <- get_species(environment = "FRW")
-head(freshwater_species)
-```
-
-How to remember all the environment codes? Not easy, right? Don't worry: you can use the `environments()` function to get a data frame with all environment codes and their description:
-
-```{r get-environments}
-environments()
-```
-
-Similar to environments, you can use the `impacts()` and `statuses()` functions to get the codes and their description:
-
-```{r get-statuses}
-statuses()
-```
-
-```{r get-impacts}
-impacts()
-```
-
 ### Information by countries or regions
 
 There are some arguments you can use to get detailed information at country/regional level:
 
-- `country_code`: to get species of **Member State concern** for one or more countries. Very few Member States have communicated this information to the European Commission, so it could be that you get an empty data frame back.
-- `region_code`: to get species of **outermost regions concern** for one or more regions.
 - `present_in_country`: to get species present in one or more countries, probably one of the most useful arguments.
 - `native_in_country`: to get species native in one or more countries.
+- `country_code`: to get species of **Member State concern** for one or more countries. Very few Member States have communicated this information to the European Commission, so it could be that you get an empty data frame back.
+- `region_code`: to get species of **outermost regions concern** for one or more regions.
 
 You must use [ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) country codes. Still, you don't have to remember all the country codes: you can use the `countries()` function to get a data frame with all country codes and their description:
 
@@ -111,18 +86,6 @@ regions()
 
 Some examples:
 
-- species of Member State concern for Ireland and Lithuania:
-
-```{r get-species-by-country_code}
-get_species(country_code = c("IE", "LT"))
-```
-
-- species of outermost regions concern for Canary Islands:
-
-```{r get-species-by-region_code}
-get_species(region_code = c("ES7"))
-```
-
 - species present in Luxembourg and Ireland:
 
 ```{r get-species-by-present_in_country}
@@ -135,6 +98,43 @@ get_species(present_in_country = c("LU", "IE"))
 get_species(native_in_country = c("EE", "FI"))
 ```
 
+- species of Member State concern for Ireland and Lithuania:
+
+```{r get-species-by-country_code}
+get_species(country_code = c("IE", "LT"))
+```
+
+- species of outermost regions concern for Canary Islands:
+
+```{r get-species-by-region_code}
+get_species(region_code = c("ES7"))
+```
+
+
+### Information by environment, impact or status
+
+You can also get species by the environments they inhabit. For example, to get all species inhabiting freshwater environments:
+
+```{r get-species-by-environment}
+freshwater_species <- get_species(environment = "FRW")
+head(freshwater_species)
+```
+
+How to remember all the environment codes? Not easy, right? Don't worry: you can use the `environments()` function to get a data frame with all environment codes and their description:
+
+```{r get-environments}
+environments()
+```
+
+Similar to environments, you can use the `impacts()` and `statuses()` functions to get the codes and their description related to impact and status:
+
+```{r get-statuses}
+statuses()
+```
+
+```{r get-impacts}
+impacts()
+```
 
 ### Information by general criteria
 

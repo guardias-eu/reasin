@@ -18,6 +18,14 @@ navbar:
         href: CONTRIBUTING.html
       - text: Code of conduct
         href: CODE_OF_CONDUCT.html
+articles:
+- title: EASIN Catalogue
+  desc: >
+    This article describes how to use reasin to get taxonomic information from
+    the EASIN Catalogue.
+  navbar: ~
+  contents:
+  - easin-catalogue
 authors:
   Research Institute for Nature and Forest (INBO):
     href: "https://www.vlaanderen.be/inbo/en-gb"
@@ -29,5 +37,4 @@ reference:
   - title: Miscellaneous functions
     contents:
     - has_concept("misc functions")
-
 url: https://guardias-eu.github.io/reasin

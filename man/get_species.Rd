@@ -45,9 +45,10 @@ defined in NUTS (Nomenclature of territorial units for statistics). Use
 and \code{"lo"} (low).  Use \code{impacts()} to look up the list of impact codes and
 their meaning. Source: EASIN \href{https://easin.jrc.ec.europa.eu/apixg}{Catalogue Web Service} documentation.}
 
-\item{taxon}{Character named vector with the taxon name(s)
-named by their taxonomic rank(s). Use \code{ranks()} to look up the list of valid
-ranks. Source: EASIN \href{https://easin.jrc.ec.europa.eu/apixg}{Catalogue Web Service} documentation.}
+\item{taxon}{Character named vector with the taxon name(s) named by their
+taxonomic rank(s). Use \code{ranks()} to look up the list of valid ranks.
+Source: EASIN \href{https://easin.jrc.ec.europa.eu/apixg}{Catalogue Web Service}
+documentation.}
 
 \item{taxonomy}{Character named vector with the taxonomic names named
 by their taxonomic rank. Provide them in the right order from kingdom up to
@@ -80,11 +81,11 @@ concern. Only \code{TRUE} is allowed.}
 A tibble data frame containing species information.
 }
 \description{
-This function retrieves species information from the EASIN
+Retrieves species information from the EASIN
 \href{https://easin.jrc.ec.europa.eu/easin/Catalogue}{Catalogue}. Users can
-retrieve records by scientific name, environment, impact, taxonomy,
-Union concern status
-(\href{https://easin.jrc.ec.europa.eu/easin/LegalFramework/Index}{Legal Framework}). More on \href{https://easin.jrc.ec.europa.eu/apixg}{EASIN Web Services}.
+retrieve records by scientific name, environment, impact, taxonomy, Union
+concern status (\href{https://easin.jrc.ec.europa.eu/easin/LegalFramework/Index}{Legal Framework}). More
+on \href{https://easin.jrc.ec.europa.eu/apixg}{EASIN Web Services}.
 }
 \examples{
 # Get list of all species in the EASIN catalogue

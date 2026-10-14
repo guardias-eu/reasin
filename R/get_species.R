@@ -1,10 +1,11 @@
 #' Get species information from the EASIN Catalogue Web Service
 #'
-#' This function retrieves species information from the EASIN
+#' Retrieves species information from the EASIN
 #' [Catalogue](https://easin.jrc.ec.europa.eu/easin/Catalogue). Users can
-#' retrieve records by scientific name, environment, impact, taxonomy,
-#' Union concern status
-#' ([Legal Framework](https://easin.jrc.ec.europa.eu/easin/LegalFramework/Index)). More on [EASIN Web Services](https://easin.jrc.ec.europa.eu/apixg).
+#' retrieve records by scientific name, environment, impact, taxonomy, Union
+#' concern status ([Legal
+#' Framework](https://easin.jrc.ec.europa.eu/easin/LegalFramework/Index)). More
+#' on [EASIN Web Services](https://easin.jrc.ec.europa.eu/apixg).
 #'
 #' @param easin_id Integer. EASIN Species ID(s).
 #' @param scientific_name Character. Scientific name(s) or part(s) of it. Case
@@ -21,16 +22,16 @@
 #'   states submitted their species of Member State concern to EASIN.
 #' @param region_code Character. Species of Outermost regions concern codes as
 #'   defined in NUTS (Nomenclature of territorial units for statistics). Use
-#'   `regions()` to look up the list of region codes. Source: EASIN [Catalogue Web
-#'   Service](https://easin.jrc.ec.europa.eu/apixg) documentation.
+#'   `regions()` to look up the list of region codes. Source: EASIN [Catalogue
+#'   Web Service](https://easin.jrc.ec.europa.eu/apixg) documentation.
 #' @param impact Character. Species impact(s). One or more of: `"hi"` (high)
 #'   and `"lo"` (low).  Use `impacts()` to look up the list of impact codes and
 #'   their meaning. Source: EASIN [Catalogue Web
 #'   Service](https://easin.jrc.ec.europa.eu/apixg) documentation.
-#' @param taxon Character named vector with the taxon name(s)
-#'   named by their taxonomic rank(s). Use `ranks()` to look up the list of valid
-#'   ranks. Source: EASIN [Catalogue Web
-#'   Service](https://easin.jrc.ec.europa.eu/apixg) documentation.
+#' @param taxon Character named vector with the taxon name(s) named by their
+#'   taxonomic rank(s). Use `ranks()` to look up the list of valid ranks.
+#'   Source: EASIN [Catalogue Web Service](https://easin.jrc.ec.europa.eu/apixg)
+#'   documentation.
 #' @param taxonomy Character named vector with the taxonomic names named
 #'   by their taxonomic rank. Provide them in the right order from kingdom up to
 #'   family. Source: EASIN [Catalogue Web
@@ -108,20 +109,20 @@
 #' # Get species which are native in one or more countries
 #' get_species(native_in_country = c("EE","FI"))
 get_species <- function(
-    easin_id = NULL,
-    scientific_name = NULL,
-    environment = NULL,
-    country_code = NULL,
-    region_code = NULL,
-    impact = NULL,
-    taxon = NULL,
-    taxonomy = NULL,
-    present_in_country = NULL,
-    status = NULL,
-    horizon = NULL,
-    partly_native = NULL,
-    native_in_country = NULL,
-    union_concern = NULL
+  easin_id = NULL,
+  scientific_name = NULL,
+  environment = NULL,
+  country_code = NULL,
+  region_code = NULL,
+  impact = NULL,
+  taxon = NULL,
+  taxonomy = NULL,
+  present_in_country = NULL,
+  status = NULL,
+  horizon = NULL,
+  partly_native = NULL,
+  native_in_country = NULL,
+  union_concern = NULL
 ) {
   # Build query parameters
   query_params <- list(
@@ -345,7 +346,7 @@ get_species <- function(
         class = "reasin_error_assignment_invalid"
       ))
     }
-    return(get_species_by_presence_in_country(country))
+    return(get_species_by_pres_in_country(country))
   }
 
   # Get species via `status`
@@ -398,7 +399,9 @@ get_species <- function(
     }
     valid_countries <- countries() %>% dplyr::pull(country_code)
     if (any(!native_in_country %in% valid_countries)) {
-      wrong_countries <- native_in_country[!native_in_country %in% valid_countries]
+      wrong_countries <- native_in_country[
+        !native_in_country %in% valid_countries
+      ]
       cli::cli_abort(c(
         "Countr{?y/ies} invalid: {wrong_coutries}",
         "i" = "Use {.fun countries} to get all valid values",
@@ -418,7 +421,11 @@ get_species <- function(
 #' @examples
 #' get_all_species()
 get_all_species <- function() {
-  url_all_species <- "https://easin.jrc.ec.europa.eu/apixg/catxg/getall/skip/0/take/20000"
+  url_all_species <- paste(
+    "https://easin.jrc.ec.europa.eu/apixg/catxg/getall",
+    "skip/0/take/20000",
+    sep = "/"
+  )
   data <- get_species_static_url(url_all_species) %>%
     clean_up_names(cols = "Name")
   return(data)
@@ -464,8 +471,8 @@ get_horizon_scanning_species <- function() {
 #' @examples
 #' get_partly_native_species()
 get_partly_native_species <- function() {
-  partly_native_url <- "https://easin.jrc.ec.europa.eu/apixg/catxg/partlynative/"
-  data <- get_species_static_url(partly_native_url, is_pagination = TRUE)
+  partly_nat_url <- "https://easin.jrc.ec.europa.eu/apixg/catxg/partlynative/"
+  data <- get_species_static_url(partly_nat_url, is_pagination = TRUE)
   return(data)
 }
 
@@ -537,7 +544,8 @@ get_species_by_scientific_name <- function(scientific_names) {
 #' Retrieves species from the EASIN Catalogue Web Service filtered by one or
 #' more environment types. It is used internally by `get_species()` if
 #' `country_code` argument is provided.
-#' @param country_codes A character vector containing one or more ISO 3166-1 alpha-2 country codes.
+#' @param country_codes A character vector containing one or more ISO 3166-1
+#'   alpha-2 country codes.
 #' @return A data frame containing species filtered by the specified countries.
 #' @noRd
 #' @examples
@@ -559,8 +567,10 @@ get_species_by_country_code <- function(country_codes) {
 #' Retrieves species from the EASIN Catalogue Web Service filtered by one or
 #' more Outermost region codes. It is used internally by `get_species()` if
 #' `region_code` argument is provided.
-#' @param region_codes A character vector containing one or more Outermost region codes.
-#' @return A tibble data frame containing species information for species present in the given Outermost regions.
+#' @param region_codes A character vector containing one or more Outermost
+#'   region codes.
+#' @return A tibble data frame containing species information for species
+#'   present in the given outermost regions.
 #' @noRd
 #' @examples
 #' get_speciesby_region_code("PT3")
@@ -580,7 +590,8 @@ get_species_by_region_code <- function(region_codes) {
 #'
 #' Retrieves species from the EASIN Catalogue Web Service It is used
 #' internally by `get_species()` if `impact` argument is provided.
-#' @param impact A character containing one or more of: `"hi"` (high) or `"lo"` (low).
+#' @param impact A character containing one or more of: `"hi"` (high) or `"lo"`
+#'   (low).
 #' @return A data frame containing species filtered by the specified countries.
 #' @noRd
 #' @examples
@@ -629,7 +640,8 @@ get_species_by_taxon <- function(rank, taxon) {
 #' `taxonomy`. It is used internally by `get_species()` if `taxonomy` argument
 #' is provided.
 #' @param rank A character representing the taxonomy level(s).
-#' @param taxonomy A character string representing the taxonomy name of given `rank`.
+#' @param taxonomy A character string representing the taxonomy name of given
+#'   `rank`.
 #' @return A tibble data frame containing species information for species
 #'   present in the given taxonomy.
 #' @noRd
@@ -663,8 +675,8 @@ get_species_by_taxonomy <- function(rank, taxonomy) {
 #' @return A data frame containing species filtered by the specified countries.
 #' @noRd
 #' @examples
-#' get_species_by_country(present_in_country = "LU")
-get_species_by_presence_in_country <- function(countries) {
+#' get_species_by_pres_in_country(countries = "LU")
+get_species_by_pres_in_country <- function(countries) {
   # For this endpoint we can pass countrycodes comma separated. We save a API
   # call by passing them all at once.
   countries <- paste(countries, collapse = ",")
@@ -702,7 +714,8 @@ get_species_by_status <- function(status) {
 #'
 #' Retrieves from the EASIN Catalogue Web Service the species for countries in
 #' which they are native.
-#' @param country_codes A character vector containing one or more ISO 3166-1 alpha-2 country codes.
+#' @param country_codes A character vector containing one or more ISO 3166-1
+#'   alpha-2 country codes.
 #' @return A data frame containing species filtered by the specified countries.
 #' @noRd
 #' @examples

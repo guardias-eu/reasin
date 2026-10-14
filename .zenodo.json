@@ -1,16 +1,13 @@
 {
-  "title": "reasin: Interface to the European Alien Species Information Network API",
-  "version": "0.0.1",
-  "license": "mit",
-  "upload_type": "software",
-  "description": "<p>A programmatic interface to the Web Service methods provided by European Alien Species Information Network (EASIN). At the moment only interface to the EASIN Catalogue Web Service (checklist data) is implemented.<\/p>",
-  "keywords": [
-    "easin",
-    "api",
-    "alien species"
-  ],
   "access_right": "open",
-  "language": "eng",
+  "communities": [
+    {
+      "identifier": "inbo"
+    },
+    {
+      "identifier": "guardias"
+    }
+  ],
   "contributors": [
     {
       "name": "Oldoni, Damiano",
@@ -30,13 +27,16 @@
       "orcid": "0000-0003-3445-7562"
     }
   ],
-  "communities": [
-    {
-      "identifier": "inbo"
-    },
-    {
-      "identifier": "guardias"
-    }
+  "description": "<p>A programmatic interface to the Web Service methods provided by European Alien Species Information Network (EASIN). At the moment only interface to the EASIN Catalogue Web Service (checklist data) is implemented.<\/p>",
+  "keywords": [
+    "easin",
+    "api",
+    "alien species"
   ],
-  "publisher": "Research Institute for Nature and Forest (INBO)"
+  "language": "eng",
+  "license": "mit",
+  "publisher": "Research Institute for Nature and Forest (INBO)",
+  "title": "reasin: Interface to the European Alien Species Information Network API",
+  "upload_type": "software",
+  "version": "0.0.1"
 }

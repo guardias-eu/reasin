@@ -10,7 +10,8 @@ regions()
 A tibble with 2 columns:
 \itemize{
 \item \code{region}: The full name of the outermost region.
-\item \code{region_code}: The abbreviations to be used in the \code{get_species(region_code = )} function.
+\item \code{region_code}: The abbreviations to be used in the
+\code{get_species(region_code = )} function.
 }
 }
 \description{

@@ -22,10 +22,6 @@ clean_up_names <- function(df, cols) {
     )
   }
   df <- df %>%
-    dplyr::mutate(dplyr::across(
-      dplyr::all_of(cols),
-      ~ gsub("^'|'$", "", .x)
-      )
-    )
+    dplyr::mutate(dplyr::across(dplyr::all_of(cols), ~ gsub("^'|'$", "", .x)))
   return(df)
 }

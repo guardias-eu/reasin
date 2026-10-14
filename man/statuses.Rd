@@ -10,12 +10,13 @@ statuses()
 A tibble with 2 columns:
 \itemize{
 \item \code{status}: The full name of the status.
-\item \code{status_code}: The abbreviations to be used in the \code{get_species(status = )} function.
+\item \code{status_code}: The abbreviations to be used in the \code{get_species(status = )}
+function.
 }
 }
 \description{
-Shows the valid species statuses. The statuses are used in the \code{get_species()}
-function to filter species by status. Based on the
+Shows the valid species statuses. The statuses are used in the
+\code{get_species()} function to filter species by status. Based on the
 \href{https://easin.jrc.ec.europa.eu/apixg}{Catalogue Web Service} documentation.
 }
 \examples{

@@ -55,7 +55,8 @@ countries <- function() {
 #' [Catalogue Web Service](https://easin.jrc.ec.europa.eu/apixg) documentation.
 #' @return A tibble with 2 columns:
 #' - `region`: The full name of the outermost region.
-#' - `region_code`: The abbreviations to be used in the `get_species(region_code = )` function.
+#' - `region_code`: The abbreviations to be used in the
+#' `get_species(region_code = )` function.
 #' @family misc functions
 #' @export
 #' @examples
@@ -112,12 +113,13 @@ ranks <- function() {
 
 #' Species statuses
 #'
-#' Shows the valid species statuses. The statuses are used in the `get_species()`
-#' function to filter species by status. Based on the
+#' Shows the valid species statuses. The statuses are used in the
+#' `get_species()` function to filter species by status. Based on the
 #' [Catalogue Web Service](https://easin.jrc.ec.europa.eu/apixg) documentation.
 #' @return A tibble with 2 columns:
 #' - `status`: The full name of the status.
-#' - `status_code`: The abbreviations to be used in the `get_species(status = )` function.
+#' - `status_code`: The abbreviations to be used in the `get_species(status = )`
+#' function.
 #' @family misc functions
 #' @export
 #' @examples
@@ -136,7 +138,8 @@ statuses <- function() {
 #' [Catalogue Web Service](https://easin.jrc.ec.europa.eu/apixg) documentation.
 #' @return A tibble with 2 columns:
 #' - `impact`: The full name of the impact level.
-#' - `impact_code`: The abbreviation to be used in the `get_species(impact = )` function.
+#' - `impact_code`: The abbreviation to be used in the `get_species(impact = )`
+#' function.
 #' @family misc functions
 #' @export
 #' @examples

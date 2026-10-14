@@ -6,7 +6,8 @@
 #'
 #' @param base_url A character string representing the base URL of the API.
 #' @param arg A character vector representing the specific endpoint to be
-#'   appended to the base URL. Useful for full taxonomy endpoint. Default: `NULL`.
+#'   appended to the base URL. Useful for full taxonomy endpoint. Default:
+#'   `NULL`.
 #' @param value An optional character vector representing a specific value to be
 #'   appended to the URL referring to `arg`. Useful for full taxonomy endpoint.
 #'   Default: `NULL`.
@@ -22,20 +23,20 @@
 #'   value = c("Animalia", "Arthropoda", "Insecta", "Hymenoptera", "Vespidae")
 #' )
 get_species_static_url <- function(
-    base_url,
-    arg = NULL,
-    value = NULL,
-    is_pagination = FALSE
-  ) {
+  base_url,
+  arg = NULL,
+  value = NULL,
+  is_pagination = FALSE
+) {
   # arg and value must be both NULL or both filled in
-  if (all(is.null(arg), is.null(value)) == FALSE &
-      all(!is.null(arg), !is.null(value)) == FALSE) {
+  if (all(is.null(arg), is.null(value)) == FALSE &&
+        all(!is.null(arg), !is.null(value)) == FALSE) {
     cli::cli_abort(
       "Arguments 'arg' and 'value' must be both NULL or both filled in.",
       class = "reasin_error_assignment_invalid"
     )
   }
-  if (!is.null(arg) & !is.null(value)) {
+  if (!is.null(arg) && !is.null(value)) {
     valid_arg <- ranks() %>% dplyr::pull(rank)
     if (!identical(arg, valid_arg)) {
       cli::cli_abort(
@@ -80,10 +81,10 @@ get_species_static_url <- function(
 #'   values = c("R12250")
 #' )
 get_species_dynamic_url <- function(
-    arg,
-    values,
-    is_pagination,
-    base_url = "https://easin.jrc.ec.europa.eu/apixg/catxg/"
+  arg,
+  values,
+  is_pagination,
+  base_url = "https://easin.jrc.ec.europa.eu/apixg/catxg/"
   ) {
   valid_args_endpoints <- c(
     "env",

@@ -57,8 +57,8 @@ get_check_parse <- function(url) {
 #'  )
 get_check_parse_paginated <- function(url) {
   all_data <- dplyr::tibble()
-  skip <- 0
-  take <- 1000
+  skip <- 0L
+  take <- 1000L
   repeat {
     paginated_url <- glue::glue(
       url, "skip/{skip}/take/{take}",

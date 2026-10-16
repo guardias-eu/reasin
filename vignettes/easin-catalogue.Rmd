@@ -1,5 +1,10 @@
 ---
-title: "How to get taxonomic information from the EASIN Catalogue"
+title: "The EASIN Catalogue"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{The EASIN Catalogue}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 ---
 
 ```{r, include = FALSE}

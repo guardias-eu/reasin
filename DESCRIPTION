@@ -30,6 +30,7 @@ Imports:
 Suggests:
     knitr,
     qs2,
+    rmarkdown,
     testthat,
     vcr (>= 0.6.0)
 VignetteBuilder:

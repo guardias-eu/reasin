@@ -4,4 +4,5 @@
 * Add `limit` argument to `get_species()` to limit the number of species returned from the API (#10).
 * reasin now relies on R >= 4.1.0 to use base pipes (|> rather than %>%) (#9).
 * Scientific names returned in column `Name` are now always consistently cleaned up from quotes (#11).
+* Vignette added to explain the use of `get_species()` and related help functions (#12). 
 * Add [`checklist`](https://inbo.github.io/checklist/) infrastructure.

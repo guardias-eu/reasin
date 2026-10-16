@@ -2,12 +2,11 @@
 # reasin
 
 <!-- badges: start -->
-[![CRAN
-status](https://www.r-pkg.org/badges/version/reasin)](https://CRAN.R-project.org/package=reasin)
 [![R-CMD-check](https://github.com/guardias-eu/reasin/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/guardias-eu/reasin/actions/workflows/R-CMD-check.yaml)
 [![Codecov test coverage](https://codecov.io/gh/guardias-eu/reasin/graph/badge.svg)](https://app.codecov.io/gh/guardias-eu/reasin)
 [![repo
 status](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
+[![funder](https://badgen.net/static/funder/European%20Union/f2a)](https://doi.org/10.3030/101181413)
 <!-- badges: end -->
 
 The goal of reasin is to provide a R interface to the API of the European Alien Species Information Network (EASIN).
@@ -24,6 +23,16 @@ You can install the development version of reasin from [GitHub](https://github.c
 pak::pak("guardias-eu/reasin") # dev version
 ```
 
+## Get started
+
+To get started, see:
+
+- [Vignettes](https://inbo.github.io/reasin/articles/): tutorials
+  showcasing functionality.
+- [Function
+  reference](https://inbo.github.io/reasin/reference/index.html):
+  overview of all functions.
+
 ## Example
 
 Use `get_species()` to retrieve information on species from the EASIN [Catalogue
@@ -39,7 +48,7 @@ get_species()
 get_species(scientific_name = "Procambarus")
 ```
 
-More examples can be found in [`get_species()` documentation](https://guardias-eu.github.io/reasin/reference/get_species.html).
+More examples can be found in [`get_species()` documentation](https://guardias-eu.github.io/reasin/reference/get_species.html) or in the [vignette](https://inbo.github.io/camtraptor/articles/how_to_get_taxon_info_from_easin_catalogue.html).
 
 Check also the [Reference
 section](https://guardias-eu.github.io/reasin/reference/index.html) for a list
@@ -47,4 +56,4 @@ with all available functions.
 
 ## Funding
 
-This package is being developed in the framework of the [GuardIAS](https://guardias.eu/) prject. GuardIAS receives funding from the European Union’s Horizon Europe Research and Innovation Programme (ID No 101181413).
+This package is being developed in the framework of the [GuardIAS](https://guardias.eu/) project. GuardIAS receives funding from the European Union’s Horizon Europe Research and Innovation Programme (ID No 101181413).

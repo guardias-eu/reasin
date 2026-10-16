@@ -2,7 +2,7 @@
 % Please edit documentation in R/get_species.R
 \name{get_species}
 \alias{get_species}
-\title{Get species information from the EASIN's Catalogue Web Service}
+\title{Get species information from the EASIN Catalogue Web Service}
 \usage{
 get_species(
   easin_id = NULL,
@@ -18,7 +18,8 @@ get_species(
   horizon = NULL,
   partly_native = NULL,
   native_in_country = NULL,
-  union_concern = NULL
+  union_concern = NULL,
+  limit = NULL
 )
 }
 \arguments{
@@ -45,9 +46,10 @@ defined in NUTS (Nomenclature of territorial units for statistics). Use
 and \code{"lo"} (low).  Use \code{impacts()} to look up the list of impact codes and
 their meaning. Source: EASIN \href{https://easin.jrc.ec.europa.eu/apixg}{Catalogue Web Service} documentation.}
 
-\item{taxon}{Character named vector with the taxon name(s)
-named by their taxonomic rank(s). Use \code{ranks()} to look up the list of valid
-ranks. Source: EASIN \href{https://easin.jrc.ec.europa.eu/apixg}{Catalogue Web Service} documentation.}
+\item{taxon}{Character named vector with the taxon name(s) named by their
+taxonomic rank(s). Use \code{ranks()} to look up the list of valid ranks.
+Source: EASIN \href{https://easin.jrc.ec.europa.eu/apixg}{Catalogue Web Service}
+documentation.}
 
 \item{taxonomy}{Character named vector with the taxonomic names named
 by their taxonomic rank. Provide them in the right order from kingdom up to
@@ -66,7 +68,7 @@ their meaning. Source: EASIN \href{https://easin.jrc.ec.europa.eu/apixg}{Catalog
 \item{horizon}{Logical. If \code{TRUE}, returns only species coming from Horizon
 Scanning assessments. Only \code{TRUE} is allowed.}
 
-\item{partly_native}{Logical. If \code{TRUE}, returns only specise which are
+\item{partly_native}{Logical. If \code{TRUE}, returns only species which are
 native in one or more EU countries.}
 
 \item{native_in_country}{Character. One or more countries' ISO 3166-1 alpha-2
@@ -75,20 +77,27 @@ look up the list of country codes. Source: EASIN \href{https://easin.jrc.ec.euro
 
 \item{union_concern}{Logical. If \code{TRUE}, returns only species of Union
 concern. Only \code{TRUE} is allowed.}
+
+\item{limit}{Integer. Maximum number of rows to return. Default: \code{NULL}
+(return all rows).}
 }
 \value{
-A tibble data frame containing species information.
+A tibble data frame containing species information. An empty tibble
+is returned when no species match the search criteria.
 }
 \description{
-This function retrieves species information from the EASIN's
+Retrieves species information from the EASIN
 \href{https://easin.jrc.ec.europa.eu/easin/Catalogue}{Catalogue}. Users can
-retrieve records by species’ scientific name, environment, impact, taxonomy,
-Union concern status
-(\href{https://easin.jrc.ec.europa.eu/easin/LegalFramework/Index}{LegalFramework}). More on \href{https://easin.jrc.ec.europa.eu/apixg}{EASIN Web Services}.
+retrieve records by scientific name, environment, impact, taxonomy, Union
+concern status (\href{https://easin.jrc.ec.europa.eu/easin/LegalFramework/Index}{Legal Framework}). More
+on \href{https://easin.jrc.ec.europa.eu/apixg}{EASIN Web Services}.
 }
 \examples{
 # Get list of all species in the EASIN catalogue
 get_species()
+
+# Get first 100 species
+get_species(limit = 100)
 
 # Get list of all species of Union concern
 get_species(union_concern = TRUE)
@@ -130,6 +139,9 @@ get_species(present_in_country = c("LU", "IE"))
 
 # Get species by `status`
 get_species(status = c("Q", "A"))
+
+# Get species by `impact`
+get_species(impact = "hi")
 
 # Get species which are native in at least one country
 get_species(partly_native = TRUE)

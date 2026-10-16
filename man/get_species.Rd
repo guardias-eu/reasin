@@ -18,7 +18,8 @@ get_species(
   horizon = NULL,
   partly_native = NULL,
   native_in_country = NULL,
-  union_concern = NULL
+  union_concern = NULL,
+  limit = NULL
 )
 }
 \arguments{
@@ -76,9 +77,13 @@ look up the list of country codes. Source: EASIN \href{https://easin.jrc.ec.euro
 
 \item{union_concern}{Logical. If \code{TRUE}, returns only species of Union
 concern. Only \code{TRUE} is allowed.}
+
+\item{limit}{Integer. Maximum number of rows to return. Default: \code{NULL}
+(return all rows).}
 }
 \value{
-A tibble data frame containing species information.
+A tibble data frame containing species information. An empty tibble
+is returned when no species match the search criteria.
 }
 \description{
 Retrieves species information from the EASIN
@@ -90,6 +95,9 @@ on \href{https://easin.jrc.ec.europa.eu/apixg}{EASIN Web Services}.
 \examples{
 # Get list of all species in the EASIN catalogue
 get_species()
+
+# Get first 100 species
+get_species(limit = 100)
 
 # Get list of all species of Union concern
 get_species(union_concern = TRUE)
@@ -131,6 +139,9 @@ get_species(present_in_country = c("LU", "IE"))
 
 # Get species by `status`
 get_species(status = c("Q", "A"))
+
+# Get species by `impact`
+get_species(impact = "hi")
 
 # Get species which are native in at least one country
 get_species(partly_native = TRUE)

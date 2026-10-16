@@ -18,15 +18,21 @@
 #' @examples
 #' get_species_static_url("https://easin.jrc.ec.europa.eu/apixg/catxg/species")
 #' get_species_static_url(
+#'   "https://easin.jrc.ec.europa.eu/apixg/catxg/species",
+#'   limit = 5
+#' )
+#' get_species_static_url(
 #'   "https://easin.jrc.ec.europa.eu/apixg/catxg/",
 #'   arg = c("kingdom", "phylum", "class", "order", "family"),
-#'   value = c("Animalia", "Arthropoda", "Insecta", "Hymenoptera", "Vespidae")
+#'   value = c("Animalia", "Arthropoda", "Insecta", "Hymenoptera", "Vespidae"),
+#'   limit = 2
 #' )
 get_species_static_url <- function(
   base_url,
   arg = NULL,
   value = NULL,
-  is_pagination = FALSE
+  is_pagination = FALSE,
+  limit = NULL
 ) {
   # arg and value must be both NULL or both filled in
   if (all(is.null(arg), is.null(value)) == FALSE &&
@@ -52,9 +58,15 @@ get_species_static_url <- function(
     url <- base_url
   }
   if (is_pagination == TRUE) {
-    get_check_parse_paginated(url)
+    get_check_parse_paginated(url, limit = limit)
   } else {
-    get_check_parse(url)
+    data <- get_check_parse(url)
+    # Apply limit for non-paginated results
+    # In this case the limit is applied AFTER the API call
+    if (!is.null(limit) && nrow(data) > limit) {
+      return(dplyr::slice(data, 1:limit))
+    }
+    return(data)
   }
 }
 
@@ -84,7 +96,8 @@ get_species_dynamic_url <- function(
   arg,
   values,
   is_pagination,
-  base_url = "https://easin.jrc.ec.europa.eu/apixg/catxg/"
+  base_url = "https://easin.jrc.ec.europa.eu/apixg/catxg/",
+  limit = NULL
   ) {
   valid_args_endpoints <- c(
     "env",
@@ -119,9 +132,15 @@ get_species_dynamic_url <- function(
       if (is_pagination == FALSE) {
         get_check_parse(url)
       } else {
-        get_check_parse_paginated(url)
+        get_check_parse_paginated(url, limit = limit)
       }
     }
   )
+
+  # Apply limit for non-paginated results
+  if (!is.null(limit) && nrow(data) > limit) {
+    data <- dplyr::slice(data, 1:limit)
+  }
+
   return(data)
 }

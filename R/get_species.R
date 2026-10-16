@@ -55,12 +55,18 @@
 #'   Service](https://easin.jrc.ec.europa.eu/apixg) documentation.
 #' @param union_concern Logical. If `TRUE`, returns only species of Union
 #' concern. Only `TRUE` is allowed.
-#' @return A tibble data frame containing species information.
+#' @param limit Integer. Maximum number of rows to return. Default: `NULL`
+#'   (return all rows).
+#' @return A tibble data frame containing species information. An empty tibble
+#'   is returned when no species match the search criteria.
 #' @family species functions
 #' @export
 #' @examples
 #' # Get list of all species in the EASIN catalogue
 #' get_species()
+#'
+#' # Get first 100 species
+#' get_species(limit = 100)
 #'
 #' # Get list of all species of Union concern
 #' get_species(union_concern = TRUE)
@@ -103,6 +109,9 @@
 #' # Get species by `status`
 #' get_species(status = c("Q", "A"))
 #'
+#' # Get species by `impact`
+#' get_species(impact = "hi")
+#'
 #' # Get species which are native in at least one country
 #' get_species(partly_native = TRUE)
 #'
@@ -122,7 +131,8 @@ get_species <- function(
   horizon = NULL,
   partly_native = NULL,
   native_in_country = NULL,
-  union_concern = NULL
+  union_concern = NULL,
+  limit = NULL
 ) {
   # Build query parameters
   query_params <- list(
@@ -142,19 +152,31 @@ get_species <- function(
     union_concern = union_concern
   )
 
+  # Get all possible non NULL arguments (API endpoints)
+  all_query_params <- c(
+    "easin_id", "scientific_name", "environment", "country_code",
+    "region_code", "impact", "taxon", "taxonomy", "present_in_country",
+    "status", "horizon", "partly_native", "native_in_country",
+    "union_concern"
+  )
   # Remove NULL parameters via purrr
   query_params <- purrr::compact(query_params)
 
   # Get all species if no parameters are provided
   if (length(query_params) == 0) {
-    return(get_all_species())
+    output <- get_all_species(limit = limit)
   }
 
   # `query_params` must be not longer than 1
   if (length(query_params) > 1) {
     no_null_args <- names(query_params)
-    cli::cli_abort(
-      "Pass one or no argument to {.fun get_species}: {no_null_args} found"
+    cli::cli_abort(c(
+      c("Pass no argument to {.fun get_species} or only one among:",
+        "{.arg {all_query_params}}"
+        ),
+      "i" = "Multiple non NULL arguments found: {.arg {no_null_args}}"
+      ),
+      class = "reasin_error_assignment_invalid"
     )
   }
 
@@ -167,7 +189,7 @@ get_species <- function(
         class = "reasin_error_assignment_invalid"
       )
     }
-    return(get_species_by_easin_id(easin_id))
+    output <- get_species_by_easin_id(easin_id, limit = limit)
   }
 
   # Get species by `scientific_name`
@@ -184,13 +206,13 @@ get_species <- function(
       short_names <- scientific_name[nchar(scientific_name) < 4]
       cli::cli_abort(c(
         "Scientific names must be at least 4 characters long",
-        "i" = "Short names found: {short_names}",
+        "i" = "Short name{?s} found: {short_names}"),
         class = "reasin_error_assignment_invalid"
-      ))
+      )
     }
     # Replace spaces with `%20`
     scientific_name <- gsub(" ", "%20", scientific_name)
-    return(get_species_by_scientific_name(scientific_name))
+    output <- get_species_by_scientific_name(scientific_name, limit = limit)
   }
 
   # Get species by `environment`
@@ -207,11 +229,11 @@ get_species <- function(
       wrong_environments <- environment[!environment %in% valid_environments]
       cli::cli_abort(c(
         "Environment{?s} invalid: {wrong_environments}",
-        "i" = "Use {.fun environments} to get all valid values",
+        "i" = "Use {.fun environments} to get all valid values"),
         class = "reasin_error_assignment_invalid"
-      ))
+      )
     }
-    return(get_species_by_environment(environment))
+    output <- get_species_by_environment(environment, limit = limit)
   }
 
   # Get species of `union_concern`
@@ -220,7 +242,7 @@ get_species <- function(
     if (!isTRUE(union_concern)) {
       cli::cli_abort("Argument {.arg union_concern} must be TRUE")
     }
-    return(get_union_concern_species())
+    output <- get_union_concern_species(limit = limit)
   }
 
   # Get species of Member State concern by `country_code`
@@ -236,12 +258,12 @@ get_species <- function(
     if (any(!country_code %in% valid_countries)) {
       wrong_countries <- country_code[!country_code %in% valid_countries]
       cli::cli_abort(c(
-        "Countr{?y/ies} invalid: {wrong_coutries}",
-        "i" = "Use {.fun countries} to get all valid values",
+        "Countr{?y/ies} invalid: {wrong_countries}",
+        "i" = "Use {.fun countries} to get all valid values"),
         class = "reasin_error_assignment_invalid"
-      ))
+      )
     }
-    return(get_species_by_country_code(country_code))
+    output <- get_species_by_country_code(country_code, limit = limit)
   }
 
   # Get species by `region_code`
@@ -258,11 +280,11 @@ get_species <- function(
       wrong_regions <- region_code[!region_code %in% valid_regions]
       cli::cli_abort(c(
         "Region{?s} code{?s} invalid: {wrong_regions}",
-        "i" = "Use {.fun regions} to get all valid values",
+        "i" = "Use {.fun regions} to get all valid values"),
         class = "reasin_error_assignment_invalid"
-      ))
+      )
     }
-    return(get_species_by_region_code(region_code))
+    output <- get_species_by_region_code(region_code, limit = limit)
   }
 
   # Get species by `impact`
@@ -279,11 +301,11 @@ get_species <- function(
       wrong_impact <- impact[!impact %in% valid_impacts]
       cli::cli_abort(c(
         "Invalid impact value{?s}: {wrong_impact}",
-        "i" = "Use {.fun impacts} to get all valid values",
+        "i" = "Use {.fun impacts} to get all valid values"),
         class = "reasin_error_assignment_invalid"
-      ))
+      )
     }
-    return(get_species_by_impact(impact))
+    output <- get_species_by_impact(impact, limit = limit)
   }
 
   # Get species by taxon
@@ -301,31 +323,45 @@ get_species <- function(
     if (length(invalid_ranks) > 0) {
       cli::cli_abort(c(
         "Invalid ranks: {invalid_ranks}",
-        "i" = "Use {.fun ranks} to get all valid ranks",
+        "i" = "Use {.fun ranks} to get all valid ranks"),
         class = "reasin_error_assignment_invalid"
-      ))
+      )
     }
-    return(get_species_by_taxon(rank = rank, taxon = taxon))
+    output <- get_species_by_taxon(rank = rank, taxon = taxon, limit = limit)
   }
 
   # Get species by full taxonomy
   if ("taxonomy" %in% names(query_params)) {
     taxonomy <- query_params$taxonomy
     rank <- names(taxonomy)
+    valid_ranks <- ranks() |> dplyr::pull("rank")
     if (!purrr::is_character(taxonomy, n = 5)) {
-      cli::cli_abort(
+      cli::cli_abort(c(
         "Argument {.arg taxonomy} must be a named vector of length 5",
+        "i" = "Provide these ranks in this order: {.arg {valid_ranks}}"),
         class = "reasin_error_assignment_invalid"
       )
     }
-    ranks <- ranks() |> dplyr::pull("rank")
-    if (!identical(rank, ranks)) {
+    if (!identical(rank, valid_ranks)) {
+      wrong_ranks <- rank[!rank %in% valid_ranks]
+      if (length(wrong_ranks) > 0) {
+        cli::cli_abort(c(
+          "Invalid ranks: {wrong_ranks}",
+          "i" = "Provide these ranks in this order: {.arg {valid_ranks}}"),
+          class = "reasin_error_assignment_invalid"
+        )
+      }
       cli::cli_abort(c(
         "Missing or invalid ranks or ranks provided in the wrong order",
-        "i" = "Valid ranks in the right order: {.val {ranks}}"
-      ))
+        "i" = "Provide these ranks in this order: {.arg {valid_ranks}}"),
+        class = "reasin_error_assignment_invalid"
+      )
     }
-    return(get_species_by_taxonomy(rank = rank, taxonomy = taxonomy))
+    output <- get_species_by_taxonomy(
+      rank = rank,
+      taxonomy = taxonomy,
+      limit = limit
+    )
   }
 
   # Get species present in a country
@@ -341,12 +377,12 @@ get_species <- function(
     if (any(!country %in% valid_countries)) {
       wrong_countries <- country[!country %in% valid_countries]
       cli::cli_abort(c(
-        "Countr{?y/ies} invalid: {wrong_coutries}",
-        "i" = "Use {.fun countries} to get all valid values",
+        "Countr{?y/ies} invalid: {wrong_countries}",
+        "i" = "Use {.fun countries} to get all valid values"),
         class = "reasin_error_assignment_invalid"
-      ))
+      )
     }
-    return(get_species_by_pres_in_country(country))
+    output <- get_species_by_pres_in_country(country, limit = limit)
   }
 
   # Get species via `status`
@@ -363,11 +399,11 @@ get_species <- function(
       wrong_status <- status[!status %in% valid_status]
       cli::cli_abort(c(
         "Status code{?s} invalid: {wrong_status}",
-        "i" = "Use {.fun statuses}` to get all valid values",
+        "i" = "Use {.fun statuses}` to get all valid values"),
         class = "reasin_error_assignment_invalid"
-      ))
+      )
     }
-    return(get_species_by_status(status))
+    output <- get_species_by_status(status, limit = limit)
   }
 
   # Get species added to EASIN database based on Horizon Scanning assessments
@@ -376,7 +412,7 @@ get_species <- function(
     if (!isTRUE(horizon)) {
       cli::cli_abort("Argument {.arg horizon} must be TRUE")
     }
-    return(get_horizon_scanning_species())
+    output <- get_horizon_scanning_species(limit = limit)
   }
 
   # Get species native at least in one country
@@ -385,7 +421,7 @@ get_species <- function(
     if (!isTRUE(partly_native)) {
       cli::cli_abort("Argument {.arg partly_native} must be TRUE")
     }
-    return(get_partly_native_species())
+    output <- get_partly_native_species(limit = limit)
   }
 
   # Get species which are native in the given countries
@@ -403,12 +439,19 @@ get_species <- function(
         !native_in_country %in% valid_countries
       ]
       cli::cli_abort(c(
-        "Countr{?y/ies} invalid: {wrong_coutries}",
-        "i" = "Use {.fun countries} to get all valid values",
+        "Countr{?y/ies} invalid: {wrong_countries}",
+        "i" = "Use {.fun countries} to get all valid values"),
         class = "reasin_error_assignment_invalid"
-      ))
+      )
     }
-    return(get_native_species_in_country(native_in_country))
+    output <- get_native_species_in_country(native_in_country, limit = limit)
+  }
+
+  # Return the output data frame with cleaned up column names
+  if (ncol(output) > 0) {
+    return(clean_up_names(output, cols = "Name"))
+  } else {
+    return(output)
   }
 }
 
@@ -420,15 +463,17 @@ get_species <- function(
 #' @noRd
 #' @examples
 #' get_all_species()
-get_all_species <- function() {
-  url_all_species <- paste(
-    "https://easin.jrc.ec.europa.eu/apixg/catxg/getall",
-    "skip/0/take/20000",
-    sep = "/"
-  )
-  data <- get_species_static_url(url_all_species) |>
-    clean_up_names(cols = "Name")
-  return(data)
+get_all_species <- function(limit = NULL) {
+  base_url <- "https://easin.jrc.ec.europa.eu/apixg/catxg/getall/"
+  if (!is.null(limit)) {
+    return(
+      get_species_static_url(base_url, is_pagination = TRUE, limit = limit)
+    )
+  } else {
+    return(
+      get_species_static_url(base_url, is_pagination = TRUE, limit = limit)
+    )
+  }
 }
 
 #' Get all species of Union Concern
@@ -440,9 +485,9 @@ get_all_species <- function() {
 #' @noRd
 #' @examples
 #' get_union_concern_species()
-get_union_concern_species <- function() {
+get_union_concern_species <- function(limit = NULL) {
   union_concern_url <- "https://easin.jrc.ec.europa.eu/apixg/catxg/euconcern"
-  data <- get_species_static_url(union_concern_url)
+  data <- get_species_static_url(union_concern_url, limit = limit)
   return(data)
 }
 
@@ -456,9 +501,9 @@ get_union_concern_species <- function() {
 #' @noRd
 #' @examples
 #' get_horizon_scanning_species()
-get_horizon_scanning_species <- function() {
+get_horizon_scanning_species <- function(limit = NULL) {
   horizon_url <- "https://easin.jrc.ec.europa.eu/apixg/catxg/horizon/"
-  data <- get_species_static_url(horizon_url, is_pagination = TRUE)
+  data <- get_species_static_url(horizon_url, is_pagination = TRUE, limit = limit)
   return(data)
 }
 
@@ -470,9 +515,9 @@ get_horizon_scanning_species <- function() {
 #' @noRd
 #' @examples
 #' get_partly_native_species()
-get_partly_native_species <- function() {
+get_partly_native_species <- function(limit = NULL) {
   partly_nat_url <- "https://easin.jrc.ec.europa.eu/apixg/catxg/partlynative/"
-  data <- get_species_static_url(partly_nat_url, is_pagination = TRUE)
+  data <- get_species_static_url(partly_nat_url, is_pagination = TRUE, limit = limit)
   return(data)
 }
 
@@ -488,14 +533,15 @@ get_partly_native_species <- function() {
 #' @noRd
 #' @examples
 #' get_species_by_environment(c("MAR", "TER"))
-get_species_by_environment <- function(environments) {
-  data <- get_species_dynamic_url(
-    arg = "env",
-    values = environments,
-    is_pagination = TRUE
+get_species_by_environment <- function(environments, limit = NULL) {
+  return(
+    get_species_dynamic_url(
+      arg = "env",
+      values = environments,
+      is_pagination = TRUE,
+      limit = limit
+    )
   )
-  data <- clean_up_names(data, cols = "Name")
-  return(data)
 }
 
 #' Get species by EASIN ID(s)
@@ -509,11 +555,12 @@ get_species_by_environment <- function(environments) {
 #' @noRd
 #' @examples
 #' get_species_by_easin_id(c("R00460", "R12250"))
-get_species_by_easin_id <- function(easin_ids) {
+get_species_by_easin_id <- function(easin_ids, limit = NULL) {
   data <- get_species_dynamic_url(
     arg = "easinid",
     values = easin_ids,
-    is_pagination = FALSE
+    is_pagination = FALSE,
+    limit = limit
   )
   return(data)
 }
@@ -530,11 +577,12 @@ get_species_by_easin_id <- function(easin_ids) {
 #' @noRd
 #' @examples
 #' get_species_by_scientific_name("Vespa")
-get_species_by_scientific_name <- function(scientific_names) {
+get_species_by_scientific_name <- function(scientific_names, limit = NULL) {
   data <- get_species_dynamic_url(
     arg = "term",
     values = scientific_names,
-    is_pagination = FALSE
+    is_pagination = FALSE,
+    limit = limit
   )
   return(data)
 }
@@ -550,14 +598,15 @@ get_species_by_scientific_name <- function(scientific_names) {
 #' @noRd
 #' @examples
 #' get_species_by_country_code(c("AT", "BG"))
-get_species_by_country_code <- function(country_codes) {
+get_species_by_country_code <- function(country_codes, limit = NULL) {
   # This endpoint accepts multiple country codes comma separated. We save an API
   # call by passing them all at once.
   country_codes <- paste(country_codes, collapse = ",")
   data <- get_species_dynamic_url(
     arg = "concernedms",
     values = country_codes,
-    is_pagination = TRUE
+    is_pagination = TRUE,
+    limit = limit
   )
   return(data)
 }
@@ -574,14 +623,15 @@ get_species_by_country_code <- function(country_codes) {
 #' @noRd
 #' @examples
 #' get_speciesby_region_code("PT3")
-get_species_by_region_code <- function(region_codes) {
+get_species_by_region_code <- function(region_codes, limit = NULL) {
   # This endpoint accepts multiple region codes comma separated. We save an API
   # call by passing them all at once.
   region_codes <- paste(region_codes, collapse = ",")
   data <- get_species_dynamic_url(
     arg = "concernedregions",
     values = region_codes,
-    is_pagination = TRUE
+    is_pagination = TRUE,
+    limit = limit
   )
   return(data)
 }
@@ -596,11 +646,12 @@ get_species_by_region_code <- function(region_codes) {
 #' @noRd
 #' @examples
 #' get_species_by_country(impact = "lo")
-get_species_by_impact <- function(impact) {
+get_species_by_impact <- function(impact, limit = NULL) {
   data <- get_species_dynamic_url(
     arg = "impact",
     values = impact,
-    is_pagination = TRUE
+    is_pagination = TRUE,
+    limit = limit
   )
   return(data)
 }
@@ -619,14 +670,15 @@ get_species_by_impact <- function(impact) {
 #' @noRd
 #' @examples
 #' get_species_by_taxon(rank = "family", taxon = "Vespidae")
-get_species_by_taxon <- function(rank, taxon) {
+get_species_by_taxon <- function(rank, taxon, limit = NULL) {
   data <- purrr::map2(
     rank,
     taxon,
     ~ get_species_dynamic_url(
       arg = .x,
       values = .y,
-      is_pagination = TRUE
+      is_pagination = TRUE,
+      limit = limit
     )
   ) |>
     purrr::list_rbind()
@@ -656,12 +708,13 @@ get_species_by_taxon <- function(rank, taxon) {
 #'     "Vespidae"
 #'   )
 #' )
-get_species_by_taxonomy <- function(rank, taxonomy) {
+get_species_by_taxonomy <- function(rank, taxonomy, limit = NULL) {
   base_url <- "https://easin.jrc.ec.europa.eu/apixg/catxg/"
   data <- get_species_static_url(
     base_url = base_url,
     arg = rank,
-    value = taxonomy
+    value = taxonomy,
+    limit = limit
   )
   return(data)
 }
@@ -676,17 +729,18 @@ get_species_by_taxonomy <- function(rank, taxonomy) {
 #' @noRd
 #' @examples
 #' get_species_by_pres_in_country(countries = "LU")
-get_species_by_pres_in_country <- function(countries) {
+get_species_by_pres_in_country <- function(countries, limit = NULL) {
   # For this endpoint we can pass countrycodes comma separated. We save a API
   # call by passing them all at once.
   countries <- paste(countries, collapse = ",")
-  data <- get_species_dynamic_url(
-    arg = "incountries",
-    values = countries,
-    is_pagination = TRUE
-  ) |>
-    clean_up_names(cols = "Name")
-  return(data)
+  return(
+    get_species_dynamic_url(
+      arg = "incountries",
+      values = countries,
+      is_pagination = TRUE,
+      limit = limit
+    )
+  )
 }
 
 #' Get species via status
@@ -699,16 +753,16 @@ get_species_by_pres_in_country <- function(countries) {
 #' @noRd
 #' @examples
 #' get_species_by_status(c("Q", "C"))
-get_species_by_status <- function(status) {
-  data <- get_species_dynamic_url(
-    arg = "status",
-    values = status,
-    is_pagination = TRUE
-  ) |>
-    clean_up_names(cols = "Name")
-  return(data)
+get_species_by_status <- function(status, limit = NULL) {
+  return(
+    get_species_dynamic_url(
+      arg = "status",
+      values = status,
+      is_pagination = TRUE,
+      limit = limit
+    )
+  )
 }
-
 
 #' Get native species in one or more countries
 #'
@@ -720,14 +774,15 @@ get_species_by_status <- function(status) {
 #' @noRd
 #' @examples
 #' get_native_species_in_country(c("AT", "BG"))
-get_native_species_in_country <- function(countries) {
+get_native_species_in_country <- function(countries, limit = NULL) {
   # For this endpoint we can pass countrycodes comma separated. We save a API
   # call by passing them all at once.
   countries <- paste(countries, collapse = ",")
   data <- get_species_dynamic_url(
     arg = "nativeincountries",
     values = countries,
-    is_pagination = TRUE
+    is_pagination = TRUE,
+    limit = limit
   )
   return(data)
 }

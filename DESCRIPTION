@@ -29,6 +29,7 @@ Imports:
     purrr
 Suggests:
     knitr,
+    qs2,
     testthat,
     vcr (>= 0.6.0)
 VignetteBuilder:

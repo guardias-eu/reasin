@@ -46,11 +46,13 @@ get_check_parse <- function(url) {
       # No data: empty tibble returned
       return(dplyr::tibble())
     } else {
-      cli::cli_abort(c(
-        "Unexpected empty response structure.",
-        "i" = "Column{?s} names found: {names(data$`jsonlite::fromJSON(content, flatten = TRUE)`)}",
+      cli::cli_abort(
+        c(
+          "Unexpected empty response structure.",
+          "i" = "Column{?s} names found: {names(data$`jsonlite::fromJSON(content, flatten = TRUE)`)}"
+        ),
         class = "reasin_error_api_unexpected_response_empty_result"
-      ))
+      )
     }
   }
   return(data)

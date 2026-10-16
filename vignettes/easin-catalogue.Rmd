@@ -24,9 +24,14 @@ To retrieve species data from the EASIN Catalogue Web Service you need to use th
 
 The first, basic way to get species data is to call `get_species()` without any arguments. This will retrieve all species from the EASIN Catalogue:
 
-```{r get-all-species}  
-all_species <- get_species()
-head(all_species)
+```r
+get_species()
+```
+
+You can limit the number of rows returned by using the `limit` argument. For example, to get only the first 10 species:
+
+```{r get-first-10-species}  
+get_species(limit = 10)
 ```
 
 Aside the `EASIN_ID` and columns containing scientific name (`Name` and `Authorship`), the returned data frame contains columns important for understanding the species distribution and status in Europe, such as `HasImpact`, `IsEUConcern` and `IsMSConcern` (is a taxon of concern for some Member States?), `IsPartNative` (is the taxon native for at least one Member State?). However, if you want to know more about for example its taxonomy, the native range, the pathways of introduction and the environments it inhabits, you need to use `get_species()` with specific arguments. So, read on!
@@ -61,7 +66,6 @@ Use `ranks()` to look up all the ranks you can use:
 ```{r ranks}
 ranks()
 ```
-
 
 ### Information by countries or regions
 
@@ -109,7 +113,6 @@ get_species(country_code = c("IE", "LT"))
 ```{r get-species-by-region_code}
 get_species(region_code = c("ES7"))
 ```
-
 
 ### Information by environment, impact or status
 

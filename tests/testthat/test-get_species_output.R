@@ -255,7 +255,9 @@ test_that("`taxon` accepts valid input", {
     )
   )
   # If there are no species for the specific taxon, an empty tibble is returned
-  result <- get_species(taxon = c(family = "Lillillidae"))
+  vcr::use_cassette("taxon_not_found", {
+    result <- get_species(taxon = c(family = "Oldonidae"))
+  })
   expect_s3_class(result, "tbl_df")
   expect_s3_class(result, "data.frame")
   expect_true(nrow(result) == 0)

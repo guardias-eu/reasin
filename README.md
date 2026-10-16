@@ -2,8 +2,6 @@
 # reasin
 
 <!-- badges: start -->
-[![CRAN
-status](https://www.r-pkg.org/badges/version/reasin)](https://CRAN.R-project.org/package=reasin)
 [![R-CMD-check](https://github.com/guardias-eu/reasin/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/guardias-eu/reasin/actions/workflows/R-CMD-check.yaml)
 [![Codecov test coverage](https://codecov.io/gh/guardias-eu/reasin/graph/badge.svg)](https://app.codecov.io/gh/guardias-eu/reasin)
 [![repo

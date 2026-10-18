@@ -3,7 +3,7 @@ pkgdown: 2.2.1
 pkgdown_sha: ~
 articles:
   easin-catalogue: easin-catalogue.html
-last_built: 2026-10-18T17:03Z
+last_built: 2026-10-18T17:07Z
 urls:
   reference: https://guardias-eu.github.io/reasin/reference
   article: https://guardias-eu.github.io/reasin/articles

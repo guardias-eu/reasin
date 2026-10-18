@@ -12,7 +12,7 @@ get_check_parse <- function(url) {
   request <- httr2::request(url)
   # Perform the request without throwing an error for HTTP errors at the request
   # stage
-  response <- httr2::req_error(request, is_error = function(resp) FALSE) %>%
+  response <- httr2::req_error(request, is_error = function(resp) FALSE) |>
     httr2::req_perform()
 
   # Check for 404 Not Found error and return a specific error
@@ -37,8 +37,25 @@ get_check_parse <- function(url) {
       class = "reasin_error_api_invalid_json"
     )
   }
-  jsonlite::fromJSON(content, flatten = TRUE) %>%
+  data <- jsonlite::fromJSON(content, flatten = TRUE) |>
     dplyr::tibble()
+  if ("jsonlite::fromJSON(content, flatten = TRUE)" %in% names(data)) {
+    if (
+      "Empty" %in% names(data$`jsonlite::fromJSON(content, flatten = TRUE)`)
+    ) {
+      # No data: empty tibble returned
+      return(dplyr::tibble())
+    } else {
+      cli::cli_abort(
+        c(
+          "Unexpected empty response structure.",
+          "i" = "Column{?s} names found: {names(data$`jsonlite::fromJSON(content, flatten = TRUE)`)}"
+        ),
+        class = "reasin_error_api_unexpected_response_empty_result"
+      )
+    }
+  }
+  return(data)
 }
 
 #' Get, check and parse paginated HTTP response
@@ -48,16 +65,22 @@ get_check_parse <- function(url) {
 #' a single request and it uses `get_check_parse()` internally.
 #'
 #' @param url A character string representing the base URL to fetch data from.
+#' @param limit Integer. Maximum number of rows to return. Default: `NULL` (return
+#'   all rows).
 #' @return A tibble data frame containing the aggregated data from all paginated
 #'   requests.
 #' @noRd
 #' @examples
-#' url <- "https://easin.jrc.ec.europa.eu/apixg/catxg/env/TER/skip/{skip}/take/{take}"
-#' get_check_parse_paginated(url)
-get_check_parse_paginated <- function(url) {
+#' get_check_parse_paginated(
+#'   "https://easin.jrc.ec.europa.eu/apixg/catxg/env/TER/"
+#'  )
+get_check_parse_paginated <- function(url, limit = NULL) {
   all_data <- dplyr::tibble()
-  skip <- 0
-  take <- 1000
+  skip <- 0L
+  take <- 1000L
+  if (!is.null(limit) && limit < take) {
+    take <- limit
+  }
   repeat {
     paginated_url <- glue::glue(
       url, "skip/{skip}/take/{take}",
@@ -65,17 +88,16 @@ get_check_parse_paginated <- function(url) {
       take = take
     )
     data <- get_check_parse(paginated_url)
-    if ("." %in% names(data)) {
-      if ("Empty" %in% names(data$.)) {
-        break # No data anymore
-      } else {
-        cli::cli_abort(
-          "Unexpected response structure: {names(data$.)} column{?s} found.",
-          class = "reasin_error_api_unexpected_response"
-        )
-      }
+    if (nrow(data) == 0) {
+      break # No data anymore
+    } else {
+      all_data <- dplyr::bind_rows(all_data, data)
     }
-    all_data <- dplyr::bind_rows(all_data, data)
+    # Check if we've reached the limit
+    if (!is.null(limit) && nrow(all_data) >= limit) {
+      all_data <- dplyr::slice(all_data, 1:limit)
+      break
+    }
     skip <- skip + take
   }
   return(all_data)

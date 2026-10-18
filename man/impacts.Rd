@@ -10,7 +10,8 @@ impacts()
 A tibble with 2 columns:
 \itemize{
 \item \code{impact}: The full name of the impact level.
-\item \code{impact_code}: The abbreviation to be used in the \code{get_species(impact = )} function.
+\item \code{impact_code}: The abbreviation to be used in the \code{get_species(impact = )}
+function.
 }
 }
 \description{

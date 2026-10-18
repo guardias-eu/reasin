@@ -1,10 +1,11 @@
-#' Get species information from the EASIN's Catalogue Web Service
+#' Get species information from the EASIN Catalogue Web Service
 #'
-#' This function retrieves species information from the EASIN's
+#' Retrieves species information from the EASIN
 #' [Catalogue](https://easin.jrc.ec.europa.eu/easin/Catalogue). Users can
-#' retrieve records by species’ scientific name, environment, impact, taxonomy,
-#' Union concern status
-#' ([LegalFramework](https://easin.jrc.ec.europa.eu/easin/LegalFramework/Index)). More on [EASIN Web Services](https://easin.jrc.ec.europa.eu/apixg).
+#' retrieve records by scientific name, environment, impact, taxonomy, Union
+#' concern status ([Legal
+#' Framework](https://easin.jrc.ec.europa.eu/easin/LegalFramework/Index)). More
+#' on [EASIN Web Services](https://easin.jrc.ec.europa.eu/apixg).
 #'
 #' @param easin_id Integer. EASIN Species ID(s).
 #' @param scientific_name Character. Scientific name(s) or part(s) of it. Case
@@ -21,16 +22,16 @@
 #'   states submitted their species of Member State concern to EASIN.
 #' @param region_code Character. Species of Outermost regions concern codes as
 #'   defined in NUTS (Nomenclature of territorial units for statistics). Use
-#'   `regions()` to look up the list of region codes. Source: EASIN [Catalogue Web
-#'   Service](https://easin.jrc.ec.europa.eu/apixg) documentation.
+#'   `regions()` to look up the list of region codes. Source: EASIN [Catalogue
+#'   Web Service](https://easin.jrc.ec.europa.eu/apixg) documentation.
 #' @param impact Character. Species impact(s). One or more of: `"hi"` (high)
 #'   and `"lo"` (low).  Use `impacts()` to look up the list of impact codes and
 #'   their meaning. Source: EASIN [Catalogue Web
 #'   Service](https://easin.jrc.ec.europa.eu/apixg) documentation.
-#' @param taxon Character named vector with the taxon name(s)
-#'   named by their taxonomic rank(s). Use `ranks()` to look up the list of valid
-#'   ranks. Source: EASIN [Catalogue Web
-#'   Service](https://easin.jrc.ec.europa.eu/apixg) documentation.
+#' @param taxon Character named vector with the taxon name(s) named by their
+#'   taxonomic rank(s). Use `ranks()` to look up the list of valid ranks.
+#'   Source: EASIN [Catalogue Web Service](https://easin.jrc.ec.europa.eu/apixg)
+#'   documentation.
 #' @param taxonomy Character named vector with the taxonomic names named
 #'   by their taxonomic rank. Provide them in the right order from kingdom up to
 #'   family. Source: EASIN [Catalogue Web
@@ -46,7 +47,7 @@
 #'   Service](https://easin.jrc.ec.europa.eu/apixg) documentation.
 #' @param horizon Logical. If `TRUE`, returns only species coming from Horizon
 #' Scanning assessments. Only `TRUE` is allowed.
-#' @param partly_native Logical. If `TRUE`, returns only specise which are
+#' @param partly_native Logical. If `TRUE`, returns only species which are
 #'   native in one or more EU countries.
 #' @param native_in_country Character. One or more countries' ISO 3166-1 alpha-2
 #'   codes to filter species native in those countries. Use `countries()` to
@@ -54,12 +55,18 @@
 #'   Service](https://easin.jrc.ec.europa.eu/apixg) documentation.
 #' @param union_concern Logical. If `TRUE`, returns only species of Union
 #' concern. Only `TRUE` is allowed.
-#' @return A tibble data frame containing species information.
+#' @param limit Integer. Maximum number of rows to return. Default: `NULL`
+#'   (return all rows).
+#' @return A tibble data frame containing species information. An empty tibble
+#'   is returned when no species match the search criteria.
 #' @family species functions
 #' @export
 #' @examples
 #' # Get list of all species in the EASIN catalogue
 #' get_species()
+#'
+#' # Get first 100 species
+#' get_species(limit = 100)
 #'
 #' # Get list of all species of Union concern
 #' get_species(union_concern = TRUE)
@@ -102,26 +109,30 @@
 #' # Get species by `status`
 #' get_species(status = c("Q", "A"))
 #'
+#' # Get species by `impact`
+#' get_species(impact = "hi")
+#'
 #' # Get species which are native in at least one country
 #' get_species(partly_native = TRUE)
 #'
 #' # Get species which are native in one or more countries
 #' get_species(native_in_country = c("EE","FI"))
 get_species <- function(
-    easin_id = NULL,
-    scientific_name = NULL,
-    environment = NULL,
-    country_code = NULL,
-    region_code = NULL,
-    impact = NULL,
-    taxon = NULL,
-    taxonomy = NULL,
-    present_in_country = NULL,
-    status = NULL,
-    horizon = NULL,
-    partly_native = NULL,
-    native_in_country = NULL,
-    union_concern = NULL
+  easin_id = NULL,
+  scientific_name = NULL,
+  environment = NULL,
+  country_code = NULL,
+  region_code = NULL,
+  impact = NULL,
+  taxon = NULL,
+  taxonomy = NULL,
+  present_in_country = NULL,
+  status = NULL,
+  horizon = NULL,
+  partly_native = NULL,
+  native_in_country = NULL,
+  union_concern = NULL,
+  limit = NULL
 ) {
   # Build query parameters
   query_params <- list(
@@ -141,19 +152,31 @@ get_species <- function(
     union_concern = union_concern
   )
 
+  # Get all possible non NULL arguments (API endpoints)
+  all_query_params <- c(
+    "easin_id", "scientific_name", "environment", "country_code",
+    "region_code", "impact", "taxon", "taxonomy", "present_in_country",
+    "status", "horizon", "partly_native", "native_in_country",
+    "union_concern"
+  )
   # Remove NULL parameters via purrr
   query_params <- purrr::compact(query_params)
 
   # Get all species if no parameters are provided
   if (length(query_params) == 0) {
-    return(get_all_species())
+    output <- get_all_species(limit = limit)
   }
 
   # `query_params` must be not longer than 1
   if (length(query_params) > 1) {
     no_null_args <- names(query_params)
-    cli::cli_abort(
-      "Pass one or no argument to `get_species()`: {no_null_args} found."
+    cli::cli_abort(c(
+      c("Pass no argument to {.fun get_species} or only one among:",
+        "{.arg {all_query_params}}"
+        ),
+      "i" = "Multiple non NULL arguments found: {.arg {no_null_args}}"
+      ),
+      class = "reasin_error_assignment_invalid"
     )
   }
 
@@ -162,11 +185,11 @@ get_species <- function(
     easin_id <- query_params$easin_id
     if (!purrr::is_character(easin_id)) {
       cli::cli_abort(
-        "Argument 'easin_id' must be character.",
+        "Argument {.arg easin_id} must be character",
         class = "reasin_error_assignment_invalid"
       )
     }
-    return(get_species_by_easin_id(easin_id))
+    output <- get_species_by_easin_id(easin_id, limit = limit)
   }
 
   # Get species by `scientific_name`
@@ -174,21 +197,22 @@ get_species <- function(
     scientific_name <- query_params$scientific_name
     if (!purrr::is_character(scientific_name)) {
       cli::cli_abort(
-        "Argument 'scientific_name' must be character.",
+        "Argument {.arg scientific_name} must be character",
         class = "reasin_error_assignment_invalid"
       )
     }
     # Length of each scientific name must be at least 4 characters
     if (any(nchar(scientific_name) < 4)) {
       short_names <- scientific_name[nchar(scientific_name) < 4]
-      cli::cli_abort(
-        "Each scientific name must be at least 4 characters long. Short names: {short_names}.",
+      cli::cli_abort(c(
+        "Scientific names must be at least 4 characters long",
+        "i" = "Short name{?s} found: {short_names}"),
         class = "reasin_error_assignment_invalid"
       )
     }
     # Replace spaces with `%20`
     scientific_name <- gsub(" ", "%20", scientific_name)
-    return(get_species_by_scientific_name(scientific_name))
+    output <- get_species_by_scientific_name(scientific_name, limit = limit)
   }
 
   # Get species by `environment`
@@ -196,28 +220,29 @@ get_species <- function(
     environment <- query_params$environment
     if (!purrr::is_character(environment)) {
       cli::cli_abort(
-        "Argument 'environment' must be character.",
+        "Argument {.arg environment} must be character",
         class = "reasin_error_assignment_invalid"
       )
     }
-    valid_environments <- environments() %>% dplyr::pull("env_code")
+    valid_environments <- environments() |> dplyr::pull("env_code")
     if (any(!environment %in% valid_environments)) {
       wrong_environments <- environment[!environment %in% valid_environments]
-      cli::cli_abort(
-        "Argument 'environment' must be one or more of: {valid_environments}.",
+      cli::cli_abort(c(
+        "Environment{?s} invalid: {wrong_environments}",
+        "i" = "Use {.fun environments} to get all valid values"),
         class = "reasin_error_assignment_invalid"
       )
     }
-    return(get_species_by_environment(environment))
+    output <- get_species_by_environment(environment, limit = limit)
   }
 
   # Get species of `union_concern`
   if ("union_concern" %in% names(query_params)) {
     union_concern <- query_params$union_concern
     if (!isTRUE(union_concern)) {
-      cli::cli_abort("Argument 'union_concern' must be TRUE")
+      cli::cli_abort("Argument {.arg union_concern} must be TRUE")
     }
-    return(get_union_concern_species())
+    output <- get_union_concern_species(limit = limit)
   }
 
   # Get species of Member State concern by `country_code`
@@ -225,19 +250,20 @@ get_species <- function(
     country_code <- toupper(query_params$country_code)
     if (!purrr::is_character(country_code)) {
       cli::cli_abort(
-        "Argument 'country_code' must be character.",
+        "Argument {.arg country_code} must be character",
         class = "reasin_error_assignment_invalid"
       )
     }
-    valid_countries <- countries() %>% dplyr::pull("country_code")
+    valid_countries <- countries() |> dplyr::pull("country_code")
     if (any(!country_code %in% valid_countries)) {
       wrong_countries <- country_code[!country_code %in% valid_countries]
-      cli::cli_abort(
-        "Countr{?y/ies} invalid: {wrong_coutries}. Use `countries()` to get all valid values.",
+      cli::cli_abort(c(
+        "Countr{?y/ies} invalid: {wrong_countries}",
+        "i" = "Use {.fun countries} to get all valid values"),
         class = "reasin_error_assignment_invalid"
       )
     }
-    return(get_species_by_country_code(country_code))
+    output <- get_species_by_country_code(country_code, limit = limit)
   }
 
   # Get species by `region_code`
@@ -245,19 +271,20 @@ get_species <- function(
     region_code <- toupper(query_params$region_code)
     if (!purrr::is_character(region_code)) {
       cli::cli_abort(
-        "Argument 'region_code' must be character.",
+        "Argument {.arg region_code} must be character",
         class = "reasin_error_assignment_invalid"
       )
     }
-    valid_regions <- regions() %>% dplyr::pull("region_code")
+    valid_regions <- regions() |> dplyr::pull("region_code")
     if (any(!region_code %in% valid_regions)) {
       wrong_regions <- region_code[!region_code %in% valid_regions]
-      cli::cli_abort(
-        "Region{?s} code{?s} invalid: {wrong_regions}. Use `regions()` to get all valid values.",
+      cli::cli_abort(c(
+        "Region{?s} code{?s} invalid: {wrong_regions}",
+        "i" = "Use {.fun regions} to get all valid values"),
         class = "reasin_error_assignment_invalid"
       )
     }
-    return(get_species_by_region_code(region_code))
+    output <- get_species_by_region_code(region_code, limit = limit)
   }
 
   # Get species by `impact`
@@ -265,19 +292,20 @@ get_species <- function(
     impact <- query_params$impact
     if (!purrr::is_character(impact)) {
       cli::cli_abort(
-        "Argument 'impact' must be character.",
+        "Argument {.arg impact} must be character",
         class = "reasin_error_assignment_invalid"
       )
     }
     valid_impacts <- c("hi", "lo")
     if (any(!impact %in% valid_impacts)) {
       wrong_impact <- impact[!impact %in% valid_impacts]
-      cli::cli_abort(
-        "Argument 'impact' must be one or more of: {valid_impacts}. Invalid value{?s}: {wrong_impact}.  Use `impacts()` to get all valid values and their meaning.",
+      cli::cli_abort(c(
+        "Invalid impact value{?s}: {wrong_impact}",
+        "i" = "Use {.fun impacts} to get all valid values"),
         class = "reasin_error_assignment_invalid"
       )
     }
-    return(get_species_by_impact(impact))
+    output <- get_species_by_impact(impact, limit = limit)
   }
 
   # Get species by taxon
@@ -286,37 +314,54 @@ get_species <- function(
     rank <- names(taxon)
     if (!purrr::is_character(taxon)) {
       cli::cli_abort(
-        "Argument 'taxon' must be a named vector.",
+        "Argument {.arg taxon} must be a named vector",
         class = "reasin_error_assignment_invalid"
       )
     }
-    valid_ranks <- ranks() %>% dplyr::pull("rank")
-    if (!rank %in% valid_ranks) {
-      cli::cli_abort(
-        "If you want to include a taxonomic level, it must be one of: {.val {valid_ranks}}",
+    valid_ranks <- ranks() |> dplyr::pull("rank")
+    invalid_ranks <- rank[!rank %in% valid_ranks]
+    if (length(invalid_ranks) > 0) {
+      cli::cli_abort(c(
+        "Invalid ranks: {invalid_ranks}",
+        "i" = "Use {.fun ranks} to get all valid ranks"),
         class = "reasin_error_assignment_invalid"
       )
     }
-    return(get_species_by_taxon(rank = rank, taxon = taxon))
+    output <- get_species_by_taxon(rank = rank, taxon = taxon, limit = limit)
   }
 
   # Get species by full taxonomy
   if ("taxonomy" %in% names(query_params)) {
     taxonomy <- query_params$taxonomy
     rank <- names(taxonomy)
+    valid_ranks <- ranks() |> dplyr::pull("rank")
     if (!purrr::is_character(taxonomy, n = 5)) {
-      cli::cli_abort(
-        "Argument 'taxonomy' must be a named vector of length 5.",
+      cli::cli_abort(c(
+        "Argument {.arg taxonomy} must be a named vector of length 5",
+        "i" = "Provide these ranks in this order: {.arg {valid_ranks}}"),
         class = "reasin_error_assignment_invalid"
       )
     }
-    ranks <- ranks() %>% dplyr::pull("rank")
-    if (!identical(rank, ranks)) {
-      cli::cli_abort(
-        "If you want to include taxonomic levels, you must include all levels up to family: {.val {ranks}}"
+    if (!identical(rank, valid_ranks)) {
+      wrong_ranks <- rank[!rank %in% valid_ranks]
+      if (length(wrong_ranks) > 0) {
+        cli::cli_abort(c(
+          "Invalid ranks: {wrong_ranks}",
+          "i" = "Provide these ranks in this order: {.arg {valid_ranks}}"),
+          class = "reasin_error_assignment_invalid"
+        )
+      }
+      cli::cli_abort(c(
+        "Missing or invalid ranks or ranks provided in the wrong order",
+        "i" = "Provide these ranks in this order: {.arg {valid_ranks}}"),
+        class = "reasin_error_assignment_invalid"
       )
     }
-    return(get_species_by_taxonomy(rank = rank, taxonomy = taxonomy))
+    output <- get_species_by_taxonomy(
+      rank = rank,
+      taxonomy = taxonomy,
+      limit = limit
+    )
   }
 
   # Get species present in a country
@@ -324,19 +369,20 @@ get_species <- function(
     country <- query_params$present_in_country
     if (!purrr::is_character(country)) {
       cli::cli_abort(
-        "Argument 'present_in_country' must be character.",
+        "Argument {.arg present_in_country} must be character.",
         class = "reasin_error_assignment_invalid"
       )
     }
-    valid_countries <- countries() %>% dplyr::pull(country_code)
+    valid_countries <- countries() |> dplyr::pull(country_code)
     if (any(!country %in% valid_countries)) {
       wrong_countries <- country[!country %in% valid_countries]
-      cli::cli_abort(
-        "Argument 'present_in_country' must be one or more of: {valid_countries}. Invalid value: {country}.",
+      cli::cli_abort(c(
+        "Countr{?y/ies} invalid: {wrong_countries}",
+        "i" = "Use {.fun countries} to get all valid values"),
         class = "reasin_error_assignment_invalid"
       )
     }
-    return(get_species_by_presence_in_country(country))
+    output <- get_species_by_pres_in_country(country, limit = limit)
   }
 
   # Get species via `status`
@@ -344,37 +390,38 @@ get_species <- function(
     status <- toupper(query_params$status)
     if (!purrr::is_character(status)) {
       cli::cli_abort(
-        "Argument 'status' must be character.",
+        "Argument {.arg status} must be character.",
         class = "reasin_error_assignment_invalid"
       )
     }
-    valid_status <- statuses() %>% dplyr::pull("status_code")
+    valid_status <- statuses() |> dplyr::pull("status_code")
     if (any(!status %in% valid_status)) {
       wrong_status <- status[!status %in% valid_status]
-      cli::cli_abort(
-        "Argument 'status' must be one or more of: {valid_status}. Invalid value{?s}: {wrong_status}. Use `statuses()` to get all valid values and their meaning.",
+      cli::cli_abort(c(
+        "Status code{?s} invalid: {wrong_status}",
+        "i" = "Use {.fun statuses}` to get all valid values"),
         class = "reasin_error_assignment_invalid"
       )
     }
-    return(get_species_by_status(status))
+    output <- get_species_by_status(status, limit = limit)
   }
 
   # Get species added to EASIN database based on Horizon Scanning assessments
   if ("horizon" %in% names(query_params)) {
     horizon <- query_params$horizon
     if (!isTRUE(horizon)) {
-      cli::cli_abort("Argument 'horizon' must be TRUE.")
+      cli::cli_abort("Argument {.arg horizon} must be TRUE")
     }
-    return(get_horizon_scanning_species())
+    output <- get_horizon_scanning_species(limit = limit)
   }
 
   # Get species native at least in one country
   if ("partly_native" %in% names(query_params)) {
     partly_native <- query_params$partly_native
     if (!isTRUE(partly_native)) {
-      cli::cli_abort("Argument 'partly_native' must be TRUE.")
+      cli::cli_abort("Argument {.arg partly_native} must be TRUE")
     }
-    return(get_partly_native_species())
+    output <- get_partly_native_species(limit = limit)
   }
 
   # Get species which are native in the given countries
@@ -382,55 +429,71 @@ get_species <- function(
     native_in_country <- query_params$native_in_country
     if (!purrr::is_character(native_in_country)) {
       cli::cli_abort(
-        "Argument 'native_in_country' must be character.",
+        "Argument {.arg native_in_country} must be character",
         class = "reasin_error_assignment_invalid"
       )
     }
-    valid_countries <- countries() %>% dplyr::pull(country_code)
+    valid_countries <- countries() |> dplyr::pull(country_code)
     if (any(!native_in_country %in% valid_countries)) {
-      wrong_countries <- native_in_country[!native_in_country %in% valid_countries]
-      cli::cli_abort(
-        "Countr{?y/ies} invalid: {wrong_coutries}. Use `countries()` to get all valid values.",
+      wrong_countries <- native_in_country[
+        !native_in_country %in% valid_countries
+      ]
+      cli::cli_abort(c(
+        "Countr{?y/ies} invalid: {wrong_countries}",
+        "i" = "Use {.fun countries} to get all valid values"),
         class = "reasin_error_assignment_invalid"
       )
     }
-    return(get_native_species_in_country(native_in_country))
+    output <- get_native_species_in_country(native_in_country, limit = limit)
+  }
+
+  # Return the output data frame with cleaned up column names
+  if (ncol(output) > 0) {
+    return(clean_up_names(output, cols = "Name"))
+  } else {
+    return(output)
   }
 }
 
 #' Get all species
 #'
-#' This function retrieves all species from the EASIN's Catalogue Web Service.
-#' It is used internally by `get_species()` if all args are `NULL`.
+#' This function retrieves all species from the EASIN Catalogue Web Service.
+#' It is used internally by `get_species()` if all arguments are `NULL`.
 #' @return A tibble data frame containing all species.
 #' @noRd
 #' @examples
 #' get_all_species()
-get_all_species <- function() {
-  url_all_species <- "https://easin.jrc.ec.europa.eu/apixg/catxg/getall/skip/0/take/20000"
-  data <- get_species_static_url(url_all_species) %>%
-    clean_up_names(cols = "Name")
-  return(data)
+get_all_species <- function(limit = NULL) {
+  base_url <- "https://easin.jrc.ec.europa.eu/apixg/catxg/getall/"
+  if (!is.null(limit)) {
+    return(
+      get_species_static_url(base_url, is_pagination = TRUE, limit = limit)
+    )
+  } else {
+    return(
+      get_species_static_url(base_url, is_pagination = TRUE, limit = limit)
+    )
+  }
 }
 
 #' Get all species of Union Concern
 #'
-#' Retrieves all species of Union Concern from the EASIN's Catalogue Web Service.
+#' Retrieves all species of Union Concern from the EASIN Catalogue Web Service.
 #' It is used internally by `get_species()` if `union_concern = TRUE`.
 #'
 #' @return A data frame containing all species of Union Concern.
 #' @noRd
 #' @examples
 #' get_union_concern_species()
-get_union_concern_species <- function() {
+get_union_concern_species <- function(limit = NULL) {
   union_concern_url <- "https://easin.jrc.ec.europa.eu/apixg/catxg/euconcern"
-  data <- get_species_static_url(union_concern_url)
+  data <- get_species_static_url(union_concern_url, limit = limit)
   return(data)
 }
 
 #' Get all species based on Horizon Scanning assessments
 #'
-#' Retrieves all species from the EASIN's Catalogue Web Service that have been
+#' Retrieves all species from the EASIN Catalogue Web Service that have been
 #' assessed in the context of Horizon Scanning. It is used internally by
 #' `get_species()` if `horion_scanning = TRUE`.
 #' @return A data frame containing all species assessed in the context of
@@ -438,29 +501,29 @@ get_union_concern_species <- function() {
 #' @noRd
 #' @examples
 #' get_horizon_scanning_species()
-get_horizon_scanning_species <- function() {
+get_horizon_scanning_species <- function(limit = NULL) {
   horizon_url <- "https://easin.jrc.ec.europa.eu/apixg/catxg/horizon/"
-  data <- get_species_static_url(horizon_url, is_pagination = TRUE)
+  data <- get_species_static_url(horizon_url, is_pagination = TRUE, limit = limit)
   return(data)
 }
 
 #' Get species native in at least one country
 #'
-#' Retrieves all species from the EASIN's Catalogue Web Service that are native
+#' Retrieves all species from the EASIN Catalogue Web Service that are native
 #' in at least one Member State.
 #' @return A data frame containing all species native in at least one country.
 #' @noRd
 #' @examples
 #' get_partly_native_species()
-get_partly_native_species <- function() {
-  partly_native_url <- "https://easin.jrc.ec.europa.eu/apixg/catxg/partlynative/"
-  data <- get_species_static_url(partly_native_url, is_pagination = TRUE)
+get_partly_native_species <- function(limit = NULL) {
+  partly_nat_url <- "https://easin.jrc.ec.europa.eu/apixg/catxg/partlynative/"
+  data <- get_species_static_url(partly_nat_url, is_pagination = TRUE, limit = limit)
   return(data)
 }
 
 #' Get species by environment(s)
 #'
-#' Retrieves species from the EASIN's Catalogue Web Service filtered by one or
+#' Retrieves species from the EASIN Catalogue Web Service filtered by one or
 #' more environment types. It is used internally by `get_species()` if
 #' `environment` argument is provided.
 #' @param environments A character vector containing one or more environment
@@ -470,19 +533,20 @@ get_partly_native_species <- function() {
 #' @noRd
 #' @examples
 #' get_species_by_environment(c("MAR", "TER"))
-get_species_by_environment <- function(environments) {
-  data <- get_species_dynamic_url(
-    arg = "env",
-    values = environments,
-    is_pagination = TRUE
+get_species_by_environment <- function(environments, limit = NULL) {
+  return(
+    get_species_dynamic_url(
+      arg = "env",
+      values = environments,
+      is_pagination = TRUE,
+      limit = limit
+    )
   )
-  data <- clean_up_names(data, cols = "Name")
-  return(data)
 }
 
 #' Get species by EASIN ID(s)
 #'
-#' Retrieves species information from the EASIN's Catalogue Web Service for one
+#' Retrieves species information from the EASIN Catalogue Web Service for one
 #' or more EASIN IDs. It is used internally by `get_species()` if `easin_id`
 #' argument is provided.
 #'
@@ -491,18 +555,19 @@ get_species_by_environment <- function(environments) {
 #' @noRd
 #' @examples
 #' get_species_by_easin_id(c("R00460", "R12250"))
-get_species_by_easin_id <- function(easin_ids) {
+get_species_by_easin_id <- function(easin_ids, limit = NULL) {
   data <- get_species_dynamic_url(
     arg = "easinid",
     values = easin_ids,
-    is_pagination = FALSE
+    is_pagination = FALSE,
+    limit = limit
   )
   return(data)
 }
 
 #' Get species by scientific name or part of it
 #'
-#' Retrieves species from the EASIN's Catalogue Web Service based on a
+#' Retrieves species from the EASIN Catalogue Web Service based on a
 #' scientific name or part of it. It is used internally by `get_species()` if
 #' `scientific_name` argument is provided.
 #'
@@ -512,80 +577,88 @@ get_species_by_easin_id <- function(easin_ids) {
 #' @noRd
 #' @examples
 #' get_species_by_scientific_name("Vespa")
-get_species_by_scientific_name <- function(scientific_names) {
+get_species_by_scientific_name <- function(scientific_names, limit = NULL) {
   data <- get_species_dynamic_url(
     arg = "term",
     values = scientific_names,
-    is_pagination = FALSE
+    is_pagination = FALSE,
+    limit = limit
   )
   return(data)
 }
 
 #' Get species of Member State concern
 #'
-#' Retrieves species from the EASIN's Catalogue Web Service filtered by one or
+#' Retrieves species from the EASIN Catalogue Web Service filtered by one or
 #' more environment types. It is used internally by `get_species()` if
 #' `country_code` argument is provided.
-#' @param country_codes A character vector containing one or more ISO 3166-1 alpha-2 country codes.
+#' @param country_codes A character vector containing one or more ISO 3166-1
+#'   alpha-2 country codes.
 #' @return A data frame containing species filtered by the specified countries.
 #' @noRd
 #' @examples
 #' get_species_by_country_code(c("AT", "BG"))
-get_species_by_country_code <- function(country_codes) {
+get_species_by_country_code <- function(country_codes, limit = NULL) {
   # This endpoint accepts multiple country codes comma separated. We save an API
   # call by passing them all at once.
   country_codes <- paste(country_codes, collapse = ",")
   data <- get_species_dynamic_url(
     arg = "concernedms",
     values = country_codes,
-    is_pagination = TRUE
+    is_pagination = TRUE,
+    limit = limit
   )
   return(data)
 }
 
 #' Get species by Outermost region code(s)
 #'
-#' Retrieves species from the EASIN's Catalogue Web Service filtered by one or
+#' Retrieves species from the EASIN Catalogue Web Service filtered by one or
 #' more Outermost region codes. It is used internally by `get_species()` if
 #' `region_code` argument is provided.
-#' @param region_codes A character vector containing one or more Outermost region codes.
-#' @return A tibble data frame containing species information for species present in the given Outermost regions.
+#' @param region_codes A character vector containing one or more Outermost
+#'   region codes.
+#' @return A tibble data frame containing species information for species
+#'   present in the given outermost regions.
 #' @noRd
 #' @examples
 #' get_speciesby_region_code("PT3")
-get_species_by_region_code <- function(region_codes) {
+get_species_by_region_code <- function(region_codes, limit = NULL) {
   # This endpoint accepts multiple region codes comma separated. We save an API
   # call by passing them all at once.
   region_codes <- paste(region_codes, collapse = ",")
   data <- get_species_dynamic_url(
     arg = "concernedregions",
     values = region_codes,
-    is_pagination = TRUE
+    is_pagination = TRUE,
+    limit = limit
   )
   return(data)
 }
 
 #' Get species with a specific impact
 #'
-#' Retrieves species from the EASIN's Catalogue Web Service It is used
+#' Retrieves species from the EASIN Catalogue Web Service It is used
 #' internally by `get_species()` if `impact` argument is provided.
-#' @param impact A character containing one or more of: `"hi"` (high) or `"lo"` (low).
+#' @param impact A character containing one or more of: `"hi"` (high) or `"lo"`
+#'   (low).
 #' @return A data frame containing species filtered by the specified countries.
 #' @noRd
 #' @examples
 #' get_species_by_country(impact = "lo")
-get_species_by_impact <- function(impact) {
+get_species_by_impact <- function(impact, limit = NULL) {
   data <- get_species_dynamic_url(
     arg = "impact",
     values = impact,
-    is_pagination = TRUE
+    is_pagination = TRUE,
+    limit = limit
   )
   return(data)
 }
 
 #' Get species by taxon
 #'
-#' Retrieves species from the EASIN's Catalogue Web Service filtered by a given
+#' Retrieves species from the EASIN Catalogue Web Service filtered by a given
 #' `taxon`. It is used internally by `get_species()` if `taxon` argument is
 #' provided.
 #' @param rank A character representing the taxonomy level. From kingdom up to
@@ -597,22 +670,30 @@ get_species_by_impact <- function(impact) {
 #' @noRd
 #' @examples
 #' get_species_by_taxon(rank = "family", taxon = "Vespidae")
-get_species_by_taxon <- function(rank, taxon) {
-  data <- get_species_dynamic_url(
-    arg = rank,
-    values = taxon,
-    is_pagination = TRUE
-  )
+get_species_by_taxon <- function(rank, taxon, limit = NULL) {
+  data <- purrr::map2(
+    rank,
+    taxon,
+    ~ get_species_dynamic_url(
+      arg = .x,
+      values = .y,
+      is_pagination = TRUE,
+      limit = limit
+    )
+  ) |>
+    purrr::list_rbind()
+
   return(data)
 }
 
 #' Get species by full taxonomy
 #'
-#' Retrieves species from the EASIN's Catalogue Web Service filtered by full
+#' Retrieves species from the EASIN Catalogue Web Service filtered by full
 #' `taxonomy`. It is used internally by `get_species()` if `taxonomy` argument
 #' is provided.
 #' @param rank A character representing the taxonomy level(s).
-#' @param taxonomy A character string representing the taxonomy name of given `rank`.
+#' @param taxonomy A character string representing the taxonomy name of given
+#'   `rank`.
 #' @return A tibble data frame containing species information for species
 #'   present in the given taxonomy.
 #' @noRd
@@ -627,42 +708,44 @@ get_species_by_taxon <- function(rank, taxon) {
 #'     "Vespidae"
 #'   )
 #' )
-get_species_by_taxonomy <- function(rank, taxonomy) {
+get_species_by_taxonomy <- function(rank, taxonomy, limit = NULL) {
   base_url <- "https://easin.jrc.ec.europa.eu/apixg/catxg/"
   data <- get_species_static_url(
     base_url = base_url,
     arg = rank,
-    value = taxonomy
+    value = taxonomy,
+    limit = limit
   )
   return(data)
 }
 
 #' Get species present in a country
 #'
-#' Retrieves species from the EASIN's Catalogue Web Service filtered by presence
+#' Retrieves species from the EASIN Catalogue Web Service filtered by presence
 #' in a give country. It is used internally by `get_species()` if
 #' `present_in_country` argument is provided.
 #' @param country A character containing one ISO 3166-1 alpha-2 country codes.
 #' @return A data frame containing species filtered by the specified countries.
 #' @noRd
 #' @examples
-#' get_species_by_country(present_in_country = "LU")
-get_species_by_presence_in_country <- function(countries) {
+#' get_species_by_pres_in_country(countries = "LU")
+get_species_by_pres_in_country <- function(countries, limit = NULL) {
   # For this endpoint we can pass countrycodes comma separated. We save a API
   # call by passing them all at once.
   countries <- paste(countries, collapse = ",")
-  data <- get_species_dynamic_url(
-    arg = "incountries",
-    values = countries,
-    is_pagination = TRUE
-  ) %>%
-    clean_up_names(cols = "Name")
-  return(data)
+  return(
+    get_species_dynamic_url(
+      arg = "incountries",
+      values = countries,
+      is_pagination = TRUE,
+      limit = limit
+    )
+  )
 }
 
 #' Get species via status
 #'
-#' Retrieves species from the EASIN's Catalogue Web Service filtered by status.
+#' Retrieves species from the EASIN Catalogue Web Service filtered by status.
 #' It is used internally by `get_species()` if `status` argument is provided.
 #' @param status A character vector containing one or more status types.
 #' @return A data frame containing species filtered by the specified status
@@ -670,34 +753,36 @@ get_species_by_presence_in_country <- function(countries) {
 #' @noRd
 #' @examples
 #' get_species_by_status(c("Q", "C"))
-get_species_by_status <- function(status) {
-  data <- get_species_dynamic_url(
-    arg = "status",
-    values = status,
-    is_pagination = TRUE
-  ) %>%
-    clean_up_names(cols = "Name")
-  return(data)
+get_species_by_status <- function(status, limit = NULL) {
+  return(
+    get_species_dynamic_url(
+      arg = "status",
+      values = status,
+      is_pagination = TRUE,
+      limit = limit
+    )
+  )
 }
-
 
 #' Get native species in one or more countries
 #'
-#' Retrieves from the EASIN's Catalogue Web Servic the species for countries in
+#' Retrieves from the EASIN Catalogue Web Service the species for countries in
 #' which they are native.
-#' @param country_codes A character vector containing one or more ISO 3166-1 alpha-2 country codes.
+#' @param country_codes A character vector containing one or more ISO 3166-1
+#'   alpha-2 country codes.
 #' @return A data frame containing species filtered by the specified countries.
 #' @noRd
 #' @examples
 #' get_native_species_in_country(c("AT", "BG"))
-get_native_species_in_country <- function(countries) {
+get_native_species_in_country <- function(countries, limit = NULL) {
   # For this endpoint we can pass countrycodes comma separated. We save a API
   # call by passing them all at once.
   countries <- paste(countries, collapse = ",")
   data <- get_species_dynamic_url(
     arg = "nativeincountries",
     values = countries,
-    is_pagination = TRUE
+    is_pagination = TRUE,
+    limit = limit
   )
   return(data)
 }

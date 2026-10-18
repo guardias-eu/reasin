@@ -38,6 +38,8 @@ test_that("`get_species()` returns all data correctly", {
   expect_type(all_data_df$IsOutermostConcern, "logical")
   expect_type(all_data_df$IsPartNative, "logical")
   expect_type(all_data_df$IsHorizonScanning, "logical")
+  # All names are cleaned up: no quotes at the begin or at the end
+  expect_false(any(grepl("^'|'$", all_data_df$Name)))
 })
 
 test_that("`easin_id` accepts valid character input", {

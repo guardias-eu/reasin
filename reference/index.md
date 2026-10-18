@@ -3,7 +3,7 @@
 ## Species functions
 
 - [`get_species()`](https://guardias-eu.github.io/reasin/reference/get_species.md)
-  : Get species information from the EASIN's Catalogue Web Service
+  : Get species information from the EASIN Catalogue Web Service
 
 ## Miscellaneous functions
 

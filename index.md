@@ -18,6 +18,16 @@ You can install the development version of reasin from
 pak::pak("guardias-eu/reasin") # dev version
 ```
 
+## Get started
+
+To get started, see:
+
+- [Vignettes](https://inbo.github.io/reasin/articles/): tutorials
+  showcasing functionality.
+- [Function
+  reference](https://inbo.github.io/reasin/reference/index.html):
+  overview of all functions.
+
 ## Example
 
 Use
@@ -37,7 +47,9 @@ get_species(scientific_name = "Procambarus")
 ```
 
 More examples can be found in [`get_species()`
-documentation](https://guardias-eu.github.io/reasin/reference/get_species.html).
+documentation](https://guardias-eu.github.io/reasin/reference/get_species.html)
+or in the
+[vignette](https://inbo.github.io/camtraptor/articles/how_to_get_taxon_info_from_easin_catalogue.html).
 
 Check also the [Reference
 section](https://guardias-eu.github.io/reasin/reference/index.html) for
@@ -46,6 +58,6 @@ a list with all available functions.
 ## Funding
 
 This package is being developed in the framework of the
-[GuardIAS](https://guardias.eu/) prject. GuardIAS receives funding from
+[GuardIAS](https://guardias.eu/) project. GuardIAS receives funding from
 the European Union’s Horizon Europe Research and Innovation Programme
 (ID No 101181413).

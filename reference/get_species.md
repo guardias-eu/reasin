@@ -1,10 +1,10 @@
-# Get species information from the EASIN's Catalogue Web Service
+# Get species information from the EASIN Catalogue Web Service
 
-This function retrieves species information from the EASIN's
+Retrieves species information from the EASIN
 [Catalogue](https://easin.jrc.ec.europa.eu/easin/Catalogue). Users can
-retrieve records by species’ scientific name, environment, impact,
-taxonomy, Union concern status
-([LegalFramework](https://easin.jrc.ec.europa.eu/easin/LegalFramework/Index)).
+retrieve records by scientific name, environment, impact, taxonomy,
+Union concern status ([Legal
+Framework](https://easin.jrc.ec.europa.eu/easin/LegalFramework/Index)).
 More on [EASIN Web Services](https://easin.jrc.ec.europa.eu/apixg).
 
 ## Usage
@@ -24,7 +24,8 @@ get_species(
   horizon = NULL,
   partly_native = NULL,
   native_in_country = NULL,
-  union_concern = NULL
+  union_concern = NULL,
+  limit = NULL
 )
 ```
 
@@ -112,7 +113,7 @@ get_species(
 
 - partly_native:
 
-  Logical. If `TRUE`, returns only specise which are native in one or
+  Logical. If `TRUE`, returns only species which are native in one or
   more EU countries.
 
 - native_in_country:
@@ -128,16 +129,22 @@ get_species(
   Logical. If `TRUE`, returns only species of Union concern. Only `TRUE`
   is allowed.
 
+- limit:
+
+  Integer. Maximum number of rows to return. Default: `NULL` (return all
+  rows).
+
 ## Value
 
-A tibble data frame containing species information.
+A tibble data frame containing species information. An empty tibble is
+returned when no species match the search criteria.
 
 ## Examples
 
 ``` r
 # Get list of all species in the EASIN catalogue
 get_species()
-#> # A tibble: 15,750 × 12
+#> # A tibble: 15,751 × 12
 #>    EasinID Name     Authorship LSID  Reference HasImpact IsEUConcern IsMSConcern
 #>    <chr>   <chr>    <chr>      <chr> <chr>     <lgl>     <lgl>       <lgl>      
 #>  1 R19422  Candida… "Fagen et… urn:… https://… FALSE     FALSE       FALSE      
@@ -150,7 +157,26 @@ get_species()
 #>  8 R19428  Candida… ""         urn:… https://… FALSE     FALSE       FALSE      
 #>  9 R11526  Candida… ""         urn:… https://… TRUE      FALSE       FALSE      
 #> 10 R19429  Candida… ""         urn:… https://… FALSE     FALSE       FALSE      
-#> # ℹ 15,740 more rows
+#> # ℹ 15,741 more rows
+#> # ℹ 4 more variables: IsOutermostConcern <lgl>, IsPartNative <lgl>,
+#> #   IsHorizonScanning <lgl>, Status <chr>
+
+# Get first 100 species
+get_species(limit = 100)
+#> # A tibble: 100 × 12
+#>    EasinID Name     Authorship LSID  Reference HasImpact IsEUConcern IsMSConcern
+#>    <chr>   <chr>    <chr>      <chr> <chr>     <lgl>     <lgl>       <lgl>      
+#>  1 R19422  Candida… "Fagen et… urn:… https://… FALSE     FALSE       FALSE      
+#>  2 R11525  Candida… ""         urn:… https://… FALSE     FALSE       FALSE      
+#>  3 R19423  Candida… ""         urn:… https://… FALSE     FALSE       FALSE      
+#>  4 R19424  Candida… ""         urn:… https://… FALSE     FALSE       FALSE      
+#>  5 R19425  Candida… ""         urn:… https://… FALSE     FALSE       FALSE      
+#>  6 R19426  Candida… ""         urn:… https://… FALSE     FALSE       FALSE      
+#>  7 R19427  Candida… ""         urn:… https://… FALSE     FALSE       FALSE      
+#>  8 R19428  Candida… ""         urn:… https://… FALSE     FALSE       FALSE      
+#>  9 R11526  Candida… ""         urn:… https://… TRUE      FALSE       FALSE      
+#> 10 R19429  Candida… ""         urn:… https://… FALSE     FALSE       FALSE      
+#> # ℹ 90 more rows
 #> # ℹ 4 more variables: IsOutermostConcern <lgl>, IsPartNative <lgl>,
 #> #   IsHorizonScanning <lgl>, Status <chr>
 
@@ -380,7 +406,7 @@ get_species(present_in_country = c("LU", "IE"))
 
 # Get species by `status`
 get_species(status = c("Q", "A"))
-#> # A tibble: 14,425 × 27
+#> # A tibble: 14,426 × 27
 #>    EASINID Name      Authorship FirstIntroductionsInEU PresentInCountries Status
 #>    <chr>   <chr>     <chr>      <list>                 <list>             <chr> 
 #>  1 R19422  Candidat… "Fagen et… <df [1 × 3]>           <df [14 × 1]>      Q     
@@ -393,7 +419,30 @@ get_species(status = c("Q", "A"))
 #>  8 R19428  Candidat… ""         <df [1 × 3]>           <df [1 × 1]>       Q     
 #>  9 R11526  Candidat… ""         <df [1 × 3]>           <df [29 × 1]>      Q     
 #> 10 R19429  Candidat… ""         <df [1 × 3]>           <df [2 × 1]>       Q     
-#> # ℹ 14,415 more rows
+#> # ℹ 14,416 more rows
+#> # ℹ 21 more variables: HasImpact <lgl>, IsEUConcern <lgl>, EUConcernName <chr>,
+#> #   IsOutermostConcern <lgl>, ConcernedOutermostRegions <list>,
+#> #   IsMSConcern <lgl>, ConcernedMS <list>, IsPartNative <lgl>,
+#> #   NativeRange <list>, IsHorizonScanning <lgl>, LastRevisionDate <lgl>,
+#> #   Kingdom <chr>, Phylum <chr>, Class <chr>, Order <chr>, Family <chr>,
+#> #   ImpactSources <list>, ImpactOnSectors <list>, CommonNames <list>, …
+
+# Get species by `impact`
+get_species(impact = "hi")
+#> # A tibble: 1,321 × 27
+#>    EASINID Name      Authorship FirstIntroductionsInEU PresentInCountries Status
+#>    <chr>   <chr>     <chr>      <list>                 <list>             <chr> 
+#>  1 R11526  Candidat… ""         <df [1 × 3]>           <df [29 × 1]>      Q     
+#>  2 R11527  Candidat… ""         <df [1 × 3]>           <df [23 × 1]>      Q     
+#>  3 R11528  Candidat… ""         <df [1 × 3]>           <df [27 × 1]>      Q     
+#>  4 R00031  Abutilon… "(Cav.) S… <df [1 × 3]>           <df [2 × 1]>       A     
+#>  5 R00033  Abutilon… "Medik."   <df [1 × 3]>           <df [46 × 1]>      A     
+#>  6 R00035  Acacia b… "F.Muell." <df [1 × 3]>           <df [8 × 1]>       A     
+#>  7 R00037  Acacia c… "G.Don"    <df [1 × 3]>           <df [3 × 1]>       A     
+#>  8 R00038  Acacia c… "G.Don"    <df [1 × 3]>           <df [10 × 1]>      A     
+#>  9 R00039  Acacia d… "Link s.l… <df [1 × 3]>           <df [23 × 1]>      A     
+#> 10 R00042  Acacia k… "Hayne"    <df [1 × 3]>           <df [12 × 1]>      A     
+#> # ℹ 1,311 more rows
 #> # ℹ 21 more variables: HasImpact <lgl>, IsEUConcern <lgl>, EUConcernName <chr>,
 #> #   IsOutermostConcern <lgl>, ConcernedOutermostRegions <list>,
 #> #   IsMSConcern <lgl>, ConcernedMS <list>, IsPartNative <lgl>,
@@ -406,16 +455,16 @@ get_species(partly_native = TRUE)
 #> # A tibble: 5,215 × 27
 #>    EASINID Name      Authorship FirstIntroductionsInEU PresentInCountries Status
 #>    <chr>   <chr>     <chr>      <list>                 <list>             <chr> 
-#>  1 R19422  'Candida… "Fagen et… <df [1 × 3]>           <df [14 × 1]>      Q     
-#>  2 R11525  'Candida… ""         <df [1 × 3]>           <df [9 × 1]>       Q     
-#>  3 R19424  'Candida… ""         <df [1 × 3]>           <df [1 × 1]>       Q     
-#>  4 R19425  'Candida… ""         <df [1 × 3]>           <df [1 × 1]>       Q     
-#>  5 R19426  'Candida… ""         <df [1 × 3]>           <df [1 × 1]>       Q     
-#>  6 R19427  'Candida… ""         <df [1 × 3]>           <df [1 × 1]>       Q     
-#>  7 R19428  'Candida… ""         <df [1 × 3]>           <df [1 × 1]>       Q     
-#>  8 R11526  'Candida… ""         <df [1 × 3]>           <df [29 × 1]>      Q     
-#>  9 R19429  'Candida… ""         <df [1 × 3]>           <df [2 × 1]>       Q     
-#> 10 R19430  'Candida… ""         <df [1 × 3]>           <df [1 × 1]>       Q     
+#>  1 R19422  Candidat… "Fagen et… <df [1 × 3]>           <df [14 × 1]>      Q     
+#>  2 R11525  Candidat… ""         <df [1 × 3]>           <df [9 × 1]>       Q     
+#>  3 R19424  Candidat… ""         <df [1 × 3]>           <df [1 × 1]>       Q     
+#>  4 R19425  Candidat… ""         <df [1 × 3]>           <df [1 × 1]>       Q     
+#>  5 R19426  Candidat… ""         <df [1 × 3]>           <df [1 × 1]>       Q     
+#>  6 R19427  Candidat… ""         <df [1 × 3]>           <df [1 × 1]>       Q     
+#>  7 R19428  Candidat… ""         <df [1 × 3]>           <df [1 × 1]>       Q     
+#>  8 R11526  Candidat… ""         <df [1 × 3]>           <df [29 × 1]>      Q     
+#>  9 R19429  Candidat… ""         <df [1 × 3]>           <df [2 × 1]>       Q     
+#> 10 R19430  Candidat… ""         <df [1 × 3]>           <df [1 × 1]>       Q     
 #> # ℹ 5,205 more rows
 #> # ℹ 21 more variables: HasImpact <lgl>, IsEUConcern <lgl>, EUConcernName <chr>,
 #> #   IsOutermostConcern <lgl>, ConcernedOutermostRegions <list>,
@@ -429,8 +478,8 @@ get_species(native_in_country = c("EE","FI"))
 #> # A tibble: 1,252 × 27
 #>    EASINID Name      Authorship FirstIntroductionsInEU PresentInCountries Status
 #>    <chr>   <chr>     <chr>      <list>                 <list>             <chr> 
-#>  1 R19422  'Candida… "Fagen et… <df [1 × 3]>           <df [14 × 1]>      Q     
-#>  2 R11526  'Candida… ""         <df [1 × 3]>           <df [29 × 1]>      Q     
+#>  1 R19422  Candidat… "Fagen et… <df [1 × 3]>           <df [14 × 1]>      Q     
+#>  2 R11526  Candidat… ""         <df [1 × 3]>           <df [29 × 1]>      Q     
 #>  3 R00024  Abramis … "(Linnaeu… <df [1 × 3]>           <df [33 × 1]>      A     
 #>  4 R00070  Acanthoc… "(Müller,… <df [1 × 3]>           <df [1 × 1]>       C     
 #>  5 R00072  Acanthoc… "(Linnaeu… <df [1 × 3]>           <df [28 × 1]>      A     

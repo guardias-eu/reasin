@@ -26,7 +26,7 @@ Imports:
     glue,
     httr2,
     jsonlite,
-    purrr
+    purrr (>= 1.0.0)
 Suggests:
     knitr,
     qs2,

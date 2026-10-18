@@ -169,7 +169,7 @@ test_that("`country_code` accepts valid input", {
     )
   )
   # If there are no species for the specific country, an empty tibble is returned
-  vcr::use_cassette("country_code_valid_empty_result", {
+  vcr::use_cassette("country_code_empty_result", {
     result <- get_species(country_code = "AT")
   })
   expect_s3_class(result, "tbl_df")

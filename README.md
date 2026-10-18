@@ -2,7 +2,7 @@
 # reasin
 
 <!-- badges: start -->
-[![R-CMD-check](https://github.com/guardias-eu/reasin/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/guardias-eu/reasin/actions/workflows/R-CMD-check.yaml)
+[![R-CMD-check](https://github.com/guardias-eu/reasin/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/guardias-eu/reasin/actions/workflows/r-cmd-check.yaml)
 [![Codecov test coverage](https://codecov.io/gh/guardias-eu/reasin/graph/badge.svg)](https://app.codecov.io/gh/guardias-eu/reasin)
 [![repo
 status](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)

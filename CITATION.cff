@@ -5,7 +5,7 @@ authors:
 - given-names: Damiano
   family-names: Oldoni
   affiliation: Research Institute for Nature and Forest (INBO)
-  orcid: 0000-0003-3445-7562
+  orcid: https://orcid.org/0000-0003-3445-7562
 keywords:
 - easin
 - api
@@ -15,6 +15,7 @@ contact:
   family-names: Oldoni
   affiliation: Research Institute for Nature and Forest (INBO)
   orcid: 0000-0003-3445-7562
+doi: ~
 license: MIT
 repository-code: https://github.com/guardias-eu/reasin/
 type: software
